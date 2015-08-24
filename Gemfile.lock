@@ -30,6 +30,9 @@ GEM
       activemodel (= 4.2.4)
       activesupport (= 4.2.4)
       arel (~> 6.0)
+    activerecord-postgis-adapter (3.0.0)
+      activerecord (~> 4.2)
+      rgeo-activerecord (~> 4.0)
     activesupport (4.2.4)
       i18n (~> 0.7)
       json (~> 1.7, >= 1.7.7)
@@ -145,6 +148,10 @@ GEM
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
     rdoc (4.2.0)
+    rgeo (0.3.20)
+    rgeo-activerecord (4.0.0)
+      activerecord (~> 4.2)
+      rgeo (~> 0.3)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -205,6 +212,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-postgis-adapter (~> 3.0)
   byebug
   coffee-rails (~> 4.1.0)
   doorkeeper

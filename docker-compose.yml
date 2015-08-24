@@ -41,7 +41,7 @@ web: &app_base
     - redis:redis.air-quality.local
   environment: &app_environment
     # PostgreSQL Database:
-    DATABASE_URL: postgres://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_development?pool=25&encoding=unicode
+    DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
 
     # Redis Database:
     REDIS_URL: redis://redis.air-quality.local:6379
@@ -74,7 +74,7 @@ test:
   environment:
     <<: *app_environment
     # PostgreSQL Database:
-    DATABASE_URL: postgres://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_test?pool=25&encoding=unicode
+    DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
 
     # Run the app in the 'test' environment, instead of the default 'developent'
     RACK_ENV: test
