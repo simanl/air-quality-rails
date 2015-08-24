@@ -1,5 +1,18 @@
 source 'https://rubygems.org'
 
+################################################################################
+# App Ruby Version:
+
+# Use MRI 2.2.2:
+ruby '2.2.3', engine: 'ruby', engine_version: '2.2.3'
+
+# Use JRuby 9.0.0.0:
+# ruby "2.2.2", engine: 'jruby', engine_version: '9.0.0.0.pre2'
+
+# Use Rubinius 2.5.3:
+# ruby "2.1.0", engine: 'rbx', engine_version: '2.5.3'
+
+################################################################################
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.3'
