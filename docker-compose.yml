@@ -68,7 +68,7 @@ web: &app_base
 test:
   <<: *app_base # We copy from &app_base, and override:
   ports: []
-  command: guard start --no-bundler-warning --no-interactions
+  command: guard start --no-bundler-warning --no-interactions --force-polling
   links:
     - postgres:postgres.air-quality.local
   environment:
