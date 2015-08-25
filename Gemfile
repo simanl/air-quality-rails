@@ -47,9 +47,17 @@ gem 'doorkeeper'
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
+# Guard setup for automatic testing:
+group :development do
+  gem 'guard',       '~> 2.13.0'
+  gem 'guard-rspec', '~> 4.6.4', require: false
+end
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug'
+
+  gem 'pry'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
   gem 'web-console', '~> 2.0'
