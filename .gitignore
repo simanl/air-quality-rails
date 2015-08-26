@@ -55,3 +55,6 @@ bower.json
 
 # Ignore environment file:
 /.env
+
+# Ignore RSpec "spec/examples.txt" file:
+/spec/examples.txt
