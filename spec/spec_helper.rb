@@ -49,6 +49,7 @@ RSpec.configure do |config|
   # `:focus` metadata. When nothing is tagged with `:focus`, all examples
   # get run.
   config.filter_run :focus
+  config.filter_run_excluding :wip
   config.run_all_when_everything_filtered = true
 
   # Allows RSpec to persist some state between runs in order to support
