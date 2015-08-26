@@ -206,7 +206,7 @@ DEPENDENCIES
   byebug
   coffee-rails (~> 4.1.0)
   doorkeeper
-  factory_girl_rails
+  factory_girl_rails (~> 4.5)
   guard (~> 2.13.0)
   guard-rspec (~> 4.6.4)
   jbuilder (~> 2.0)
