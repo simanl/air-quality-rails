@@ -4,4 +4,6 @@ class StationSerializer < ActiveModel::Serializer
   def latlon
     "#{object.latitude},#{object.longitude}"
   end
+
+  has_one :last_measurement, serializer: MeasurementSerializer
 end

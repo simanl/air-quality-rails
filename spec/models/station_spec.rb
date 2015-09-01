@@ -27,7 +27,7 @@ RSpec.describe Station, type: :model do
   end
 
   # Check the availability of associations:
-  describe "associations", wip: true do
+  describe "associations" do
     it { is_expected.to respond_to :measurements }
     it { is_expected.to respond_to :last_measurement }
   end

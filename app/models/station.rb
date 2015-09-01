@@ -3,6 +3,10 @@ class Station < ActiveRecord::Base
   validates :code, uniqueness: true
   delegate :latitude, :longitude, to: :lonlat
 
+  has_many :measurements
+  has_one :last_measurement, -> { latest.limit(1) },
+    class_name: "Measurement"
+
   # params:
   # a) latitude, longitude
   # b) "lat,lon" as String
