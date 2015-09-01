@@ -2,6 +2,16 @@ require 'rails_helper'
 
 RSpec.describe Station, type: :model do
 
+  describe 'class' do
+    subject { described_class }
+
+    it { is_expected.to respond_to :nearest_from }
+
+    describe ".nearest_from" do
+      it "retrieves stations near from a given point"
+    end
+  end
+
   # Check the availability of persisted properties:
   describe "attributes" do
     it { is_expected.to respond_to :code }
