@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150824233610) do
+ActiveRecord::Schema.define(version: 20150824235056) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,5 +56,16 @@ ActiveRecord::Schema.define(version: 20150824233610) do
   end
 
   add_index "oauth_applications", ["uid"], name: "index_oauth_applications_on_uid", unique: true, using: :btree
+
+  create_table "stations", force: :cascade do |t|
+    t.string    "code"
+    t.string    "name"
+    t.string    "short_name"
+    t.geography "lonlat",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.datetime  "created_at",                                                          null: false
+    t.datetime  "updated_at",                                                          null: false
+  end
+
+  add_index "stations", ["code"], name: "index_stations_on_code", unique: true, using: :btree
 
 end
