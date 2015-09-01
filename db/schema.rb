@@ -11,11 +11,28 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150824235056) do
+ActiveRecord::Schema.define(version: 20150825192741) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "measurements", force: :cascade do |t|
+    t.integer  "station_id"
+    t.datetime "measured_at",                                                      null: false
+    t.decimal  "temperature",                 precision: 4, scale: 2
+    t.decimal  "relative_humidity",           precision: 3, scale: 2
+    t.integer  "wind_direction",    limit: 2
+    t.decimal  "wind_speed",                  precision: 5, scale: 2
+    t.integer  "imeca_points",      limit: 2
+    t.decimal  "rainfall",                    precision: 4, scale: 2
+    t.jsonb    "pollutants",                                          default: {}
+    t.datetime "created_at",                                                       null: false
+    t.datetime "updated_at",                                                       null: false
+  end
+
+  add_index "measurements", ["station_id", "measured_at"], name: "index_measurements_on_station_id_and_measured_at", unique: true, using: :btree
+  add_index "measurements", ["station_id"], name: "index_measurements_on_station_id", using: :btree
 
   create_table "oauth_access_grants", force: :cascade do |t|
     t.integer  "resource_owner_id", null: false
@@ -68,4 +85,5 @@ ActiveRecord::Schema.define(version: 20150824235056) do
 
   add_index "stations", ["code"], name: "index_stations_on_code", unique: true, using: :btree
 
+  add_foreign_key "measurements", "stations"
 end

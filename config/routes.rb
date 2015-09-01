@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   use_doorkeeper
 
   resources :stations, only: [:index, :show]
+  resources :measurements, only: [:index, :show]
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
