@@ -5,5 +5,4 @@ class MeasurementSerializer < ActiveModel::Serializer
     :ozone, :sulfur_dioxide, :suspended_particulate_matter,
     :respirable_suspended_particles, :fine_particles
 
-  belongs_to :station
 end
