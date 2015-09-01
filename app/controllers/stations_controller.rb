@@ -5,6 +5,9 @@ class StationsController < ApplicationController
   def index
     @stations = Station.all
 
+    # Fetch the stations nearest from a given point:
+    @stations = @stations.nearest_from(params[:nearest_from]) if params[:nearest_from].present?
+
     # Sorting:
     @stations = @stations.order(json_api_params[:sort]) if json_api_params.key? :sort
 
