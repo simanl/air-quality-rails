@@ -40,6 +40,8 @@ gem 'doorkeeper'
 gem 'activerecord-postgis-adapter', '~> 3.0'
 gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model_serializers', branch: 'master'
 
+gem 'sidekiq',     '~> 3.4.2'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
