@@ -4,4 +4,7 @@ class ApplicationController < ActionController::Base
   protect_from_forgery with: :exception
 
   include JsonApiHelper
+  rescue_from ActiveRecord::AssociationNotFoundError,
+    with: :json_api_association_not_found
+
 end

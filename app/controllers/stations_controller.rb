@@ -18,8 +18,11 @@ class StationsController < ApplicationController
       # ...
     end
 
+    # Inclusion of Related Resources:
+    @stations = @stations.includes(*json_api_params[:include]) if json_api_params.key? :include
+
     respond_to do |format|
-      format.json { render json: @stations, fields: params[:fields] }
+      format.json { render json: @stations, fields: params[:fields], include: params[:include] }
     end
   end
 
