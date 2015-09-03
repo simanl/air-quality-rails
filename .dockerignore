@@ -1,0 +1,30 @@
+# Ignore version control files:
+.git/
+.gitignore
+
+# Ignore docker and environment files:
+Dockerfile
+docker-compose.yml
+.env
+setup-development-with-docker.sh
+
+# Ignore log files:
+log/*.log
+
+# Ignore temporary files:
+tmp/
+
+# Ignore vendored gems & libraries:
+vendor/bundle
+
+# Ignore test files:
+.rspec
+Guardfile
+spec/
+
+
+# Ignore bash / IRB / Byebug history files
+.bash_history
+.byebug_hist
+.pry_history
+.guard_history
