@@ -23,18 +23,10 @@ if [ ! -e "$RAILS_SECRETS_FILE" ] ; then
     cat $RAILS_SECRETS_TEMPLATE_FILE > $RAILS_SECRETS_FILE
 fi
 
-# 3: Call 'bundler' in any of the app containers (web, worker, test).
+# 3: Call 'bundler' and 'rake db:setup' in one of the app containers.
 # It will also start the dependency containers (postgres, redis), which
-# we'll need them already running for the next step:
-docker-compose run --rm web bundle
-
-# Wait 20 seconds for the postgres container to finish initializing:
-read -t 20 -p "Waiting 20 seconds for the postgres container to finish initializing (Hit ENTER to continue right away)"
-echo " - Continuing with app database setup:"
-
-# 4: Call 'rake db:setup' to initialize the app database with the needed tables
-# & data:
-docker-compose run --rm -e ENABLE_DEBUG_SERVER=false web rake db:setup
+# we'll need them already running for app database setup:
+docker-compose run --rm -e ENABLE_DEBUG_SERVER=false web sh -c "bundle install && rake db:setup"
 
 # 5: Stop all the running containers:
 docker-compose stop
