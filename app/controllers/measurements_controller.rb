@@ -15,6 +15,7 @@ class MeasurementsController < ApplicationController
 
     respond_to do |format|
       format.json { render json: @measurements }
+      format.tab  { render csv: @measurements, serializer: MeasurementWithStationSerializer }
     end
   end
 
