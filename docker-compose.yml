@@ -28,7 +28,7 @@ web: &app_base
   # It's fine for development, do not do it in production:
   command: rails server -p 3000 -b 0.0.0.0
   ports:
-    - "3001:3000" # Bind host port 3000 to app HTTP port 3000
+    - "3001:3000" # Bind host port 3001 to app HTTP port 3000
   volumes:
     - .:/app
   ##############################################################################
@@ -59,10 +59,10 @@ web: &app_base
     RAILS_ENV: development
   env_file: .env # Include the environment variables in the unversioned .env file
 
-# worker:
-#   <<: *app_base
-#   ports: []
-#   command: sidekiq -c 25 -q default
+jobs:
+  <<: *app_base
+  ports: []
+  command: sidekiq -c 25 -q default
 
 # App Guard: Keeps running tests on a separate process:
 test:
