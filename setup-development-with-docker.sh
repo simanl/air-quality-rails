@@ -34,7 +34,7 @@ echo " - Continuing with app database setup:"
 
 # 4: Call 'rake db:setup' to initialize the app database with the needed tables
 # & data:
-docker-compose run --rm web rake db:setup
+docker-compose run --rm -e ENABLE_DEBUG_SERVER=false web rake db:setup
 
 # 5: Stop all the running containers:
 docker-compose stop
