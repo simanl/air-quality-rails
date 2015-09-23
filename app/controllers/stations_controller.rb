@@ -32,7 +32,7 @@ class StationsController < ApplicationController
     @station = Station.find(params[:id])
 
     respond_to do |format|
-      format.json { render json: @station }
+      format.json { render json: @station, fields: params[:fields], include: params[:include] }
     end
   end
 
