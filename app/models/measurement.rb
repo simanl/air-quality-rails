@@ -1,17 +1,23 @@
 class Measurement < ActiveRecord::Base
   belongs_to :station
 
+  store_accessor :weather,
+    :precipitation,
+    :relative_humidity,
+    :temperature,
+    :wind_direction,
+    :wind_speed
+
   store_accessor :pollutants,
     :carbon_monoxide,
     :nitric_oxide,
     :nitrogen_dioxide,
-    :nitrogen_oxide, # https://en.wikipedia.org/wiki/Nitrogen_oxide
+    :nitrogen_oxides, # https://en.wikipedia.org/wiki/Nitrogen_oxide
     :ozone,
     :sulfur_dioxide,
     :suspended_particulate_matter,   # SPM
     :respirable_suspended_particles, # PM10
-    :fine_particles,                 # PM2.5
-    :tout
+    :fine_particles                 # PM2.5
 
   validates :measured_at,
     presence: true,
