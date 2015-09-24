@@ -1,5 +1,7 @@
 class StationsController < ApplicationController
 
+  before_action :set_station, only: [:show]
+
   # GET /stations
   # GET /stations.json
   def index
@@ -29,11 +31,19 @@ class StationsController < ApplicationController
   # GET /stations/1
   # GET /stations/1.json
   def show
-    @station = Station.find(params[:id])
-
     respond_to do |format|
       format.json { render json: @station, fields: params[:fields], include: params[:include] }
     end
   end
+
+  protected
+
+    def set_station
+      @station = if params[:id]
+        Station.find(params[:id])
+      elsif params[:nearest_from] || params[:latlon]
+        Station.nearest_from(params[:nearest_from] || params[:latlon]).limit(1).first
+      end
+    end
 
 end

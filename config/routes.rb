@@ -1,7 +1,12 @@
 Rails.application.routes.draw do
   use_doorkeeper
 
-  resources :stations, only: [:index, :show]
+  resources :stations, only: [:index, :show] do
+    collection do
+      get "nearest_from", to: "stations#show"
+    end
+  end
+
   resources :measurements, only: [:index, :show]
 
   # The priority is based upon order of creation: first created -> highest priority.
