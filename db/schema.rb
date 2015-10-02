@@ -28,10 +28,10 @@ ActiveRecord::Schema.define(version: 20151002205117) do
   add_index "forecasts", ["station_id"], name: "index_forecasts_on_station_id", using: :btree
 
   create_table "measurements", force: :cascade do |t|
-    t.integer  "station_id"
+    t.integer  "station_id",                          null: false
     t.datetime "measured_at",                         null: false
-    t.jsonb    "weather",                default: {}
-    t.jsonb    "pollutants",             default: {}
+    t.jsonb    "weather",                default: {}, null: false
+    t.jsonb    "pollutants",             default: {}, null: false
     t.integer  "imeca_points", limit: 2
     t.datetime "created_at",                          null: false
     t.datetime "updated_at",                          null: false
