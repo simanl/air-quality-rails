@@ -1,28 +1,136 @@
-== README
+== Air Quality Rails Project README
 
-This README would normally document whatever steps are necessary to get the
-application up and running.
+=== Development & Test Environment
 
-Things you may want to cover:
+This project is configured to be easily set up and run with
+{Docker Engine}[https://www.docker.com/docker-engine] and
+{Docker Compose}[https://www.docker.com/docker-compose], without installing
+anything else, like postgres, redis or ruby.
 
-* Ruby version
+==== Mac & Windows users note
 
-* System dependencies
+Mac and Windows users should install
+{Docker Toolbox}[https://www.docker.com/toolbox], which also installs
+{Docker Machine}[https://www.docker.com/docker-machine] and
+{Oracle Virtualbox}[https://www.virtualbox.org] by default. Once installed, a
+Docker host virtual machine can be easily created to host the project's containers:
 
-* Configuration
+  # Create the Docker host VM - keep in mind the number of CPU cores and
+  # RAM memory size you want to assign to the virtual machine:
+  docker-machine create --driver virtualbox --virtualbox-cpu-count 2 \
+    --virtualbox-memory 4096 my-docker-host
 
-* Database creation
+  # Check and see the environment variables needed to connect to your Docker host:
+  docker-machine env my-docker-host
 
-* Database initialization
+  # Export the environment variables needed to connect to your Docker host:
+  eval $(docker-machine env my-docker-host)
+
+  # You can stop, start & restart your virtual machine at any time:
+  docker-machine stop my-docker-host
+
+==== Cloning and starting the Development & Test environments:
+
+The first time the <code>docker-compose up</code> command is called, docker will
+download the required versions of postgres, redis and ruby, create isolated
+containers with the required services linked between them, and start the
+containers. After that, the project's entrypoint script will install the gem
+dependencies with <code>bundler</code>, and run the database setup process:
+
+  # Clone the project:
+  git clone git@github.com:IcaliaLabs/air-quality-rails.git
+
+  # Go to the cloned project directory:
+  cd air-quality-rails
+
+  # Create and start the project service containers (postgres, redis, web, jobs & test):
+  docker-compose up
+
+  # ...or create and start them, running in the background:
+  docker-compose up -d
+
+  # Create and start only a subset of containers, running on the background:
+  docker-compose up -d postgres redis
+
+If for any reason you decide to kill and/or forcibly remove the project
+containers during the <code>bundler</code> or database setup, *be sure to remove
+the <code>tmp/setup.lock</code> file* before attempting to repeat the startup.
+
+==== Executing commands to any running app container
+
+To execute a command, or start a bash shell in any of the running app containers:
+
+  # Start an interactive Rails console, on the web container:
+  docker exec -ti airqualityrails_web_1 rails c
+
+  # Start an interactive bash shell:
+  docker exec -ti airqualityrails_web_1 bash
+
+==== Setting execution breakpoints and debugging the processes
+
+As the <code>docker-compose up</code> will start containers without an
+interactive console attached to the rails / sidekiq processes, the execution
+will fly past any byebug breakpoint you've inserted in the code, *IF* there's no
+console attached manually.
+
+To attach a console to any given app container process, you must run the
+following command in a separate console window:
+
+  docker attach airqualityrails_web_1
+
+If you try to detach the console from the container process with
+<code>CTRL+c</code>, you'll cause the container process to exit, stopping the
+container. To detach the console *WITHOUT* terminating the app container
+proccess, you must type <code>CTRL+p</code> and <code>CTRL+q</code>.
+
+Alternatively, you can attach a console to the container process with the
+<code>--sig-proxy=false</code> option, and use <code>CTRL+c</code> safely:
+
+  docker attach --sig-proxy=false airqualityrails_web_1
+
+==== Controlling running containers
+
+At any time you can stop, start and restart all containers at once, or any
+number of selected containers:
+
+  # Stop all the running containers:
+  docker-compose stop
+
+  # Start all the created containers:
+  docker-compose start
+
+  # Stop the 'web' and 'jobs' containers:
+  docker-compose stop web jobs
+
+  # Start the 'web' and 'jobs' containers:
+  docker-compose start web jobs
+
+  # Restart the 'postgres', 'web' and 'jobs' containers:
+  docker-compose restart postgres web jobs
+
+=== Deployment
+
+To deploy into a Docker host, the project image must be built and pushed to the
+{Docker Hub}[https://hub.docker.com]:
+
+  # Please check the release version tag prior to building:
+  docker build -t vovimayhem/air-quality-rails:v3 .
+
+  # Push it to the docker hub (a prior authentication is required)
+  docker push vovimayhem/air-quality-rails:v3
+
+Then the image will be available for the production Docker host
+(i.e. a {Rancher}[http://rancher.com] cluster) to pull it from the
+{Docker Hub}[https://hub.docker.com].
+
+=== TODO
 
 * How to run the test suite
 
-* Services (job queues, cache servers, search engines, etc.)
+* Services Description (job queues, cache servers, search engines, etc.)
 
-* Deployment instructions
+=== Credits
 
-* ...
-
-
-Please feel free to use a different markup language if you do not plan to run
-<tt>rake doc:app</tt>.
+Developed by {Vov}[https://github.com/vovimayhem] &
+{JC}[https://github.com/zenbakiak] at
+{Icalia Labs}[https://github.com/IcaliaLabs].

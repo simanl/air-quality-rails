@@ -7,95 +7,64 @@
 # type 'docker-compose ps'.
 data:
   image: tianon/true
-  volumes:
-    - /var/lib/postgresql/data
+  volumes: [ "/var/lib/postgresql/data" ]
 
 # Our PostgreSQL service:
 postgres:
   image: vovimayhem/postgis:2.1.7-9.4.4
-  ports:
-    - "5442:5432" # Bind host port 5432 to PostgreSQL port 5432
-  volumes:
-    - .:/app # We're mounting this folder so we can backup/restore database dumps from our app folder.
-    - ./db/postgres-initialize.sql:/docker-entrypoint-initdb.d/initialize.sql
-  volumes_from:
-    - data
+  # Bind host port 5432 to PostgreSQL port 5432:
+  ports: [ "5442:5432" ]
+  # We're mounting 'db/dumps' into the postgres container so we can backup and
+  # restore data dumps easily:
+  volumes: [ "./db/dumps:/data-dumps" ]
+  volumes_from: [ "data" ]
   environment:
     LC_ALL: C.UTF-8
     POSTGRES_PASSWORD: 41rqu4l1ty
 
 # Our Redis service:
 redis:
-  image: redis:3.0.3
-  ports:
-    - "6389:6379" # Bind host port 6379 to Redis port 6379
+  image: redis:3.0.4
+  # Bind host port 6389 to Redis port 6379:
+  ports: [ "6389:6379" ]
+  command: redis-server --appendonly yes
 
 # Application: -----------------------------------------------------------------
-app_gems: &app_ruby
-  image: vovimayhem/app-dev:mri-2.2.3 # A ruby image with DTrace enabled for dev
-  command: "true" # Just enough for docker-compose to create the container.
-  volumes:
-    - /usr/local/bundle
-# We'll also use this configuration (&app_base) for the worker and test
-# containers:
-web: &app
-  <<: *app_ruby
-  # Rails 4.2 now binds to 127.0.0.1 by default and not 0.0.0.0.
-  # Start the server using bin/rails server -b 0.0.0.0 and that should sort it.
-  # http://stackoverflow.com/questions/27799260/rails-4-2-server-port-forwarding-on-vagrant-does-not-work
-  # It's fine for development, do not do it in production:
-  command: rails server -p 3000 -b 0.0.0.0
-  ports:
-    - "3001:3000" # Bind host port 3001 to app HTTP port 3000
-  volumes:
-    - .:/app
-  volumes_from:
-    - app_gems
-  ##############################################################################
-  # With linked containers, Docker writes entries to the container's /etc/hosts.
-  # We'll try here naming the entries docker will insert into the
-  # container's /etc/hosts, so we can use more familiar URL's for our app - See
-  # this container's environment section below:
-  links: &app_links
-    - postgres:postgres.air-quality.local
-    - redis:redis.air-quality.local
+gems: &app_base
+  image: ruby:2.2.3
+  volumes: [ ".:/usr/src/app", "/usr/local/bundle" ]
+  working_dir: /usr/src/app
   environment: &app_environment
-    # PostgreSQL Database:
+    PATH: /usr/src/app/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
-
-    # Redis Database:
-    REDIS_URL: redis://redis.air-quality.local:6379
-
-    # Sidekiq configuration:
-    SIDEKIQ_CONCURRENCY: 5
-    SIDEKIQ_TIMEOUT: 10
-
-    # Enable the byebug debugging server - this can be overriden
-    # from the command line:
-    ENABLE_DEBUG_SERVER: true
-
-    # Run the app in the 'development' environment:
+    REDIS_URL: redis://redis.air-quality.local:6379/air_quality_development
     RACK_ENV: development
     RAILS_ENV: development
-  env_file: .env # Include the environment variables in the unversioned .env file
+  links: [ "postgres:postgres.air-quality.local", "redis:redis.air-quality.local" ]
+  env_file: [ "dev.env" ]
 
-jobs:
-  <<: *app
-  ports: []
+# We'll also use this configuration (&app_base) for the web and test
+# containers:
+jobs: &app
+  <<: *app_base
+  stdin_open: true
+  tty: true
+  volumes_from: [ "gems" ]
+  entrypoint: /usr/src/app/dev-entrypoint.sh
   command: sidekiq -c 25 -q default
+
+web:
+  <<: *app
+  ports: [ "3001:3000" ]
+  command: rails server -p 3000 -b 0.0.0.0
 
 # App Guard: Keeps running tests on a separate process:
 test:
   <<: *app # We copy from &app_base, and override:
-  ports: []
   command: guard start --no-bundler-warning --no-interactions --force-polling
-  links:
-    - postgres:postgres.air-quality.local
   environment:
     <<: *app_environment
-    # PostgreSQL Database:
     DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
-
-    # Run the app in the 'test' environment, instead of the default 'developent'
+    REDIS_URL: redis://redis.air-quality.local:6379/air_quality_test
     RACK_ENV: test
     RAILS_ENV: test
