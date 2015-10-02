@@ -1,5 +1,6 @@
 class Measurement < ActiveRecord::Base
   belongs_to :station
+  validates :station, presence: true
 
   store_accessor :weather,
     :precipitation,
