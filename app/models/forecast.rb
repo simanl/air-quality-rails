@@ -12,6 +12,10 @@ class Forecast < ActiveRecord::Base
 
   validate :at_least_one_parameter_is_forecasted
 
+  def self.current
+    where(self.arel_table[:forecasted_datetime].gteq DateTime.now)
+  end
+
   protected
 
     def at_least_one_parameter_is_forecasted
