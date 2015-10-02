@@ -17,8 +17,9 @@ class Measurement < ActiveRecord::Base
     :ozone,
     :sulfur_dioxide,
     :suspended_particulate_matter,   # SPM
-    :respirable_suspended_particles, # PM10
-    :fine_particles                 # PM2.5
+    # Both Toracic (PM > 10nm) and Respirable (PM > 2.5 nm) are Inhalable Particles:
+    :toracic_particles,   # PM10
+    :respirable_particles # PM2.5
 
   validates :measured_at,
     presence: true,
