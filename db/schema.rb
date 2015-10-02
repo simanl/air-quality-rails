@@ -25,6 +25,7 @@ ActiveRecord::Schema.define(version: 20151002205117) do
     t.datetime "updated_at",                       null: false
   end
 
+  add_index "forecasts", ["station_id", "forecasted_datetime"], name: "index_forecasts_on_station_id_and_forecasted_datetime", unique: true, using: :btree
   add_index "forecasts", ["station_id"], name: "index_forecasts_on_station_id", using: :btree
 
   create_table "measurements", force: :cascade do |t|

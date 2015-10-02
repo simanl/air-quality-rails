@@ -7,6 +7,10 @@ class Station < ActiveRecord::Base
   has_one :last_measurement, -> { latest.limit(1) },
     class_name: "Measurement"
 
+  has_many :forecasts
+  has_many :current_forecasts, -> { current.limit(6) },
+    class_name: "Forecast"
+
   # params:
   # a) latitude, longitude
   # b) "lat,lon" as String

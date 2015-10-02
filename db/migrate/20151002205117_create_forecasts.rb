@@ -12,5 +12,9 @@ class CreateForecasts < ActiveRecord::Migration
       # Created At & Updated At timestamps:
       t.timestamps null: false
     end
+
+    # This index should help us to query efficiently when obtaining a station's
+    # current forecasts:
+    add_index :forecasts, [:station_id, :forecasted_datetime], unique: true
   end
 end
