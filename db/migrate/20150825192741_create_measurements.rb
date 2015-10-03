@@ -1,7 +1,10 @@
 class CreateMeasurements < ActiveRecord::Migration
   def change
     create_table :measurements do |t|
-      t.references :station, null: false, index: true, foreign_key: true
+      t.references :station,
+        null: false,
+        index: { name: "IX_measurement_station" },
+        foreign_key: true
 
       # The measurement datetime:
       t.datetime :measured_at, null: false
@@ -21,6 +24,8 @@ class CreateMeasurements < ActiveRecord::Migration
 
     # This index should help us to query efficiently when obtaining a station's
     # last measurement:
-    add_index :measurements, [:station_id, :measured_at], unique: true
+    add_index :measurements, [:station_id, :measured_at],
+      name: "UK_station_measured_at",
+      unique: true
   end
 end

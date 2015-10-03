@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151002205117) do
+ActiveRecord::Schema.define(version: 20151003010750) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,8 +25,8 @@ ActiveRecord::Schema.define(version: 20151002205117) do
     t.datetime "updated_at",                       null: false
   end
 
-  add_index "forecasts", ["station_id", "forecasted_datetime"], name: "index_forecasts_on_station_id_and_forecasted_datetime", unique: true, using: :btree
-  add_index "forecasts", ["station_id"], name: "index_forecasts_on_station_id", using: :btree
+  add_index "forecasts", ["station_id", "forecasted_datetime"], name: "UK_station_forecasted_datetime", unique: true, using: :btree
+  add_index "forecasts", ["station_id"], name: "IX_forecast_station", using: :btree
 
   create_table "measurements", force: :cascade do |t|
     t.integer  "station_id",                          null: false
@@ -38,20 +38,23 @@ ActiveRecord::Schema.define(version: 20151002205117) do
     t.datetime "updated_at",                          null: false
   end
 
-  add_index "measurements", ["station_id", "measured_at"], name: "index_measurements_on_station_id_and_measured_at", unique: true, using: :btree
-  add_index "measurements", ["station_id"], name: "index_measurements_on_station_id", using: :btree
+  add_index "measurements", ["station_id", "measured_at"], name: "UK_station_measured_at", unique: true, using: :btree
+  add_index "measurements", ["station_id"], name: "IX_measurement_station", using: :btree
 
   create_table "stations", force: :cascade do |t|
     t.string    "code"
     t.string    "name"
     t.string    "short_name"
-    t.geography "lonlat",     limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.datetime  "created_at",                                                          null: false
-    t.datetime  "updated_at",                                                          null: false
+    t.geography "lonlat",              limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.integer   "last_measurement_id"
+    t.datetime  "created_at",                                                                   null: false
+    t.datetime  "updated_at",                                                                   null: false
   end
 
-  add_index "stations", ["code"], name: "index_stations_on_code", unique: true, using: :btree
+  add_index "stations", ["code"], name: "UK_station_code", unique: true, using: :btree
+  add_index "stations", ["last_measurement_id"], name: "UK_station_last_measurement", unique: true, using: :btree
 
   add_foreign_key "forecasts", "stations"
   add_foreign_key "measurements", "stations"
+  add_foreign_key "stations", "measurements", column: "last_measurement_id"
 end

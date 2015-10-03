@@ -1,7 +1,10 @@
 class CreateForecasts < ActiveRecord::Migration
   def change
     create_table :forecasts do |t|
-      t.references :station, null: false, index: true, foreign_key: true
+      t.references :station,
+        null: false,
+        index: { name: "IX_forecast_station" },
+        foreign_key: true
 
       # The datetime in which the forecast applies for:
       t.datetime :forecasted_datetime, null: false
@@ -15,6 +18,8 @@ class CreateForecasts < ActiveRecord::Migration
 
     # This index should help us to query efficiently when obtaining a station's
     # current forecasts:
-    add_index :forecasts, [:station_id, :forecasted_datetime], unique: true
+    add_index :forecasts, [:station_id, :forecasted_datetime],
+      name: "UK_station_forecasted_datetime",
+      unique: true
   end
 end
