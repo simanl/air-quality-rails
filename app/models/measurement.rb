@@ -29,6 +29,8 @@ class Measurement < ActiveRecord::Base
     numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 360 },
     allow_nil: true
 
+  after_create :update_station_last_measurement!
+
   def self.since(timestampish)
     timestamp = if timestampish.respond_to? :split
       # It's a string
@@ -67,5 +69,12 @@ class Measurement < ActiveRecord::Base
     else 'extremely_bad'
     end if imeca_points.present?
   end
+
+  protected
+
+    def update_station_last_measurement!
+      station.update last_measurement_id: station.measurements.latest
+        .limit(1).pluck(:id).first
+    end
 
 end

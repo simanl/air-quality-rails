@@ -4,8 +4,7 @@ class Station < ActiveRecord::Base
   delegate :latitude, :longitude, to: :lonlat
 
   has_many :measurements
-  has_one :last_measurement, -> { latest.limit(1) },
-    class_name: "Measurement"
+  belongs_to :last_measurement, class_name: "Measurement"
 
   has_many :forecasts
   has_many :current_forecasts, -> { current.limit(6) },
