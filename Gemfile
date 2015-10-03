@@ -38,7 +38,7 @@ gem 'sdoc', '~> 0.4.0', group: :doc
 
 gem 'activerecord-postgis-adapter', '~> 3.0'
 gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model_serializers', branch: 'master'
-gem 'as_csv', '~> 2.0'
+
 gem 'whenever', require: false
 
 gem 'sidekiq',     '~> 3.4.2'
