@@ -5,8 +5,9 @@
 # Ignore docker and environment files:
 Dockerfile
 docker-compose.yml
-.env
-setup-development-with-docker.sh
+*.env
+dev-entrypoint.sh
+.dockerignore
 
 # Ignore log files:
 log/*.log
@@ -14,14 +15,13 @@ log/*.log
 # Ignore temporary files:
 tmp/
 
-# Ignore vendored gems & libraries:
-vendor/bundle
-
 # Ignore test files:
 .rspec
 Guardfile
 spec/
 
+# Ignore database dumps:
+db/dumps
 
 # Ignore bash / IRB / Byebug history files
 .bash_history
