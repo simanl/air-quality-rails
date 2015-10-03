@@ -5,5 +5,6 @@ class StationSerializer < ActiveModel::Serializer
     "#{object.latitude},#{object.longitude}"
   end
 
-  has_one :last_measurement, serializer: MeasurementSerializer
+  has_one  :last_measurement,  serializer: MeasurementSerializer
+  has_many :current_forecasts, serializer: ForecastSerializer
 end

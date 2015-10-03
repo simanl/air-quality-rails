@@ -21,7 +21,7 @@ class StationsController < ApplicationController
     end
 
     # Inclusion of Related Resources:
-    @stations = @stations.includes(:last_measurement)
+    @stations = @stations.includes(:last_measurement, :current_forecasts)
 
     respond_to do |format|
       format.json { render json: @stations, fields: params[:fields], include: params[:include] }
