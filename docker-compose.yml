@@ -11,7 +11,7 @@ data:
 
 # Our PostgreSQL service:
 postgres:
-  image: vovimayhem/postgis:2.1.7-9.4.4
+  image: vovimayhem/postgis:2.1.8-9.4.4
   # Bind host port 5432 to PostgreSQL port 5432:
   ports: [ "5442:5432" ]
   # We're mounting 'db/dumps' into the postgres container so we can backup and
