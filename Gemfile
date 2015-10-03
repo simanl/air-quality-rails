@@ -36,7 +36,6 @@ gem 'jbuilder', '~> 2.0'
 # bundle exec rake doc:rails generates the API under doc/api.
 gem 'sdoc', '~> 0.4.0', group: :doc
 
-gem 'doorkeeper'
 gem 'activerecord-postgis-adapter', '~> 3.0'
 gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model_serializers', branch: 'master'
 gem 'as_csv', '~> 2.0'

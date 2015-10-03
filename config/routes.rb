@@ -1,5 +1,4 @@
 Rails.application.routes.draw do
-  use_doorkeeper
 
   resources :stations, only: [:index, :show] do
     collection do
