@@ -34,11 +34,8 @@ class PullDataFromSimaJsonServiceJob < ActiveJob::Base
 
       # Obtain the refered station from our database, or create it:
       station = Station.find_or_create_by(code: station_code) do |station|
-        short_name = station_data['shortName'].titleize
-
         station.name        = station_data['name'].titleize
-        station.short_name  = short_name
-        station.status      = Station.default_status_by_short_name(short_name)
+        station.short_name  = station_data['shortName'].titleize
 
         latitude, longitude = station_data['location'].split(',')
         station.lonlat      = "POINT(#{longitude} #{latitude})"
