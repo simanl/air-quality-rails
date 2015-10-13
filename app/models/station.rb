@@ -10,6 +10,22 @@ class Station < ActiveRecord::Base
   has_many :current_forecasts, -> { current.limit(6) },
     class_name: "Forecast"
 
+  # Simple enum for station status - no need for AASM or Workflow gem right now.
+  enum status: { active: 0, archived: 1 }
+
+  # This list enumerates the stations currently tracked by the forecast engine.
+  # This list alone doesn't actively check the status of stations!
+  STATIONS_TRACKED_BY_FORECAST_ENGINE = [
+    "La Pastora", "Obispado", "San Bernabe", "San Nicolas", "Santa Catarina"
+  ]
+  def self.default_status_by_short_name(short_name)
+    if STATIONS_TRACKED_BY_FORECAST_ENGINE.include?(short_name)
+      :active
+    else
+      :archived
+    end
+  end
+
   # params:
   # a) latitude, longitude
   # b) "lat,lon" as String
