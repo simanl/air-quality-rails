@@ -3,8 +3,10 @@ class Measurement < ActiveRecord::Base
   validates :station, presence: true
 
   store_accessor :weather,
+    :atmospheric_pressure,
     :precipitation,
     :relative_humidity,
+    :solar_radiation,
     :temperature,
     :wind_direction,
     :wind_speed
