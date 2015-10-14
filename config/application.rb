@@ -34,5 +34,8 @@ module AirQuality
 
     # We'll use Sidekiq as our ActiveJob backend:
     config.active_job.queue_adapter = :sidekiq
+
+    # Add the demos folder to the autoload paths:
+    config.autoload_paths += %W(#{config.root}/app/demos)
   end
 end
