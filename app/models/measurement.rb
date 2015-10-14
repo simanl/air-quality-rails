@@ -28,7 +28,7 @@ class Measurement < ActiveRecord::Base
     uniqueness: { scope: :station, message: "already exists for station" }
 
   validates :wind_direction,
-    numericality: { only_integer: true, greater_than: 0, less_than_or_equal_to: 360 },
+    numericality: { greater_than_or_equal_to: 0, less_than: 360 },
     allow_nil: true
 
   after_create :update_station_last_measurement!
