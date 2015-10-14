@@ -18,14 +18,15 @@ ActiveRecord::Schema.define(version: 20151003010750) do
   enable_extension "postgis"
 
   create_table "forecasts", force: :cascade do |t|
-    t.integer  "station_id",                       null: false
-    t.datetime "forecasted_datetime",              null: false
-    t.jsonb    "data",                default: {}, null: false
-    t.datetime "created_at",                       null: false
-    t.datetime "updated_at",                       null: false
+    t.integer  "station_id",                      null: false
+    t.datetime "forecast_starts_at",              null: false
+    t.datetime "forecast_ends_at",                null: false
+    t.jsonb    "data",               default: {}, null: false
+    t.datetime "created_at",                      null: false
+    t.datetime "updated_at",                      null: false
   end
 
-  add_index "forecasts", ["station_id", "forecasted_datetime"], name: "UK_station_forecasted_datetime", unique: true, using: :btree
+  add_index "forecasts", ["station_id", "forecast_starts_at"], name: "UK_station_forecast_start", unique: true, using: :btree
   add_index "forecasts", ["station_id"], name: "IX_forecast_station", using: :btree
 
   create_table "measurements", force: :cascade do |t|
