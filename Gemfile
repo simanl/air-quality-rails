@@ -41,6 +41,9 @@ gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model
 
 gem 'whenever', require: false
 
+# Gem used on the demo to generate the measurement data from cycle CVS files:
+gem 'msgpack', '~> 0.6.2', require: nil
+
 gem 'sidekiq',     '~> 3.4.2'
 gem 'faraday',     '~> 0.9'
 
