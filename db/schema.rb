@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151003010750) do
+ActiveRecord::Schema.define(version: 20151014185034) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -28,6 +28,15 @@ ActiveRecord::Schema.define(version: 20151003010750) do
 
   add_index "forecasts", ["station_id", "forecast_starts_at"], name: "UK_station_forecast_start", unique: true, using: :btree
   add_index "forecasts", ["station_id"], name: "IX_forecast_station", using: :btree
+
+  create_table "forecasts_measurements", force: :cascade do |t|
+    t.integer "forecast_id",    null: false
+    t.integer "measurement_id", null: false
+  end
+
+  add_index "forecasts_measurements", ["forecast_id", "measurement_id"], name: "UK_forecast_measurement", unique: true, using: :btree
+  add_index "forecasts_measurements", ["forecast_id"], name: "FK_measurement_forecast", using: :btree
+  add_index "forecasts_measurements", ["measurement_id"], name: "FK_forecast_measurement", using: :btree
 
   create_table "measurements", force: :cascade do |t|
     t.integer  "station_id",                          null: false
@@ -58,6 +67,8 @@ ActiveRecord::Schema.define(version: 20151003010750) do
   add_index "stations", ["status"], name: "IX_station_status", using: :btree
 
   add_foreign_key "forecasts", "stations"
+  add_foreign_key "forecasts_measurements", "forecasts"
+  add_foreign_key "forecasts_measurements", "measurements"
   add_foreign_key "measurements", "stations"
   add_foreign_key "stations", "measurements", column: "last_measurement_id"
 end

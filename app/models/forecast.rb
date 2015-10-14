@@ -2,6 +2,8 @@ class Forecast < ActiveRecord::Base
   belongs_to :station
   validates :station, presence: true
 
+  has_and_belongs_to_many :measurements
+
   validates :forecast_starts_at, :forecast_ends_at, presence: true
 
   store_accessor :data,
