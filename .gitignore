@@ -48,3 +48,4 @@ bower.json
 # Ignore the project's database dumps folder:
 /db/dumps/*
 !/db/dumps/README.md
+.DS_Store
