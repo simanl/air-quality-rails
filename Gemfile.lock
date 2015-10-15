@@ -175,6 +175,9 @@ GEM
     rgeo-activerecord (4.0.0)
       activerecord (~> 4.2)
       rgeo (~> 0.3)
+    rserve-client (0.3.1)
+    rserve-simpler (0.0.6)
+      rserve-client (~> 0.3.0)
     rspec (3.3.0)
       rspec-core (~> 3.3.0)
       rspec-expectations (~> 3.3.0)
@@ -263,6 +266,8 @@ DEPENDENCIES
   pry-rails
   puma (~> 2.13.4)
   rails (= 4.2.4)
+  rserve-client (~> 0.3.1)
+  rserve-simpler (~> 0.0.6)
   rspec-rails (~> 3.0)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)

@@ -38,9 +38,11 @@ gems: &app_base
     PATH: /usr/src/app/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
     DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
     REDIS_URL: redis://redis.air-quality.local:6379/air_quality_development
+    FORECAST_ENGINE_URL: tcp://engine.air-quality.local:6311 # The URL pointing to our engine container
     RACK_ENV: development
     RAILS_ENV: development
   links: [ "postgres:postgres.air-quality.local", "redis:redis.air-quality.local" ]
+  external_links: [ "airqualityforecasts_engine_1:engine.air-quality.local" ]
   env_file: [ "dev.env" ]
 
 # We'll also use this configuration (&app_base) for the web and test

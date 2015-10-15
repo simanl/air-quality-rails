@@ -41,6 +41,10 @@ gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model
 
 gem 'whenever', require: false
 
+# Libraries used to connect with the forecasts engine core:
+gem 'rserve-client',  '~> 0.3.1', require: nil
+gem 'rserve-simpler', '~> 0.0.6', require: nil
+
 # Gem used on the demo to generate the measurement data from cycle CVS files:
 gem 'msgpack', '~> 0.6.2', require: nil
 
