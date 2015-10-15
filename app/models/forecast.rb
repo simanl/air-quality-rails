@@ -4,7 +4,7 @@ class Forecast < ActiveRecord::Base
 
   has_and_belongs_to_many :measurements
 
-  validates :forecast_starts_at, :forecast_ends_at, presence: true
+  validates :starts_at, :ends_at, presence: true
 
   store_accessor :data,
     :ozone,
@@ -15,7 +15,7 @@ class Forecast < ActiveRecord::Base
   validate :at_least_one_parameter_is_forecasted
 
   def self.current
-    where(self.arel_table[:forecast_starts_at].gteq DateTime.now)
+    where(self.arel_table[:starts_at].gteq DateTime.now)
   end
 
   protected
