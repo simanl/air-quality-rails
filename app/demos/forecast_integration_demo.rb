@@ -105,7 +105,7 @@ class ForecastIntegrationDemo
   def self.expand_demo_cycles!
     raise "Demo cycles archive not found" unless File.exist?(cycles_archive_path)
     clear_cycles_dir!
-    system_call_result = %x[ tar xf #{cycles_archive_path} -C #{cycles_dir} ]
+    system_call_result = %x[ tar xf #{cycles_archive_path} --no-same-owner -C #{cycles_dir} ]
   end
 
   def self.import_demo_cycle_measurements!
