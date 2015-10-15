@@ -43,44 +43,6 @@ class ForecastIntegrationDemo
     end
   end
 
-  FIELD_NAME_TRANSLATIONS = {
-    "CO"    => "carbon_monoxide",
-    "NO"    => "nitric_oxide",
-    "NO2"   => "nitrogen_dioxide",
-    "NOX"   => "nitrogen_oxides",
-    "O3"    => "ozone",
-    "PM10"  => "toracic_particles",
-    "PM2.5" => "respirable_particles",
-    "PRS"   => "atmospheric_pressure",
-    "RAINF" => "precipitation",
-    "HR"    => "relative_humidity",
-    "SO2"   => "sulfur_dioxide",
-    "SR"    => "solar_radiation",
-    "TOUT"  => "temperature",
-    "WS"    => "wind_speed",
-    "WDR"   => "wind_direction"
-  }
-
-  def self.get_api_attribute_name(engine_field_name)
-    if (api_attribute_name = FIELD_NAME_TRANSLATIONS[engine_field_name])
-      api_attribute_name.to_sym
-    else
-      raise "No API attribute name found for \"#{engine_field_name}\""
-    end
-  end
-
-  def self.get_api_attribute_sym(engine_field_name)
-    get_api_attribute_name(engine_field_name).to_sym
-  end
-
-  def self.get_engine_field_name(api_attrib_name)
-    if (engine_field_name = FIELD_NAME_TRANSLATIONS.key(api_attrib_name.to_s))
-      engine_field_name
-    else
-      raise "No Engine field name found for \"#{api_attrib_name}\""
-    end
-  end
-
   # Copies the CSV files from a temporary folder into the 'db/demo-cicles'
   # folder, renamed with the last datetime of the cicle measurements:
   def self.import_original_csvs_to_project
@@ -109,7 +71,7 @@ class ForecastIntegrationDemo
         measurement = row.headers.inject(measurement) do |msrmnt, field_name|
           value = row.field(field_name)
 
-          msrmnt[get_api_attribute_name(field_name)] = if value == "NA"
+          msrmnt[ForecastEngine.get_api_attribute_name(field_name)] = if value == "NA"
             nil
           else
             value.to_f
