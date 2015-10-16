@@ -7,7 +7,7 @@
 # type 'docker-compose ps'.
 data:
   image: tianon/true
-  volumes: [ "/var/lib/postgresql/data" ]
+  volumes: [ "/var/lib/postgresql/data", "/app/tablas" ]
 
 # Our PostgreSQL service:
 postgres:
@@ -31,7 +31,10 @@ redis:
 
 # The Forecasts Engine:
 forecasts:
-  image: vovimayhem/air-quality-forecasts:0-rc1
+  image: vovimayhem/air-quality-forecasts:0-rc2
+  volumes: [ "./dev-engine-entrypoint.sh:/app/entrypoint.sh" ]
+  volumes_from: [ "data" ]
+  entrypoint: /app/entrypoint.sh
 
 # Application: -----------------------------------------------------------------
 gems: &app_base
