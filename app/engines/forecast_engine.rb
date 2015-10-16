@@ -63,7 +63,7 @@ class ForecastEngine
       datetime = msrmnt.measured_at.to_time.getlocal('-06:00')
 
       df['fecha'] << datetime.strftime('%Y-%m-%d')
-      df['hora']  << datetime.hour.to_s
+      df['hora']  << datetime.hour.to_i
       df['sitio'] << msrmnt.station.short_name
 
       %w(CO NO NO2 NOX O3 PM10 PM2.5 PRS
@@ -144,8 +144,11 @@ class ForecastEngine
 
     # Use the remote engine to generate an output dataframe:
     output_df = conn.converse("tabla.entrada" => input_df.to_dataframe) do
-      "SPCA('/app')"
+      'SPCA("/app")'
     end
+
+    # SPCA method completed successfully on engine... tell it to save the data:
+    conn.command 'post()' if output_df
 
     # Return a translated array of hashes:
     return convert_to_output_data(output_df)
