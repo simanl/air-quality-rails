@@ -24,9 +24,9 @@ lock_setup
 
 # 5: Check if data tables exist, or download the initial data tables:
 if [ ! -f ${APP_PATH}/tablas/series/tabla_maestra_imputada.RData ]; then
-  echo "Downloading initial tables..."
-  ${APP_PATH}/descargar-tablas-iniciales.sh
-  echo "Finished!"
+  printf "Downloading initial tables..."
+  ${APP_PATH}/descargar-tablas-iniciales.sh -q
+  echo " finished!"
 fi
 
 # 6: 'Unlock' the setup process:
