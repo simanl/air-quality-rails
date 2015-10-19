@@ -2,7 +2,7 @@ require "rserve"
 require "rserve/simpler"
 
 class UpdateForecastsJob < ActiveJob::Base
-  queue_as :forecasting
+  queue_as :forecasts
 
   def perform(*args)
 
@@ -25,8 +25,10 @@ class UpdateForecastsJob < ActiveJob::Base
 
     # Cancel the task if the dataframe cannot_be_completed not complete:
     unless input_data_looks_complete?(measurements_to_process)
-      puts "Input data does not look complete..."
+      logger.debug "Input data does not look complete..."
       return
+    else
+      logger.info "Proceeding to feed the Forecasts engine..."
     end
 
     engine = ForecastEngine.new
@@ -50,7 +52,8 @@ class UpdateForecastsJob < ActiveJob::Base
 
       grouped_data[group_key][fd[:pollutant]] = fd[:quality]
       grouped_data
-    end.each do |station_starts_at, attributes|
+    end.inject({}) do |dict, station_starts_at_attributes|
+      station_starts_at, attributes = station_starts_at_attributes
       station, starts_at = station_starts_at
       forecast = station.forecasts.find_or_initialize_by(starts_at: starts_at)
       attributes.each do |name, value|
@@ -61,6 +64,13 @@ class UpdateForecastsJob < ActiveJob::Base
         end
       end
       forecast.save!
+
+      # add the forecast id to the stations dictionary:
+      dict[station] = [] unless dict.key?(station)
+      dict[station] << forecast.id
+      dict
+    end.each do |station, forecast_ids|
+      station.update current_forecast_ids: forecast_ids
     end
   end
 
