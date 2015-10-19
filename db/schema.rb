@@ -11,11 +11,20 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151014185034) do
+ActiveRecord::Schema.define(version: 20151017012856) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
+
+  create_table "active_station_forecasts", force: :cascade do |t|
+    t.integer "station_id",  null: false
+    t.integer "forecast_id", null: false
+  end
+
+  add_index "active_station_forecasts", ["forecast_id"], name: "FK_active_station_forecast", using: :btree
+  add_index "active_station_forecasts", ["station_id", "forecast_id"], name: "UK_active_station_forecast", unique: true, using: :btree
+  add_index "active_station_forecasts", ["station_id"], name: "FK_active_forecast_station", using: :btree
 
   create_table "forecasts", force: :cascade do |t|
     t.integer  "station_id",              null: false
@@ -66,6 +75,8 @@ ActiveRecord::Schema.define(version: 20151014185034) do
   add_index "stations", ["last_measurement_id"], name: "UK_station_last_measurement", unique: true, using: :btree
   add_index "stations", ["status"], name: "IX_station_status", using: :btree
 
+  add_foreign_key "active_station_forecasts", "forecasts"
+  add_foreign_key "active_station_forecasts", "stations"
   add_foreign_key "forecasts", "stations"
   add_foreign_key "forecasts_measurements", "forecasts"
   add_foreign_key "forecasts_measurements", "measurements"

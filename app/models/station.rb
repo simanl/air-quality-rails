@@ -7,8 +7,9 @@ class Station < ActiveRecord::Base
   belongs_to :last_measurement, class_name: "Measurement"
 
   has_many :forecasts
-  has_many :current_forecasts, -> { order(starts_at: :desc).limit(4) },
-    class_name: "Forecast"
+  has_and_belongs_to_many :current_forecasts,
+    class_name: "Forecast",
+    join_table: "active_station_forecasts"
 
   # Simple enum for station status - no need for AASM or Workflow gem right now.
   enum status: { created: 0, active: 1, archived: 2 }
