@@ -31,7 +31,7 @@ redis:
 
 # The Forecasts Engine:
 forecasts:
-  image: vovimayhem/air-quality-forecasts:0-rc2
+  image: vovimayhem/air-quality-forecasts:0-rc3
   volumes: [ "./dev-engine-entrypoint.sh:/app/entrypoint.sh" ]
   volumes_from: [ "data" ]
   entrypoint: /app/entrypoint.sh
