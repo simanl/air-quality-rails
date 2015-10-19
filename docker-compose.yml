@@ -62,7 +62,7 @@ jobs: &app
   tty: true
   volumes_from: [ "gems" ]
   entrypoint: /usr/src/app/dev-entrypoint.sh
-  command: sidekiq -c 25 -q default
+  command: sidekiq -c 25 -q default -q forecasts
 
 web:
   <<: *app
