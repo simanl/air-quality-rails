@@ -28,3 +28,6 @@ db/dumps
 .byebug_hist
 .pry_history
 .guard_history
+
+# Ignore the actual staging setup:
+examples/actual-staging-setup

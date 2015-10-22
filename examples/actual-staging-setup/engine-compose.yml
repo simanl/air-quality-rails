@@ -1,0 +1,17 @@
+---
+# Our data container, mainly for storing the Postgres container's database
+# files. This will allow us to move between postgres versions without losing the
+# data currently in our development environment.
+
+# We won't worry if this container is not in a "running state" when you
+# type 'docker-compose ps'.
+data:
+  image: tianon/true
+  volumes: [ "/app/tablas" ]
+
+# The Forecasts Engine:
+engine:
+  image: vovimayhem/air-quality-forecasts:0-rc3
+  volumes_from: [ "data" ]
+  ports: [ "6311:6311" ]
+  restart: always
