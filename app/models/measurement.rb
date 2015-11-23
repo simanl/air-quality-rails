@@ -10,7 +10,7 @@ class Measurement < ActiveRecord::Base
   store_accessor :weather,
     :atmospheric_pressure,
     :precipitation,
-    :relative_humidity,
+    :relative_humidity, # Percentage Points (0..100)
     :solar_radiation,
     :temperature,
     :wind_direction,

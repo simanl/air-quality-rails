@@ -13,7 +13,7 @@
   short_name: "La Pastora", lonlat: "POINT (-100.24958 25.66827)" },
   { code: "centro-obispado", name: "Centro Obispado",
     short_name: "Obispado", lonlat: "POINT (-100.335847 25.67602)" },
-  { code: "noroeste-san-bernabe", name: "Noroeste San Bernabe",
+  { code: "noroeste-san-bernabe", name: "Noroeste San Bernabé",
     short_name: "San Bernabe", lonlat: "POINT (-100.365974 25.75712)" },
   { code: "noreste-san-nicolas", name: "Noreste San Nicolas",
     short_name: "San Nicolas", lonlat: "POINT (-100.25502 25.74543)" },
