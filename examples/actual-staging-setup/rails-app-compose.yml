@@ -20,14 +20,14 @@ postgres:
 
 # Our Redis service:
 redis:
-  image: redis:3.0.4
+  image: redis:3.0.5
   command: redis-server --appendonly yes
   restart: always
 
 # We'll also use this configuration (&app_base) for the web and test
 # containers:
 jobs: &app
-  image: vovimayhem/air-quality-rails:v6-rc2
+  image: vovimayhem/air-quality-rails:v6-rc4
   working_dir: /usr/src/app
   command: sidekiq -c 25 -q default
   restart: always
