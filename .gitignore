@@ -49,3 +49,6 @@ bower.json
 /db/dumps/*
 !/db/dumps/README.md
 .DS_Store
+
+
+.ruby-version
