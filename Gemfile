@@ -15,9 +15,9 @@ ruby '2.2.3', engine: 'ruby', engine_version: '2.2.3'
 ################################################################################
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.4'
+gem 'rails', '4.2.5'
 # Use postgresql as the database for Active Record
-gem 'pg'
+gem 'pg', '~> 0.18.4'
 # Use SCSS for stylesheets
 gem 'sass-rails', '~> 5.0'
 # Use Uglifier as compressor for JavaScript assets
@@ -55,7 +55,7 @@ gem 'faraday',     '~> 0.9'
 # gem 'bcrypt', '~> 3.1.7'
 
 # Use Puma as the app server
-gem 'puma', '~> 2.13.4'
+gem 'puma', '~> 2.15.3'
 
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
