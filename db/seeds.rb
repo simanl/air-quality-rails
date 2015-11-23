@@ -11,7 +11,7 @@
 [
   { code: "sureste-la-pastora", name: "Sureste La Pastora",
   short_name: "La Pastora", lonlat: "POINT (-100.24958 25.66827)" },
-  { code: "noreste-san-nicolas", name: "Noreste San Nicolas",
+  { code: "noreste-san-nicolas", name: "Noreste San Nicolás",
   short_name: "San Nicolas", lonlat: "POINT (-100.25502 25.74543)" },
   { code: "centro-obispado", name: "Centro Obispado",
     short_name: "Obispado", lonlat: "POINT (-100.335847 25.67602)" },
