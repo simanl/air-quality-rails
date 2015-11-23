@@ -66,14 +66,14 @@ ActiveRecord::Schema.define(version: 20151017012856) do
     t.string    "short_name"
     t.geography "lonlat",              limit: {:srid=>4326, :type=>"point", :geographic=>true}
     t.integer   "last_measurement_id"
-    t.integer   "status",              limit: 2,                                                default: 0, null: false
-    t.datetime  "created_at",                                                                               null: false
-    t.datetime  "updated_at",                                                                               null: false
+    t.boolean   "is_forecastable",                                                              default: false, null: false
+    t.datetime  "created_at",                                                                                   null: false
+    t.datetime  "updated_at",                                                                                   null: false
   end
 
   add_index "stations", ["code"], name: "UK_station_code", unique: true, using: :btree
+  add_index "stations", ["is_forecastable"], name: "IX_forecastable_station", using: :btree
   add_index "stations", ["last_measurement_id"], name: "UK_station_last_measurement", unique: true, using: :btree
-  add_index "stations", ["status"], name: "IX_station_status", using: :btree
 
   add_foreign_key "active_station_forecasts", "forecasts"
   add_foreign_key "active_station_forecasts", "stations"

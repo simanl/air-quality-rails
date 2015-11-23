@@ -11,8 +11,13 @@ class Station < ActiveRecord::Base
     class_name: "Forecast",
     join_table: "active_station_forecasts"
 
-  # Simple enum for station status - no need for AASM or Workflow gem right now.
-  enum status: { created: 0, active: 1, archived: 2 }
+  def is_forecastable?
+    is_forecastable
+  end
+
+  def self.forecastable
+    where(is_forecastable: true)
+  end
 
   # params:
   # a) latitude, longitude

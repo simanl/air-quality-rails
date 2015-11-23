@@ -6,7 +6,7 @@ class UpdateForecastsJob < ActiveJob::Base
 
   def perform(*args)
 
-    active_stations = Station.active
+    forecastable_stations = Station.forecastable
 
     # Get the 'measured_at' timestamp from the last measurements used in the
     # forecast update process:
@@ -19,7 +19,7 @@ class UpdateForecastsJob < ActiveJob::Base
     finish_dt = start_dt.advance(hours: 5)
 
     measurements_to_process = Measurement.includes(:station).joins(:station)
-      .merge(active_stations)
+      .merge(forecastable_stations)
       .where(measured_at: start_dt..finish_dt)
       .order(station_id: :asc, measured_at: :asc)
 
@@ -35,14 +35,14 @@ class UpdateForecastsJob < ActiveJob::Base
     forecast_data = engine.update_forecasts(measurements_to_process)
 
     # A dictionary of stations indexed by short_name:
-    active_stations_dictionary = Station.active.inject({}) do |list, station|
+    forecastable_stations_dictionary = Station.forecastable.inject({}) do |list, station|
       list.merge(station.short_name => station)
     end
 
     # Upsert the forecasts into the database:
     forecast_data.inject({}) do |grouped_data, fd|
       # Merge pollutant quality forecasts by station and starts_at datetime:
-      station = active_stations_dictionary[fd[:site]]
+      station = forecastable_stations_dictionary[fd[:site]]
       group_key = [station, fd[:start_at]]
 
       grouped_data[group_key] = {
@@ -84,7 +84,7 @@ class UpdateForecastsJob < ActiveJob::Base
       end
 
       # Currently, there should be 6 measurements by each station, from the
-      # currently active 5 stations:
+      # 5 currently forecastable stations:
       counts.keys.size == 5 && counts.values.uniq == [6]
     end
 

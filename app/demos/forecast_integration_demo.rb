@@ -27,7 +27,7 @@ class ForecastIntegrationDemo
 
   def self.get_station_mapping
     @station_mapping ||= begin
-      Hash[Station.active.order(id: :asc).pluck(:short_name, :id)]
+      Hash[Station.forecastable.order(id: :asc).pluck(:short_name, :id)]
     end
   end
 
@@ -110,7 +110,7 @@ class ForecastIntegrationDemo
 
   def self.import_demo_cycle_measurements!
     # Get the Datetime of the last measurement:
-    msrmnt_ids = Station.active.pluck(:last_measurement_id)
+    msrmnt_ids = Station.forecastable.pluck(:last_measurement_id)
     lst_msrmnt_dttms = Measurement.where(id: msrmnt_ids).map(&:measured_at).uniq
 
     # If the list of datetimes is:
