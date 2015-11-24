@@ -22,7 +22,6 @@ module Sima
                   :nitrogen_oxides, # https://en.wikipedia.org/wiki/Nitrogen_oxide
                   :ozone,
                   :sulfur_dioxide,
-                  :suspended_particulate_matter,   # SPM
                   # Both Toracic (PM > 10nm) and Respirable (PM > 2.5 nm) are Inhalable Particles:
                   :toracic_particles,   # PM10
                   :respirable_particles # PM2.5

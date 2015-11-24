@@ -3,7 +3,7 @@ class MeasurementSerializer < ActiveModel::Serializer
     :wind_direction, :wind_speed, :imeca_points, :imeca_category, :precipitation
 
   attributes :carbon_monoxide, :nitric_oxide, :nitrogen_dioxide,
-    :nitrogen_oxides, :ozone, :sulfur_dioxide, :suspended_particulate_matter,
+    :nitrogen_oxides, :ozone, :sulfur_dioxide,
     :toracic_particles, :respirable_particles
 
   def measured_at_rfc822
