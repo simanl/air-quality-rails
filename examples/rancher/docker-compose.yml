@@ -1,0 +1,54 @@
+postgres:
+  image: vovimayhem/postgis:2.1.8-9.4.4
+  labels:
+    io.rancher.scheduler.affinity:host_label: data-server=true
+  environment:
+    LC_ALL: C.UTF-8
+    POSTGRES_PASSWORD: 41rqu4l1ty
+
+# Our Redis service:
+redis:
+  image: redis:3.0.5
+  command: redis-server --appendonly yes
+  restart: always
+  labels:
+    io.rancher.scheduler.affinity:host_label: data-server=true
+
+# The Forecasts Engine:
+engine:
+  image: simanl/air-quality-forecasts:latest
+  restart: always
+  labels:
+    io.rancher.scheduler.affinity:host_label: data-server=true
+
+# We'll also use this configuration (&app_base) for the web and test
+# containers:
+jobs: &app
+  image: simanl/air-quality-rails:latest
+  working_dir: /usr/src/app
+  command: sidekiq -c 25 -q default
+  restart: always
+  links:
+    - postgres:postgres.air-quality.local
+    - redis:redis.air-quality.local
+    - engine:forecasts.air-quality.local
+  environment:
+    DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_staging?pool=25&encoding=unicode&schema_search_path=public
+    REDIS_URL: redis://redis.air-quality.local:6379/air_quality_staging
+    FORECAST_ENGINE_URL: tcp://forecasts.air-quality.local:6311
+    SECRET_KEY_BASE: f6c8303a92658b08b79e275e4d3888c9bf5ff40505c84344a2013fa574b3b4fd5144c2477caa19a382288e1e9e8929760764f53c9d83133970f77b8bd7e281fe
+
+web:
+  <<: *app
+  command: rails server -p 3000 -b 0.0.0.0
+  labels:
+    io.rancher.scheduler.affinity:host_label: app-server=true
+
+web-lb:
+  ports: [ "80:3000"]
+  tty: true
+  image: rancher/load-balancer-service
+  links: [ "web:web" ]
+  stdin_open: true
+  labels:
+    io.rancher.scheduler.affinity:host_label: app-server=true
