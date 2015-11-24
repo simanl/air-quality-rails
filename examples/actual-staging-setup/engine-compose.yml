@@ -11,7 +11,7 @@ data:
 
 # The Forecasts Engine:
 engine:
-  image: vovimayhem/air-quality-forecasts:0-rc3
+  image: simanl/air-quality-forecasts:latest
   volumes_from: [ "data" ]
   ports: [ "6311:6311" ]
   restart: always
