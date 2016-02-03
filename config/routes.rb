@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
 
+  root "home#index"
+
   resources :stations, only: [:index, :show] do
     collection do
       get "nearest_from", to: "stations#show"

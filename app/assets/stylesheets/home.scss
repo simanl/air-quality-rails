@@ -1,0 +1,327 @@
+// Place all the styles related to the home controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+body {
+  background-attachment: fixed;
+  background-position: 50% 20%;
+  background-repeat: no-repeat;
+  background-size: cover;
+  font-family: Lato;
+
+  &:before {
+    background-color: rgba(0,0,0,0.2);
+    content: "\A";
+    display: block;
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: -1;
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.modals {
+  .modal-content {
+    background-color: rgba(255,255,255,0.7);
+    border-radius: 3px;
+    display: none;
+    height: 250px;
+    overflow-y: auto;
+    padding:15px;
+    width: 300px;
+  }
+}
+
+.easy-modal, .easy-modal-animated {
+  background-color: white;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.35);
+  padding: 2em;
+  width: 600px;
+}
+
+.container {
+  margin: auto;
+  width: 800px;
+}
+
+.brand {
+  margin: 12% auto 4rem;
+  width: 184px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.title {
+  color: #FFFFFF;
+  font-family: AvenirNext-UltraLight;
+  font-size: 26px;
+  letter-spacing: 1px;
+  line-height: 50px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.label {
+  color: #FFFFFF;
+  font-family: Avenir-Light;
+  font-size: 10px;
+  letter-spacing: 2px;
+  line-height: 14px;
+  opacity: 0.8;
+  text-align: center;
+}
+
+
+.board {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  box-shadow: 0px 15px 20px 5px rgba(0, 0, 0, 0.08);
+  display: table;
+  margin-bottom: 1rem;
+  position: relative;
+  width: 100%;
+
+  & > aside {
+    box-sizing: border-box;
+    display: table-cell;
+    vertical-align: top;
+    width: 50%;
+
+    article {
+      position: relative;
+    }
+  }
+
+  .left { text-align: center; }
+
+  .right {
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 90%, #000000 100%);
+    background: rgba(0, 0, 0, 0.05);
+    padding: 28px;
+  }
+
+  .row {
+    clear: both;
+    display: block;
+
+    .item {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      margin: 0 0 6px 0;
+      min-height: 94px;
+
+      .table {
+        display: table;
+
+        &.agents {
+          width: 80%;
+          margin: auto;
+        }
+
+        .col {
+          width: 1%;
+          display: table-cell;
+          text-align: center;
+
+          .badge {
+            margin: 15px auto 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            width: 40px;
+            padding: 5px 3px 3px;
+            font-family: Avenir-Light;
+            font-size: 9px;
+            color: #FFFFFF;
+            letter-spacing: 2px;
+            line-height: 12px;
+          }
+
+          .value {
+            margin-top: 8px;
+            font-family: AvenirNext-UltraLight;
+            font-size: 26px;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+            line-height: 36px;
+          }
+        }
+      }
+
+      &.half {
+        width: 49%;
+        display: block;
+
+        &:first-child {
+          margin-right: 1%;
+          float: left;
+        }
+
+        &:last-child {
+          float: right;
+        }
+      }
+
+      .icon {
+        width: 28px;
+      }
+
+      .icon-thermometer {
+        width: 12px;
+        margin-right: 5px;
+      }
+
+
+    &.forecast {
+      padding-top: 15px;
+      min-height: 160px;
+      .col {
+        display: table-cell;
+        min-width: 80px;
+        .label {
+
+        }
+        .value {
+          font-family: AvenirNext-UltraLight;
+          font-size: 18px;
+          color: #FFFFFF;
+          letter-spacing: 0.76px;
+          line-height: 27px;
+        }
+
+        .time-range {
+          font-family: AvenirNext-UltraLight;
+          font-size: 12px;
+          color: #FFFFFF;
+          line-height: 27px;
+        }
+
+        &.th {
+          font-family: Avenir-Light;
+          font-size: 10px;
+          color: #FFFFFF;
+          letter-spacing: 2px;
+          line-height: 14px;
+        }
+      }
+    }
+
+
+    }
+  }
+
+  .info-icon {
+    background-image: image-url("moreinfo.png");
+    background-size: 100%;
+    display: block;
+    float: left;
+    height: 14px;
+    left: 20px;
+    position: absolute;
+    top: 18px;
+    width: 14px;
+    content: "";
+    clear: both;
+  }
+
+  .activities {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    margin:24px;
+    padding:15px;
+    min-height: 94px;
+
+    .head {
+      margin:5px 0px 10px;
+    }
+  }
+
+  .main-measure {
+    h1 {
+      font-weight: lighter;
+      font-size: 90px;
+      color: #FFFFFF;
+      line-height: 123px;
+      margin: 1rem auto 0;
+    }
+
+    small {
+      opacity: 0.8;
+      font-size: 10px;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      line-height: 14px;
+    }
+  }
+
+  .quality {
+    margin: 1.5rem auto 1rem;
+
+    .label {
+      color: #FFFFFF;
+      font-size: 10px;
+      letter-spacing: 2px;
+      line-height: 14px;
+      opacity: 0.8;
+    }
+
+    .info-badge {
+      background: #51CD54;
+      border-radius: 40px;
+      height: 50px;
+      line-height: 50px;
+      margin: 1rem auto;
+      opacity: 0.89;
+      position: relative;
+      width: 200px;
+
+      .description {
+        font-size: 18px;
+        color: #FFFFFF;
+        letter-spacing: 1.22px;
+        line-height: 25px;
+      }
+    }
+  }
+}
+
+.activity-icon {
+  margin:3px;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  background-size: 100%;
+
+  &.allergy   { background-image: image-url('icons/allergy@2x.png');    }
+  &.car       { background-image: image-url('icons/car@2x.png');        }
+  &.cigarrete { background-image: image-url('icons/cigarrete@2x.png');  }
+  &.exercise  { background-image: image-url('icons/exercise@2x.png');   }
+  &.gas       { background-image: image-url('icons/gas@2x.png');        }
+  &.hearth    { background-image: image-url('icons/hearth@2x.png');     }
+  &.outdoors  { background-image: image-url('icons/outdoors@2x.png');   }
+  &.window    { background-image: image-url('icons/window@2x.png');     }
+
+}
+
+  // .container {
+  //   width: 600px;
+  //   .board {
+  //     background-color: rgba(255,255,255,0.1);
+
+  //     aside {
+  //       width: 100%;
+  //       display: block;
+
+  //       &.left {
+  //         background-color: rgba(255,255,255,0.2);
+  //       }
+  //     }
+  //   }
+  // }

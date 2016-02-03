@@ -1,0 +1,184 @@
+<section class="modals">
+  <!-- Modal contents -->
+  <div id="quality-modal" class="modal-content">
+    <h1><%= t "modals.quality.title" %></h1>
+    <pre><%= t "modals.quality.text" %></pre>
+  </div>
+
+  <div id="activities-modal" class="modal-content">
+    <h1><%= t "modals.activities.title" %></h1>
+    <pre><%= t "modals.activities.text" %></pre>
+  </div>
+
+  <div id="forecast-modal" class="modal-content">
+    <h1><%= t "modals.forecast.title" %></h1>
+    <pre><%= t "modals.forecast.text" %></pre>
+  </div>
+
+  <div class="modal-content" id="allergy-modal">allergy-modal description</div>
+  <div class="modal-content" id="car-modal">car-modal description</div>
+  <div class="modal-content" id="cigarrete-modal">cigarrete-modal description</div>
+  <div class="modal-content" id="exercise-modal">exercise-modal description</div>
+  <div class="modal-content" id="gas-modal">gas-modal description</div>
+  <div class="modal-content" id="hearth-modal">hearth-modal description</div>
+  <div class="modal-content" id="outdoors-modal">outdoors-modal description</div>
+  <div class="modal-content" id="window-modal">window-modal description</div>
+
+</section>
+
+
+<div class="container">
+  <div class="brand">
+    <%= image_tag 'airenl.png' %>
+  </div>
+
+  <section class="board">
+    <aside class="left">
+
+      <article class="main-measure">
+        <h1 class="imeca-points value">--</h1>
+        <small>IMECA</small>
+      </article>
+
+      <article class="quality">
+        <span class="label">LA CALIDAD DEL AIRE ES</span>
+        <div class="info-badge">
+          <a class="modal-link" data-modal="#quality-modal" href="#">
+            <span class="info-icon"></span>
+            <span class="description imeca-category value">N/A</span>
+          </a>
+        </div>
+      </article>
+
+      <article class="activities">
+        <a href="#" class="modal-link info-icon" data-modal="#activities-modal"></a>
+        <div class="label head">ACTIVIDADES RECOMENDADAS</div>
+        <a href="#" class="activity-icon allergy modal-link" data-modal="#allergy-modal"></a>
+        <a href="#" class="activity-icon car modal-link" data-modal="#car-modal"></a>
+        <a href="#" class="activity-icon cigarrete modal-link" data-modal="#cigarrete-modal"></a>
+        <a href="#" class="activity-icon exercise modal-link" data-modal="#exercise-modal"></a>
+        <a href="#" class="activity-icon gas modal-link" data-modal="#gas-modal"></a>
+        <a href="#" class="activity-icon hearth modal-link" data-modal="#hearth-modal"></a>
+        <a href="#" class="activity-icon outdoors modal-link" data-modal="#outdoors-modal"></a>
+        <a href="#" class="activity-icon window modal-link" data-modal="#window-modal"></a>
+      </article>
+    </aside>
+    <aside class="right">
+      <div class="row">
+
+        <article class="item half">
+          <div class="title">
+            <%= image_tag "wind.png", class: 'icon' %>
+            <span class="wind-speed value">--</span>
+          </div>
+          <div class="label">VIENTO KM/H</div>
+        </article>
+
+        <article class="item half">
+          <div class="title">
+            <%= image_tag "thermometer.png", class: 'icon-thermometer' %>
+            <span class="temperature value">--</span>
+          </div>
+          <div class="label">TEMPERATURA ºC</div>
+        </article>
+
+      </div>
+
+      <div class="row">
+        <article class="item">
+          <div class="table agents">
+            <div class="col">
+              <div class="badge">PM10</div>
+              <div class="toracic-particles value">--</div>
+            </div>
+            <div class="col">
+              <div class="badge">PM2.5</div>
+              <div class="respirable-particles value">--</div>
+            </div>
+            <div class="col">
+              <div class="badge">O3</div>
+              <div class="ozone value">--</div>
+            </div>
+          </div>
+        </article>
+      </div>
+
+      <div class="row">
+        <article class="item forecast">
+
+          <div class="table row">
+            <div class="col th">
+              <a href="#" class="modal-link" data-modal="#forecast-modal">
+                <span class="info-icon"></span>
+              </a>
+            </div>
+            <div class="col th"><div class="badge">PM10</div></div>
+            <div class="col th"><div class="badge">PM2.5</div></div>
+            <div class="col th"><div class="badge">O3</div></div>
+          </div>
+
+          <div class="table row">
+            <div class="col">
+              <div class="time-range">13:00-19:00</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+          </div>
+
+          <div class="table row">
+            <div class="col">
+              <div class="time-range">19:00-21:00</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+          </div>
+
+          <div class="table row">
+            <div class="col">
+              <div class="time-range">21:00-06:00</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+          </div>
+
+          <div class="table row">
+            <div class="col">
+              <div class="time-range">21:00-06:00</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+            <div class="col">
+              <div class="value">--</div>
+            </div>
+          </div>
+
+        </article>
+      </div>
+    </aside>
+  </section>
+</div>
