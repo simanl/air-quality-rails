@@ -3,8 +3,8 @@ source 'https://rubygems.org'
 ################################################################################
 # App Ruby Version:
 
-# Use MRI 2.2.2:
-ruby '2.2.3', engine: 'ruby', engine_version: '2.2.3'
+# Use MRI 2.2.4:
+ruby '2.2.4', engine: 'ruby', engine_version: '2.2.4'
 
 # Use JRuby 9.0.0.0:
 # ruby "2.2.2", engine: 'jruby', engine_version: '9.0.0.0.pre2'
