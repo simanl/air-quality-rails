@@ -6,6 +6,7 @@
 Dockerfile
 docker-compose.yml
 *.env
+dev-engine-entrypoint.sh
 dev-entrypoint.sh
 .dockerignore
 
@@ -20,8 +21,13 @@ tmp/
 Guardfile
 spec/
 
+# Ignore OS artifacts:
+.DS_Store
+
 # Ignore database dumps:
 db/dumps
+
+.rspec
 
 # Ignore bash / IRB / Byebug history files
 .bash_history
@@ -29,5 +35,5 @@ db/dumps
 .pry_history
 .guard_history
 
-# Ignore the actual staging setup:
-examples/actual-staging-setup
+# Ignore the examples folder:
+examples/
