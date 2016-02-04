@@ -20,14 +20,14 @@ postgres:
 
 # Our Redis service:
 redis:
-  image: redis:3.0.5
+  image: redis:3.0.7
   command: redis-server --appendonly yes
   restart: always
 
 # We'll also use this configuration (&app_base) for the web and test
 # containers:
 jobs: &app
-  image: simanl/air-quality-rails:latest
+  image: simanl/air-quality-rails:v6-rc5
   working_dir: /usr/src/app
   command: sidekiq -c 25 -q default
   restart: always
@@ -37,7 +37,7 @@ jobs: &app
   environment:
     DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_staging?pool=25&encoding=unicode&schema_search_path=public
     REDIS_URL: redis://redis.air-quality.local:6379/air_quality_staging
-    FORECAST_ENGINE_URL: tcp://159.203.240.209:6311
+    FORECAST_ENGINE_URL: tcp://104.236.145.13:6311
     SECRET_KEY_BASE: f6c8303a92658b08b79e275e4d3888c9bf5ff40505c84344a2013fa574b3b4fd5144c2477caa19a382288e1e9e8929760764f53c9d83133970f77b8bd7e281fe
 
 web:

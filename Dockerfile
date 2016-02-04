@@ -1,7 +1,7 @@
 # This Dockerfile is intended to build a production-ready Docker container with
 # the app... however, further shrinking can be achieved...
 # See - for example - https://blog.jtlebi.fr/2015/04/25/how-i-shrunk-a-docker-image-by-98-8-featuring-fanotify
-FROM ruby:2.2.3
+FROM ruby:2.2.4
 MAINTAINER Roberto Quintanilla <vov@icalialabs.com>
 
 ENV PATH=/usr/src/app/bin:$PATH RAILS_ENV=production RACK_ENV=production
