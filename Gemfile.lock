@@ -157,6 +157,7 @@ GEM
       rails-deprecated_sanitizer (>= 1.0.1)
     rails-html-sanitizer (1.0.2)
       loofah (~> 2.0)
+    rails_stdout_logging (0.0.4)
     railties (4.2.5)
       actionpack (= 4.2.5)
       activesupport (= 4.2.5)
@@ -266,6 +267,7 @@ DEPENDENCIES
   pry-rails
   puma (~> 2.15.3)
   rails (= 4.2.5)
+  rails_stdout_logging
   rserve-client (~> 0.3.1)
   rserve-simpler (~> 0.0.6)
   rspec-rails (~> 3.0)
@@ -280,4 +282,4 @@ DEPENDENCIES
   whenever
 
 BUNDLED WITH
-   1.10.6
+   1.11.2
