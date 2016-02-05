@@ -20,6 +20,13 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 es:
+  quality:
+    category:
+      good: "Buena"
+      regular: "Regular"
+      bad: "Mala"
+      very_bad: "Muy Mala"
+      extremely_bad: "Extremadamente Mala"
   modals:
     quality:
       title: "Quality modal"
