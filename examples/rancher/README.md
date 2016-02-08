@@ -1,0 +1,8 @@
+- Initialize a GlusterFS stack from catalog:
+  - It should at least start scaled to 2!
+  - Wait for stack peer & volume create containers to finish (check logs)
+  - Wait for stack server containers to finish (check logs)
+- Initialize a convoy-glusterfs stack from catalog!
+  - Use the previous stack's 'gluster-server' as the GlusterFS service.
+  - Wait for storage pools to finish (check logs)
+  - Wait for GlusterFS stack server containers to finish (check logs)
