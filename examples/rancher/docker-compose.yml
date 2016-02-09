@@ -1,29 +1,41 @@
 ---
-# The postgres service will use an existing storage pool in the rancher farm:
-postgres:
-  environment:
-    LC_ALL: C.UTF-8
-    POSTGRES_PASSWORD: 41rqu4l1ty
+# The Redis service will use a configured glusterfs storage pool on Rancher:
+redis:
+  tty: true
+  image: redis:3.0.7
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: data-server=true,convoy.glusterfs=true
-  tty: true
-  image: vovimayhem/postgis:2.1.8-9.4.4
+  command: redis-server --appendonly yes
   volumes:
-    - airdb:/var/lib/postgresql/data
+    - airkeyval:/data
   stdin_open: true
   volume_driver: convoy-gluster
 
-# The Redis service will also use the existing storage pool in the rancher farm:
-redis:
+# The postgres service will use a configured glusterfs storage pool on Rancher:
+postgres:
+  tty: true
+  image: vovimayhem/postgis:2.1.8-9.4.4
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: data-server=true,convoy.glusterfs=true
-  tty: true
-  command: redis-server --appendonly yes
-  image: redis:3.0.7
   volumes:
-  - airkeyval:/data
+    - airdb:/var/lib/postgresql/data
+  stdin_open: true
+  environment:
+    LC_ALL: C.UTF-8
+    POSTGRES_PASSWORD: 41rqu4l1ty
+  volume_driver: convoy-gluster
+
+# The Forecasts Engine will use a configured glusterfs storage pool on Rancher:
+forecasts:
+  tty: true
+  image: simanl/air-quality-forecasts:0-rc3
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: data-server=true,convoy.glusterfs=true
+  volumes:
+    - airforecastdb:/app/tablas
   stdin_open: true
   volume_driver: convoy-gluster
 
@@ -32,8 +44,9 @@ jobs:
   tty: true
   image: simanl/air-quality-rails:v6-rc7
   links:
-    - postgres:postgres.air-quality.local
     - redis:redis.air-quality.local
+    - postgres:postgres.air-quality.local
+    - forecasts:forecasts.air-quality.local
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: app-server=true
@@ -50,8 +63,8 @@ web:
   tty: true
   image: simanl/air-quality-rails:v6-rc7
   links:
-    - postgres:postgres.air-quality.local
     - redis:redis.air-quality.local
+    - postgres:postgres.air-quality.local
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: app-server=true
@@ -60,7 +73,6 @@ web:
   environment:
     DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_staging?pool=25&encoding=unicode&schema_search_path=public
     REDIS_URL: redis://redis.air-quality.local:6379/air_quality_staging
-    FORECAST_ENGINE_URL: tcp://forecasts.air-quality.local:6311
     SECRET_KEY_BASE: f6c8303a92658b08b79e275e4d3888c9bf5ff40505c84344a2013fa574b3b4fd5144c2477caa19a382288e1e9e8929760764f53c9d83133970f77b8bd7e281fe
     PUMA_MIN_THREADS: 8
     PUMA_MAX_THREADS: 12
