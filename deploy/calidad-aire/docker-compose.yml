@@ -6,7 +6,7 @@ redis:
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-redis:/data" ]
-  volume_driver: simanl-fs-manager
+  volume_driver: simanl-fs-convoy
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
@@ -17,7 +17,7 @@ postgres:
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-postgres:/var/lib/postgresql/data" ]
-  volume_driver: simanl-fs-manager
+  volume_driver: simanl-fs-convoy
   environment:
     LC_ALL: C.UTF-8
   env_file: [ "postgres.env" ]
@@ -30,8 +30,8 @@ pronosticos:
   image: simanl/air-quality-forecasts:latest
   tty: true
   stdin_open: true
-  volumes: [ "airforecastdb:/app/tablas" ]
-  volume_driver: simanl-fs-manager
+  volumes: [ "calidad-aire-pronosticos:/app/tablas" ]
+  volume_driver: simanl-fs-convoy
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
@@ -71,6 +71,6 @@ web:
   tty: true
   stdin_open: true
   links: [ "app-web:app-web" ]
-  ports: [ "80:80" ]
+  ports: [ "80:3000" ]
   labels:
     io.rancher.scheduler.affinity:host_label: public-http=true

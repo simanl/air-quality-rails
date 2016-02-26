@@ -1,0 +1,4 @@
+glusterfs-server:
+  scale: 2
+  metadata:
+    volume_name: "simanl-data"
