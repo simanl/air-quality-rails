@@ -39,8 +39,8 @@ bower.json
 /.gem
 
 # Ignore dotenv environment files:
-/.env
-/*.env
+*.env
+!*.example.env
 
 # Ignore RSpec "spec/examples.txt" file:
 /spec/examples.txt

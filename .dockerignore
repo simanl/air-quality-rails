@@ -37,3 +37,6 @@ db/dumps
 
 # Ignore the examples folder:
 examples/
+
+# Ignore the deployment folder:
+deploy/
