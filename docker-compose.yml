@@ -1,80 +1,83 @@
----
-# Our data container, mainly for storing the Postgres container's database
-# files. This will allow us to move between postgres versions without losing the
-# data currently in our development environment.
+version: '2'
 
-# We won't worry if this container is not in a "running state" when you
-# type 'docker-compose ps'.
-data:
-  image: tianon/true
-  volumes: [ "/var/lib/postgresql/data", "/app/tablas" ]
+volumes:
+  postgres-data:
+    driver: local
+  redis-data:
+    driver: local
+  forecasts-data:
+    driver: local
+  gems:
+    driver: local
 
-# Our PostgreSQL service:
-postgres:
-  image: vovimayhem/postgis:2.1.8-9.4.4
-  # Bind host port 5432 to PostgreSQL port 5432:
-  ports: [ "5442:5432" ]
-  # We're mounting 'db/dumps' into the postgres container so we can backup and
-  # restore data dumps easily:
-  volumes: [ "./db/dumps:/data-dumps" ]
-  volumes_from: [ "data" ]
-  environment:
-    LC_ALL: C.UTF-8
-    POSTGRES_PASSWORD: 41rqu4l1ty
+networks:
+  front-tier:
+    driver: bridge
+  back-tier:
+    driver: bridge
 
-# Our Redis service:
-redis:
-  image: redis:3.0.7
-  # Bind host port 6389 to Redis port 6379:
-  ports: [ "6389:6379" ]
-  command: redis-server --appendonly yes
+services:
+  # Our PostgreSQL service:
+  postgres:
+    image: vovimayhem/postgis:2.1.8-9.4.4
+    # Bind host port 5432 to PostgreSQL port 5432:
+    ports: [ "5442:5432" ]
+    # We're mounting 'db/dumps' into the postgres container so we can backup and
+    # restore data dumps easily:
+    volumes: [ "postgres-data:/var/lib/postgresql/data", "./db/dumps:/db/dumps:ro" ]
+    networks: [ "back-tier" ]
+    environment:
+      LC_ALL: C.UTF-8
+      POSTGRES_PASSWORD: 41rqu4l1ty
 
-# The Forecasts Engine:
-forecasts:
-  image: simanl/air-quality-forecasts:0-rc3
-  volumes: [ "./dev-engine-entrypoint.sh:/app/entrypoint.sh" ]
-  volumes_from: [ "data" ]
-  entrypoint: /app/entrypoint.sh
+  # Our Redis service:
+  redis:
+    image: redis:3.0.7
+    # Bind host port 6389 to Redis port 6379:
+    ports: [ "6389:6379" ]
+    command: redis-server --appendonly yes
+    volumes: [ "redis-data:/var/lib/redis" ]
+    networks: [ "back-tier" ]
 
-# Application: -----------------------------------------------------------------
-gems: &app_base
-  image: vovimayhem/ruby:2.2.4
-  volumes: [ ".:/usr/src/app", "/usr/local/bundle" ]
-  environment: &app_environment
-    DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
-    REDIS_URL: redis://redis.air-quality.local:6379/air_quality_development
-    FORECAST_ENGINE_URL: tcp://forecasts-engine.air-quality.local:6311 # The URL pointing to our engine container
-    RACK_ENV: development
-    RAILS_ENV: development
-  links:
-    - postgres:postgres.air-quality.local
-    - redis:redis.air-quality.local
-    - forecasts:forecasts-engine.air-quality.local
-  env_file:
-    - "dev.env"
+  # The Forecasts Engine:
+  forecasts:
+    image: simanl/air-quality-forecasts:0-rc3
+    volumes: [ "forecasts-data:/app/tablas", "./dev-engine-entrypoint.sh:/app/entrypoint.sh" ]
+    entrypoint: /app/entrypoint.sh
 
-# We'll also use this configuration (&app_base) for the web and test
-# containers:
-jobs: &app
-  <<: *app_base
-  stdin_open: true
-  tty: true
-  volumes_from: [ "gems" ]
-  entrypoint: /usr/src/app/dev-entrypoint.sh
-  command: sidekiq -c 25 -q default -q forecasts
+  # Application: -----------------------------------------------------------------
+  jobs:
+    image: ruby:2.2.4
+    entrypoint: /usr/src/app/dev-entrypoint.sh
+    command: sidekiq -c 25 -q default -q forecasts
+    volumes: [ "gems:/usr/local/bundle", ".:/usr/src/app" ]
+    networks: [ "back-tier" ]
+    working_dir: /usr/src/app
+    stdin_open: true
+    tty: true
+    links:
+      - postgres:postgres.calidad-aire.local
+      - redis:redis.calidad-aire.local
+      - forecasts:pronosticos.calidad-aire.local
+    environment: &app_environment
+      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.calidad-aire.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
+      REDIS_URL: redis://redis.calidad-aire.local:6379/air_quality_development
+      FORECAST_ENGINE_URL: tcp://pronosticos-engine.calidad-aire.local:6311 # The URL pointing to our engine container
+      RAILS_ENV: development
+    env_file: [ "dev.env" ]
 
-web:
-  <<: *app
-  ports: [ "3010:3000" ]
-  command: rails server -p 3000 -b 0.0.0.0
+  web:
+    <<: *app
+    ports: [ "3010:3000" ]
+    command: rails server -p 3000 -b 0.0.0.0
 
-# App Guard: Keeps running tests on a separate process:
-test:
-  <<: *app # We copy from &app_base, and override:
-  command: guard start --no-bundler-warning --no-interactions --force-polling
-  environment:
-    <<: *app_environment
-    DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
-    REDIS_URL: redis://redis.air-quality.local:6379/air_quality_test
-    RACK_ENV: test
-    RAILS_ENV: test
+  # App Guard: Keeps running tests on a separate process:
+  test:
+    <<: *app # We copy from &app_base, and override:
+    command: guard start --no-bundler-warning --no-interactions --force-polling
+    environment:
+      <<: *app_environment
+      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
+      REDIS_URL: redis://redis.air-quality.local:6379/air_quality_test
+      RACK_ENV: test
+      RAILS_ENV: test
