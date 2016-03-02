@@ -1,0 +1,17 @@
+// Place all the styles related to the Admin::JobProcessor controller here.
+// They will automatically be included in application.css.
+// You can use Sass (SCSS) here: http://sass-lang.com/
+
+body.admin-job-processor {
+
+  > .container {
+    width: 100%;
+    padding: 0;
+  }
+
+  iframe {
+    width: 100%;
+    min-height: calc(100vh - 7ex + 1px);
+    border: 0;
+  }
+}

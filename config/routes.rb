@@ -1,4 +1,17 @@
+require 'sidekiq/web'
+
 Rails.application.routes.draw do
+  devise_for :users
+
+  namespace :admin do
+    root "dashboard#show"
+    get "job_processor", to: "job_processor#show"
+    post "job_processor", to: "job_processor#enqueue", as: :enqueue_job
+
+    authenticate :user, lambda { |u| u.administrator? } do
+      mount Sidekiq::Web => '/job_processor/monitor'
+    end
+  end
 
   root "home#index"
 
