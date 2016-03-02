@@ -51,6 +51,7 @@ gem 'devise', '~> 3.5.6'
 gem 'msgpack', '~> 0.6.2', require: nil
 
 gem 'whenever', require: false
+gem 'sinatra',  require: nil
 gem 'sidekiq',     '~> 4.1.0'
 
 gem 'faraday',     '~> 0.9'
