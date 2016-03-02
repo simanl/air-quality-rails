@@ -54,7 +54,8 @@ gem 'msgpack', '~> 0.6.2', require: nil
 
 gem 'whenever', require: false
 gem 'sinatra',  require: nil
-gem 'sidekiq',     '~> 4.1.0'
+gem 'sidekiq',           '~> 4.1.0'
+gem 'sidekiq-scheduler', '~> 2.0.4'
 
 gem 'faraday',     '~> 0.9'
 
