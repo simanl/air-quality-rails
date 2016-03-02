@@ -24,3 +24,15 @@
   Station.create_with(station_attributes.merge(is_forecastable: true))
     .find_or_create_by(code: station_code)
 end
+
+# Create the Administrator Role:
+admin_role = Role.create_with(description: "System Administrator")
+  .find_or_create_by(name: "administrator")
+
+# Create the first user, which should have the admin role:
+User.create(
+  email: ENV.fetch("ADMIN_EMAIL", "admin@example.com"),
+  password: ENV.fetch("ADMIN_PASSWORD", "3x4mpl35"),
+  password_confirmation: ENV.fetch("ADMIN_PASSWORD", "3x4mpl35"),
+  roles: [admin_role]
+) unless User.any?
