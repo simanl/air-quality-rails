@@ -45,6 +45,8 @@ gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model
 gem 'rserve-client',  '~> 0.3.1', require: nil
 gem 'rserve-simpler', '~> 0.0.6', require: nil
 
+gem 'devise', '~> 3.5.6'
+
 # Gem used on the demo to generate the measurement data from cycle CVS files:
 gem 'msgpack', '~> 0.6.2', require: nil
 
