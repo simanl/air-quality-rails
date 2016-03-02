@@ -19,6 +19,6 @@
 
 # Learn more: http://github.com/javan/whenever
 
-every :hour do
-  command "docker exec airquality_web_1 rails runner 'PullDataFromSimaJsonServiceJob.perform_later'"
+every 10.minutes do
+  runner "PullDataFromSimaJob.perform_later"
 end
