@@ -41,8 +41,6 @@ gem 'rails_stdout_logging'
 gem 'activerecord-postgis-adapter', '~> 3.0'
 gem 'active_model_serializers', '~> 0.10.0.rc2', github: 'rails-api/active_model_serializers', branch: 'master'
 
-gem 'whenever', require: false
-
 # Libraries used to connect with the forecasts engine core:
 gem 'rserve-client',  '~> 0.3.1', require: nil
 gem 'rserve-simpler', '~> 0.0.6', require: nil
@@ -50,7 +48,9 @@ gem 'rserve-simpler', '~> 0.0.6', require: nil
 # Gem used on the demo to generate the measurement data from cycle CVS files:
 gem 'msgpack', '~> 0.6.2', require: nil
 
-gem 'sidekiq',     '~> 3.4.2'
+gem 'whenever', require: false
+gem 'sidekiq',     '~> 4.1.0'
+
 gem 'faraday',     '~> 0.9'
 
 # Use ActiveModel has_secure_password
