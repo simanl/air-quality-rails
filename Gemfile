@@ -47,6 +47,8 @@ gem 'rserve-simpler', '~> 0.0.6', require: nil
 
 gem 'devise', '~> 3.5.6'
 
+gem 'bootstrap-sass', '~> 3.3.6'
+
 # Gem used on the demo to generate the measurement data from cycle CVS files:
 gem 'msgpack', '~> 0.6.2', require: nil
 
