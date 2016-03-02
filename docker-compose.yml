@@ -46,7 +46,7 @@ services:
     entrypoint: /app/entrypoint.sh
 
   # Application: -----------------------------------------------------------------
-  jobs:
+  jobs: &app
     image: ruby:2.2.4
     entrypoint: /usr/src/app/dev-entrypoint.sh
     command: sidekiq -c 25 -q default -q forecasts
@@ -60,6 +60,7 @@ services:
       - redis:redis.calidad-aire.local
       - forecasts:pronosticos.calidad-aire.local
     environment: &app_environment
+      PATH: /usr/src/app/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.calidad-aire.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
       REDIS_URL: redis://redis.calidad-aire.local:6379/air_quality_development
       FORECAST_ENGINE_URL: tcp://pronosticos-engine.calidad-aire.local:6311 # The URL pointing to our engine container
@@ -69,15 +70,17 @@ services:
   web:
     <<: *app
     ports: [ "3010:3000" ]
+    networks: [ "front-tier", "back-tier" ]
     command: rails server -p 3000 -b 0.0.0.0
 
   # App Guard: Keeps running tests on a separate process:
   test:
     <<: *app # We copy from &app_base, and override:
+    networks: [ "front-tier", "back-tier" ]
     command: guard start --no-bundler-warning --no-interactions --force-polling
     environment:
       <<: *app_environment
-      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.air-quality.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
-      REDIS_URL: redis://redis.air-quality.local:6379/air_quality_test
+      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.calidad-aire.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
+      REDIS_URL: redis://redis.calidad-aire.local:6379/air_quality_test
       RACK_ENV: test
       RAILS_ENV: test
