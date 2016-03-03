@@ -52,7 +52,6 @@ gem 'bootstrap-sass', '~> 3.3.6'
 # Gem used on the demo to generate the measurement data from cycle CVS files:
 gem 'msgpack', '~> 0.6.2', require: nil
 
-gem 'whenever', require: false
 gem 'sinatra',  require: nil
 gem 'sidekiq',           '~> 4.1.0'
 gem 'sidekiq-scheduler', '~> 2.0.4'
@@ -71,7 +70,7 @@ gem 'puma', '~> 2.15.3'
 # Guard setup for automatic testing:
 group :development do
   gem 'guard',       '~> 2.13.0'
-  gem 'guard-rspec', '~> 4.6.4', require: false
+  gem 'guard-rspec', '~> 4.6.4', require: nil
 end
 
 group :development, :test do
