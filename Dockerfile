@@ -52,11 +52,11 @@ RUN set -ex \
   && mkdir -p /usr/src/app/tmp/cache \
   && mkdir -p /usr/src/app/tmp/pids \
   && mkdir -p /usr/src/app/tmp/sockets \
-  && chown -R nobody /usr/src/app/tmp \
   && DATABASE_URL=postgres://postgres@example.com:5432/fakedb \
   TWITTER_API_KEY=SOME_KEY TWITTER_API_SECRET=SOME_SECRET \
   SECRET_KEY_BASE=10167c7f7654ed02b3557b05b88ece \
-  rake assets:precompile
+  rake assets:precompile \
+  && chown -R nobody /usr/src/app
 
 # 3: Expose the following ports:
 # - Port 3000 for the Rails web process
