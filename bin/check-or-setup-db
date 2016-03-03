@@ -18,29 +18,8 @@ rescue PG::ConnectionBad => e
   end
   1
 rescue ActiveRecord::NoDatabaseError => e
-
-  include ActiveRecord::Tasks
-
-  DatabaseTasks.root = File.expand_path '../..', __FILE__
-  DatabaseTasks.db_dir = File.join DatabaseTasks.root, 'db'
-  DatabaseTasks.env = ENV.fetch 'ENV', ENV.fetch('RAILS_ENV', 'development')
-
-  # The App database seeder:
-  DatabaseTasks.seed_loader = (Class.new do
-    def load_seed
-      seed_file_path = File.join DatabaseTasks.db_dir, 'seeds.rb'
-      raise "Seed file '#{seed_file_path}' does not exist" unless File.file?(seed_file_path)
-      load seed_file_path
-    end
-  end).new
-
-  # Add model dirs to the autoload_paths for the seeder to run smoothly:
-  ActiveSupport::Dependencies.autoload_paths << File.join(DatabaseTasks.root, 'app', 'models', 'concerns')
-  ActiveSupport::Dependencies.autoload_paths << File.join(DatabaseTasks.root, 'app', 'models')
-
-  return 2 unless DatabaseTasks.create_current
-  return 3 unless DatabaseTasks.load_schema_current
-  return 4 unless DatabaseTasks.load_seed
+  puts "\n== Preparing database =="
+  return 2 unless system "bin/rake db:setup"
   0
 ensure
   ActiveRecord::Base.clear_all_connections!
