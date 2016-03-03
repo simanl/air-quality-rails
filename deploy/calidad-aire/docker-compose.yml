@@ -39,7 +39,7 @@ pronosticos:
 # The Job Processor app:
 tareas:
   image: simanl/air-quality-rails:latest
-  command: sidekiq -c 25 -q default
+  command: sidekiq -c 25 -q default -q forecasts
   tty: true
   stdin_open: true
   links:
