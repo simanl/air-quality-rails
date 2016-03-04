@@ -49,7 +49,25 @@ class Measurement < ActiveRecord::Base
   end
 
   def self.latest
-    order(measured_at: :desc)
+    sub_query = Measurement.latest_grouped.arel.as '"grouping"'
+    join_query = arel_table.join(sub_query).on(
+      arel_table[:station_id].eq(sub_query[:station_id]).and(
+        arel_table[:updated_at].eq sub_query[:updated_at]
+      )
+    )
+    joins(join_query.join_sources)
+  end
+
+  # The query used internally that selects the latest ones:
+  def self.latest_grouped
+    # We're using unscoped to prevent `station.measurement.latest` trying to
+    # allocate two parameters whereas just providing one (station_id).
+    # TODO: Try any way to make this work without `unscoped`, since it would be
+    # better to be able to also filter this nested query...
+    unscoped.select(
+      :station_id,
+      Arel::Nodes::NamedFunction.new("max", [arel_table[:updated_at]]).as('"updated_at"')
+    ).group(:station_id)
   end
 
   def wind_cardinal_direction
