@@ -15,7 +15,7 @@ ruby '2.2.4', engine: 'ruby', engine_version: '2.2.4'
 ################################################################################
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.2.5'
+gem 'rails', '4.2.5.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '~> 0.18.4'
 # Use SCSS for stylesheets
