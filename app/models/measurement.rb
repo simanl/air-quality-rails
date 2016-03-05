@@ -1,7 +1,5 @@
 class Measurement < ActiveRecord::Base
 
-  include Concerns::PersistenceNotifications
-
   belongs_to :station
   validates :station, presence: true
 
