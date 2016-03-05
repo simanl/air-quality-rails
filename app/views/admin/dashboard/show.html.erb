@@ -1,2 +1,64 @@
-<h1>Admin::Dashboard#show</h1>
-<p>Find me in app/views/admin/dashboard/show.html.erb</p>
+<section class="latest measurements">
+  <header>
+    <h1>Últimas Mediciones:</h1>
+    <p>Fecha y Hora Actual:
+      <%= Time.now.in_time_zone('Monterrey').to_formatted_s(:admin_dashboard) %>
+      (<%= Time.now.utc.to_formatted_s(:admin_dashboard) %>)
+    </p>
+  </header>
+  <table class="measurements">
+    <thead>
+      <tr>
+        <th rowspan="2">Estación</th>
+        <th colspan="3">General</th>
+        <th colspan="7">Clima</th>
+        <th colspan="8">Contaminación</th>
+      </tr>
+      <tr>
+        <th>ID</th>
+        <th>Fecha</th>
+        <th>Última Actualización</th>
+        <th class="weather"><abbr title="Temperatura">TOUT</abbr></th>
+        <th class="weather"><abbr title="Humedad Relativa">HR</abbr></th>
+        <th class="weather"><abbr title="Dirección del Viento">WDR</abbr></th>
+        <th class="weather"><abbr title="Rapidez del Viento">WS</abbr></th>
+        <th class="weather"><abbr title="Precipitación">RAINF</abbr></th>
+        <th class="weather"><abbr title="Presión Atmosférica">PRS</abbr></th>
+        <th class="weather"><abbr title="Radiación Solar">SR</abbr></th>
+        <th class="pollutant"><abbr title="Monóxido de Carbono">CO</abbr></th>
+        <th class="pollutant"><abbr title="Dióxido de Sulfuro">SO<sub>2</sub></abbr></th>
+        <th class="pollutant"><abbr title="Ozono">O<sub>3</sub></abbr></th>
+        <th class="pollutant"><abbr title="Partículas Torácicas">PM<sub>10</sub></abbr></th>
+        <th class="pollutant"><abbr title="Partículas Respirables">PM<sub>2.5</sub></abbr></th>
+        <th class="pollutant"><abbr title="Dióxido de Nitrógeno">NO<sub>2</sub></abbr></th>
+        <th class="pollutant"><abbr title="Óxido Nítrico">NO</abbr></th>
+        <th class="pollutant"><abbr title="Óxidos de Nitrógeno">NO<sub>x</sub></abbr></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% @latest_measurements.each do |measurement| %>
+      <tr class="measurement">
+        <td class="general"><%= measurement.station.name %></td>
+        <td class="general"><%= measurement.id %></td>
+        <td class="general"><%= measurement.measured_at.in_time_zone('Monterrey').to_formatted_s(:admin_dashboard) %></td>
+        <td class="general"><%= measurement.updated_at.in_time_zone('Monterrey').to_formatted_s(:admin_dashboard) %></td>
+        <td class="weather"><%= measurement.temperature %></td>
+        <td class="weather"><%= measurement.relative_humidity %></td>
+        <td class="weather"><%= measurement.wind_direction %></td>
+        <td class="weather"><%= measurement.wind_speed %></td>
+        <td class="weather"><%= measurement.precipitation %></td>
+        <td class="weather"><%= measurement.atmospheric_pressure %></td>
+        <td class="weather"><%= measurement.solar_radiation %></td>
+        <td class="pollutant"><%= measurement.carbon_monoxide %></td>
+        <td class="pollutant"><%= measurement.sulfur_dioxide %></td>
+        <td class="pollutant"><%= measurement.ozone %></td>
+        <td class="pollutant"><%= measurement.toracic_particles %></td>
+        <td class="pollutant"><%= measurement.respirable_particles %></td>
+        <td class="pollutant"><%= measurement.nitrogen_dioxide %></td>
+        <td class="pollutant"><%= measurement.nitric_oxide %></td>
+        <td class="pollutant"><%= measurement.nitrogen_oxides %></td>
+      </tr>
+      <% end %>
+    </tbody>
+  </table>
+</section>

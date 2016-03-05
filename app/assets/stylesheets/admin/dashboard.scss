@@ -1,3 +1,26 @@
 // Place all the styles related to the Admin::Dashboard controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: http://sass-lang.com/
+
+body.admin-dashboard {
+  section.latest.measurements {
+    table.measurements {
+      width: 100%;
+      font-size: smaller;
+
+      > thead > tr > th {
+        background-color: #333;
+        color: #CCC;
+      }
+
+      > tbody > tr.measurement {
+        > td {
+          border-left: 1px solid #CCC;
+          border-right: 1px solid #CCC;
+          padding: 0 .5ex;
+          font-family: monospace;
+        }
+      }
+    }
+  }
+}
