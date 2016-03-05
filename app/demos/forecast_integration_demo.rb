@@ -119,7 +119,7 @@ class ForecastIntegrationDemo
     #  - empty: There are no measurements, we'll start on cycle 1
     #  - contains only 1 element: All the measurements are from the same
     #    datetime, so we'll consider the set complete.
-    raise "Station last measurement set incomplete" \
+    fail "Station last measurement set incomplete" \
       unless lst_msrmnt_dttms.empty? || lst_msrmnt_dttms.count == 1
 
     # Get the cycle corresponding to 6 hours after the last measurement:
@@ -147,4 +147,17 @@ class ForecastIntegrationDemo
     puts exit_message
   end
 
+  def self.import_all_demo_cycle_measurements!
+    cycle_count = Dir[File.join(cycles_dir, '**', '*')].count { |file| File.file?(file) }
+    cycle_count.times do |x|
+      puts "===================================================================="
+      puts "===== Cycle #{x + 1}:"
+      import_demo_cycle_measurements!
+      puts "===================================================================="
+    end
+    exit_message = 'done!'
+  ensure
+    exit_message ||= 'failed!'
+    puts exit_message
+  end
 end
