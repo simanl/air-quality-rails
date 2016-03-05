@@ -73,6 +73,8 @@ class ForecastIntegrationDemo
 
           msrmnt[ForecastEngine.get_api_attribute_name(field_name)] = if value == "NA"
             nil
+          elsif field_name == 'WDR' && value == '360'
+            0.to_f
           else
             value.to_f
           end
