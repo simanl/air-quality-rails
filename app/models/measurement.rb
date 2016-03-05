@@ -68,6 +68,15 @@ class Measurement < ActiveRecord::Base
     ).group(:station_id)
   end
 
+  def self.forecast_engine_dataframe(start_at)
+    finish_at = start_at.advance(hours: 5)
+
+    joins(:station)
+      .merge(Station.forecastable)
+      .where(measured_at: start_at..finish_at)
+      .order(station_id: :asc, measured_at: :asc)
+  end
+
   def wind_cardinal_direction
     case wind_direction
     when 339..360 then 'north'
