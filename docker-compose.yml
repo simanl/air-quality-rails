@@ -24,7 +24,7 @@ services:
     ports: [ "5442:5432" ]
     # We're mounting 'db/dumps' into the postgres container so we can backup and
     # restore data dumps easily:
-    volumes: [ "postgres-data:/var/lib/postgresql/data", "./db/dumps:/db/dumps:ro" ]
+    volumes: [ "postgres-data:/var/lib/postgresql/data", "./db/dumps:/db/dumps" ]
     networks: [ "back-tier" ]
     environment:
       LC_ALL: C.UTF-8
