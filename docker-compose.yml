@@ -50,7 +50,7 @@ services:
   jobs: &app
     image: ruby:2.2.4
     entrypoint: /usr/src/app/dev-entrypoint.sh
-    command: sidekiq -c 25 -q default -q forecasts
+    command: sidekiq -c 1 -q default -q forecasts
     volumes: [ "gems:/usr/local/bundle", ".:/usr/src/app" ]
     networks: [ "back-tier" ]
     working_dir: /usr/src/app
