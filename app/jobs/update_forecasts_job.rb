@@ -4,31 +4,40 @@ require "rserve/simpler"
 class UpdateForecastsJob < ActiveJob::Base
   queue_as :forecasts
 
-  def perform(*args)
-
+  def perform(allow_imputation = false)
     forecastable_stations = Station.forecastable
 
     # Get the 'measured_at' timestamp from the last measurements used in the
     # forecast update process:
     last_processed_dt = Measurement.joins(:forecasts).maximum(:measured_at)
 
+    # If there were no previous forecasts... let's get the earliest registered
+    # measurement's datetime, and set 'last_processed_dt' to 1 hour before said
+    # measurement:
+    last_processed_dt = Measurement.minimum(:measured_at)
+      .advance(hours: -1) unless last_processed_dt.present?
+
+    # If there's still no datetime were no previous forecasts... let's get the
+    # earliest measurement datetime from the available importable cycles:
     last_processed_dt = Time.parse('2014-06-01T00:00:00.00-06:00')
       .advance(hours: -1) unless last_processed_dt.present?
 
     start_dt = last_processed_dt.advance(hours: 1)
     finish_dt = start_dt.advance(hours: 5)
 
-    measurements_to_process = Measurement.includes(:station).joins(:station)
-      .merge(forecastable_stations)
-      .where(measured_at: start_dt..finish_dt)
-      .order(station_id: :asc, measured_at: :asc)
+    # Stop if we know up to this point that there shouldn't be enough measurements:
+    if Time.now < finish_dt
+      logger.info "There should't be enough measurements yet..."
+      return
+    end
+
+    measurements_to_process = Measurement.includes(:station)
+      .forecast_engine_dataframe(start_dt)
 
     # Cancel the task if the dataframe cannot_be_completed not complete:
-    unless input_data_looks_complete?(measurements_to_process)
-      logger.debug "Input data does not look complete..."
+    unless input_data_looks_complete?(measurements_to_process) || allow_imputation
+      logger.warn "Input data does not look complete..."
       return
-    else
-      logger.info "Proceeding to feed the Forecasts engine..."
     end
 
     engine = ForecastEngine.new
@@ -71,6 +80,12 @@ class UpdateForecastsJob < ActiveJob::Base
       dict
     end.each do |station, forecast_ids|
       station.update current_forecast_ids: forecast_ids
+    end
+
+    # Enqueue the next update right away, if there's enough data to do it:
+    if input_data_looks_complete?(Measurement.forecast_engine_dataframe finish_dt.advance(hours: 1))
+      logger.info "There are enough measurements available to call the forecast update again..."
+      self.class.perform_later(allow_imputation)
     end
   end
 
