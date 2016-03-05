@@ -44,6 +44,7 @@ services:
     image: simanl/air-quality-forecasts:0-rc3
     volumes: [ "forecasts-data:/app/tablas", "./dev-engine-entrypoint.sh:/app/entrypoint.sh" ]
     entrypoint: /app/entrypoint.sh
+    networks: [ "back-tier" ]
 
   # Application: -----------------------------------------------------------------
   jobs: &app
