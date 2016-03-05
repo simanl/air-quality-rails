@@ -64,8 +64,8 @@ module Sima
         general_measurement_attributes = extract_general_measurement_attributes(data)
 
         data['pollutionMeasurements']['Stations'].map do |data|
-          measurement = Measurement.from_type_a_data(data, general_measurement_attributes)
-          measurement.station = Station.from_type_a_data(data, general_station_attributes)
+          measurement = from_type_a_data(data, general_measurement_attributes)
+          measurement.station = Sima::Station.from_type_a_data(data, general_station_attributes)
           measurement
         end
       end
@@ -89,8 +89,8 @@ module Sima
         general_measurement_attributes = extract_general_measurement_attributes(data)
 
         data['pollutionMeasurements']['Stations'].map do |data|
-          measurement = Measurement.from_type_b_data(data, general_measurement_attributes)
-          measurement.station = Station.from_type_b_data(data, general_station_attributes)
+          measurement = from_type_b_data(data, general_measurement_attributes)
+          measurement.station = Sima::Station.from_type_b_data(data, general_station_attributes)
           measurement
         end
       end
