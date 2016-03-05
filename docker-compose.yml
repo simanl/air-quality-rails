@@ -57,14 +57,14 @@ services:
     stdin_open: true
     tty: true
     links:
-      - postgres:postgres.calidad-aire.local
-      - redis:redis.calidad-aire.local
-      - forecasts:pronosticos.calidad-aire.local
+      - postgres
+      - redis
+      - forecasts
     environment: &app_environment
       PATH: /usr/src/app/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.calidad-aire.local:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
-      REDIS_URL: redis://redis.calidad-aire.local:6379/air_quality_development
-      FORECAST_ENGINE_URL: tcp://pronosticos-engine.calidad-aire.local:6311 # The URL pointing to our engine container
+      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres:5432/air_quality_development?pool=25&encoding=unicode&schema_search_path=public
+      REDIS_URL: redis://redis:6379/air_quality_development
+      FORECAST_ENGINE_URL: tcp://forecasts:6311 # The URL pointing to our engine container
       RAILS_ENV: development
     env_file: [ "dev.env" ]
 
@@ -81,7 +81,7 @@ services:
     command: guard start --no-bundler-warning --no-interactions --force-polling
     environment:
       <<: *app_environment
-      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres.calidad-aire.local:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
-      REDIS_URL: redis://redis.calidad-aire.local:6379/air_quality_test
+      DATABASE_URL: postgis://postgres:41rqu4l1ty@postgres:5432/air_quality_test?pool=25&encoding=unicode&schema_search_path=public
+      REDIS_URL: redis://redis:6379/air_quality_test
       RACK_ENV: test
       RAILS_ENV: test
