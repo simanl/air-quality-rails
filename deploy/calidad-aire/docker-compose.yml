@@ -27,7 +27,7 @@ postgres:
 
 # The Forecasts Engine will use a configured glusterfs storage pool on Rancher:
 pronosticos:
-  image: simanl/air-quality-forecasts:0-rc3
+  image: simanl/air-quality-forecasts:1.0.0.rc1
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-pronosticos:/app/tablas" ]
@@ -38,7 +38,7 @@ pronosticos:
 
 # The Job Processor app:
 tareas:
-  image: simanl/air-quality-rails:v6-rc9
+  image: simanl/air-quality-rails:v1.0.0.rc1
   command: sidekiq -c 25 -q default -q forecasts
   tty: true
   stdin_open: true
@@ -53,7 +53,7 @@ tareas:
 
 # The Web + API app:
 app-web:
-  image: simanl/air-quality-rails:v6-rc9
+  image: simanl/air-quality-rails:v1.0.0.rc1
   command: /usr/bin/supervisord --configuration=/usr/src/app/config/nginx-rails.conf
   tty: true
   stdin_open: true

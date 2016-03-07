@@ -49,13 +49,15 @@ services:
 
   # The Forecasts Engine:
   forecasts:
-    image: simanl/air-quality-forecasts:0-rc3
+    image: simanl/air-quality-forecasts:1.0.0.rc1
     volumes:
       - forecasts-data:/app/tablas
       - ./development-forecasts-entrypoint:/app/development-entrypoint
     entrypoint: /app/development-entrypoint
     networks:
       - back-tier
+    mem_limit: 2g
+    memswap_limit: 4g
 
   # Application: -----------------------------------------------------------------
   jobs: &app

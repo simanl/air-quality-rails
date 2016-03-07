@@ -80,7 +80,7 @@ class ForecastEngine
     row_size = given_output_df.map { |column| column.size }.uniq.max
 
     blank_row = %w(site start_at end_at
-    pollutant category).inject({}) do |hsh, name|
+    pollutant index category).inject({}) do |hsh, name|
       hsh[name.to_sym] = nil
       hsh
     end
@@ -108,8 +108,9 @@ class ForecastEngine
           when 'PM10' then :toracic_particles
           when 'PM2.5' then :respirable_particles
           end
+        when :index then given_output_df['pronostico'][row_index]
         when :category then
-          if (categoria_pronosticada = given_output_df['pronostico'][row_index])
+          if (categoria_pronosticada = given_output_df['categoria'][row_index])
             case categoria_pronosticada
             when 'buena'   then :good
             when 'regular' then :regular
@@ -144,7 +145,7 @@ class ForecastEngine
 
     # Use the remote engine to generate an output dataframe:
     output_df = conn.converse("tabla.entrada" => input_df.to_dataframe) do
-      'SPCA("/app")'
+      'SPCA()'
     end
 
     # SPCA method completed successfully on engine... tell it to save the data:
