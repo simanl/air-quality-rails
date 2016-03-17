@@ -6,8 +6,8 @@
 Dockerfile
 docker-compose.yml
 *.env
-dev-engine-entrypoint.sh
-dev-entrypoint.sh
+development-forecasts-entrypoint
+development-entrypoint
 .dockerignore
 
 # Ignore log files:
