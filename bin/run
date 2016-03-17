@@ -1,0 +1,20 @@
+#! /bin/bash
+set -e
+
+SERVICE_NAME=$1
+
+read -a ARR <<<$(docker-compose ps | grep "${SERVICE_NAME}_")
+
+CONTAINER_NAME=${ARR[0]}
+CONTAINER_STATUS=${ARR[$((${#ARR[@]}-2))]}
+
+shift
+CONTAINER_COMMAND=$@
+
+if [ -n "${CONTAINER_NAME}" ] && [ "${CONTAINER_STATUS}" = "Up" ]; then
+  echo "Running command on existing container ${CONTAINER_NAME}..."
+  docker exec -ti ${CONTAINER_NAME} ${CONTAINER_COMMAND}
+else
+  echo "Running command on a new container..."
+  docker-compose run --rm ${SERVICE_NAME} ${CONTAINER_COMMAND}
+fi
