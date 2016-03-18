@@ -80,7 +80,7 @@ class ForecastEngine
     row_size = given_output_df.map { |column| column.size }.uniq.max
 
     blank_row = %w(site start_at end_at
-    pollutant quality).inject({}) do |hsh, name|
+    pollutant category).inject({}) do |hsh, name|
       hsh[name.to_sym] = nil
       hsh
     end
@@ -108,15 +108,15 @@ class ForecastEngine
           when 'PM10' then :toracic_particles
           when 'PM2.5' then :respirable_particles
           end
-        when :quality then
-          if (pronostico = given_output_df['pronostico'][row_index])
-            case pronostico
-            when 'buena' then :good
-            when 'mala' then :bad
+        when :category then
+          if (categoria_pronosticada = given_output_df['pronostico'][row_index])
+            case categoria_pronosticada
+            when 'buena'   then :good
             when 'regular' then :regular
+            when 'mala'    then :bad
             else
-              puts "======= Unknown quality value '#{pronostico}' - assigning as is ======="
-              pronostico
+              puts "======= Unknown quality value '#{categoria_pronosticada}' - assigning as is ======="
+              categoria_pronosticada
             end
           end
         end

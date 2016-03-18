@@ -58,8 +58,7 @@ class UpdateForecastsJob < ActiveJob::Base
         'ends_at' => fd[:end_at],
         'measurements' => measurements_to_process.to_a.select { |x| x.station == station }
       } unless grouped_data.key?(group_key)
-
-      grouped_data[group_key][fd[:pollutant]] = fd[:quality]
+      grouped_data[group_key]["#{fd[:pollutant]}_category".to_sym] = fd[:category]
       grouped_data
     end.inject({}) do |dict, station_starts_at_attributes|
       station_starts_at, attributes = station_starts_at_attributes

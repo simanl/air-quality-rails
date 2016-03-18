@@ -7,10 +7,10 @@ class Forecast < ActiveRecord::Base
   validates :starts_at, :ends_at, presence: true
 
   store_accessor :data,
-    :ozone,
+    :ozone_category,
     # Both Toracic (PM > 10nm) and Respirable (PM > 2.5 nm) are Inhalable Particles:
-    :toracic_particles,   # PM10
-    :respirable_particles # PM2.5
+    :toracic_particles_category,   # PM10
+    :respirable_particles_category # PM2.5
 
   validate :at_least_one_parameter_is_forecasted
 
