@@ -1,8 +1,11 @@
 class ForecastSerializer < ActiveModel::Serializer
   attributes :id, :starts_at, :starts_at_rfc822, :ends_at, :ends_at_rfc822
 
-  attributes :ozone_category,
+  attributes :ozone_index,
+             :ozone_category,
+             :toracic_particles_index,
              :toracic_particles_category,
+             :respirable_particles_index,
              :respirable_particles_category
 
   attributes :updated_at
