@@ -61,7 +61,7 @@ services:
   tareas-pronosticos:
     <<: *tasks
     image: simanl/air-quality-rails:1.0.0.rc1
-    command: sidekiq -c 25 -q forecasts
+    command: sidekiq -c 25 -q forecasting
 
   # The Web + API app:
   app-web:

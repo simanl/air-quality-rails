@@ -52,6 +52,10 @@ tareas-default: &tasks
     io.rancher.scheduler.affinity:host_label: app-host=true
   env_file: [ "app.env", "sidekiq.env" ]
 
+tareas-pronosticos:
+  <<: *tasks
+  command: sidekiq -c 1 -q forecasting
+
 # The Web + API app:
 app-web:
   image: simanl/air-quality-rails:1.0.0.rc1

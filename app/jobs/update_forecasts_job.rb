@@ -2,7 +2,7 @@ require "rserve"
 require "rserve/simpler"
 
 class UpdateForecastsJob < ActiveJob::Base
-  queue_as :forecasts
+  queue_as :forecasting
 
   def perform(allow_imputation = false)
     forecastable_stations = Station.forecastable
