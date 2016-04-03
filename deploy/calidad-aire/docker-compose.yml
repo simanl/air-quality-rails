@@ -14,6 +14,7 @@ redis:
 # The postgres service will use a configured glusterfs storage pool on Rancher:
 postgres:
   image: vovimayhem/postgis:2.1.8-9.4.4
+  # ports: [ "5432:5432" ]
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-postgres:/var/lib/postgresql/data" ]
@@ -38,7 +39,7 @@ pronosticos:
 
 # The Job Processor app:
 tareas-default: &tasks
-  image: simanl/air-quality-rails:v1.0.0.rc1
+  image: simanl/air-quality-rails:1.0.0.rc1
   command: sidekiq -c 1 -q default
   tty: true
   stdin_open: true
@@ -51,13 +52,9 @@ tareas-default: &tasks
     io.rancher.scheduler.affinity:host_label: app-host=true
   env_file: [ "app.env", "sidekiq.env" ]
 
-tareas-pronosticos:
-  <<: *tasks
-  command: sidekiq -c 1 -q forecasts
-
 # The Web + API app:
 app-web:
-  image: simanl/air-quality-rails:v1.0.0.rc1
+  image: simanl/air-quality-rails:1.0.0.rc1
   command: /usr/bin/supervisord --configuration=/usr/src/app/config/nginx-rails.conf
   tty: true
   stdin_open: true

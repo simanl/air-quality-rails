@@ -47,7 +47,7 @@ services:
 
   # The Job Processor app:
   tareas-default: &tasks
-    image: simanl/air-quality-rails:v1.0.0.rc1
+    image: simanl/air-quality-rails:1.0.0.rc1
     command: sidekiq -c 25 -q default
     tty: true
     stdin_open: true
@@ -60,12 +60,12 @@ services:
 
   tareas-pronosticos:
     <<: *tasks
-    image: simanl/air-quality-rails:v1.0.0.rc1
+    image: simanl/air-quality-rails:1.0.0.rc1
     command: sidekiq -c 25 -q forecasts
 
   # The Web + API app:
   app-web:
-    image: simanl/air-quality-rails:v1.0.0.rc1
+    image: simanl/air-quality-rails:1.0.0.rc1
     command: /usr/bin/supervisord --configuration=/usr/src/app/config/nginx-rails.conf
     tty: true
     stdin_open: true
