@@ -53,9 +53,9 @@ services:
     stdin_open: true
     networks: [ "back-tier" ]
     links:
-      - redis:redis.calidad-aire.simanl
-      - postgres:postgres.calidad-aire.simanl
-      - pronosticos:pronosticos.calidad-aire.simanl
+      - redis:redis
+      - postgres:postgres
+      - pronosticos:pronosticos
     env_file: [ "app.env", "sidekiq.env" ]
 
   # The Web + API app:
@@ -67,6 +67,6 @@ services:
     ports: [ "80:3000" ]
     networks: [ "front-tier", "back-tier" ]
     links:
-      - redis:redis.calidad-aire.simanl
-      - postgres:postgres.calidad-aire.simanl
+      - redis:redis
+      - postgres:postgres
     env_file: [ "app.env", "rails.env" ]

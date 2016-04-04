@@ -43,9 +43,9 @@ tareas:
   tty: true
   stdin_open: true
   links:
-    - redis:redis.calidad-aire.simanl
-    - postgres:postgres.calidad-aire.simanl
-    - pronosticos:pronosticos.calidad-aire.simanl
+    - redis:redis
+    - postgres:postgres
+    - pronosticos:pronosticos
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: app-host=true
@@ -58,8 +58,8 @@ app-web:
   tty: true
   stdin_open: true
   links:
-    - redis:redis.calidad-aire.simanl
-    - postgres:postgres.calidad-aire.simanl
+    - redis:redis
+    - postgres:postgres
   labels:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: app-host=true
