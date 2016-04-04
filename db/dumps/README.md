@@ -53,3 +53,13 @@ pg_restore --host=[HOSTNAME] --port=[PORT] --username=[USERNAME] --password \
   --dbname=rts_development --clean --no-owner --no-privileges --verbose --jobs=2 \
   [LOCAL_DUMP_FILE]
 ```
+
+## 3: Copying data from main server directly to a secondary server
+
+```bash
+# From 'production' server to a 'staging' target server:
+pg_dump -C -U postgres air_quality_production | psql -h [staging-host] -U postgres air_quality_production
+
+# From 'staging' server back to 'staging' target server:
+pg_dump -C -h [staging-host] -U postgres air_quality_production | psql -U postgres air_quality_production
+```
