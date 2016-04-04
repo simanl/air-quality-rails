@@ -46,9 +46,9 @@ services:
     networks: [ "back-tier" ]
 
   # The Job Processor app:
-  tareas:
+  tareas-default: &tasks
     image: simanl/air-quality-rails:v1.0.0.rc1
-    command: sidekiq -c 25 -q default -q forecasts
+    command: sidekiq -c 25 -q default
     tty: true
     stdin_open: true
     networks: [ "back-tier" ]
@@ -57,6 +57,11 @@ services:
       - postgres:postgres
       - pronosticos:pronosticos
     env_file: [ "app.env", "sidekiq.env" ]
+
+  tareas-pronosticos:
+    <<: *tasks
+    image: simanl/air-quality-rails:v1.0.0.rc1
+    command: sidekiq -c 25 -q forecasts
 
   # The Web + API app:
   app-web:
