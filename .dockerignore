@@ -22,7 +22,7 @@ Guardfile
 spec/
 
 # Ignore OS artifacts:
-.DS_Store
+**/.DS_Store
 
 # Ignore database dumps:
 db/dumps
@@ -32,11 +32,19 @@ db/dumps
 # Ignore bash / IRB / Byebug history files
 .bash_history
 .byebug_hist
+.byebug_history
 .pry_history
 .guard_history
 
 # Ignore the examples folder:
 examples/
 
-# Ignore the deployment folder:
-deploy/
+# Ignore the deployment folders:
+deploy
+deploy-local
+
+# Ignore development executables:
+bin/attach
+bin/check-or-setup-db
+bin/restoredb
+bin/run
