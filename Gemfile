@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 # App Ruby Version:
 
 # Use MRI 2.2.4:
-ruby '2.2.4', engine: 'ruby', engine_version: '2.2.4'
+ruby '2.2.5', engine: 'ruby', engine_version: '2.2.5'
 
 # Use JRuby 9.0.0.0:
 # ruby "2.2.2", engine: 'jruby', engine_version: '9.0.0.0.pre2'
