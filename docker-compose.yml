@@ -62,7 +62,7 @@ services:
   # Application: -----------------------------------------------------------------
   jobs: &app
     image: ruby:2.2.5
-    entrypoint: /usr/src/app/development-entrypoint
+    #entrypoint: /usr/src/app/development-entrypoint
     command: sidekiq -c 1 -q default -q forecasting
     volumes:
       - gems:/usr/local/bundle

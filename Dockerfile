@@ -18,11 +18,8 @@ ADD ./Gemfile* /usr/src/app/
 # NGINX Config/Installation
 RUN set -ex \
   && echo "Installing nginx & supervisord" \
-  && echo "@testing http://dl-cdn.alpinelinux.org/alpine/edge/testing" >> /etc/apk/repositories \
-	&& apk add --no-cache --virtual .app-rundeps libpq libxml2 libxslt v8@testing nginx supervisor \
-  && apk add --no-cache --virtual .app-builddeps build-base git libxml2-dev v8-dev@testing libxslt-dev postgresql-dev \
-  && bundle config build.nokogiri --use-system-libraries \
-  && bundle config build.libv8 --with-system-v8 \
+	&& apk add --no-cache --virtual .app-rundeps libpq nginx supervisor \
+  && apk add --no-cache --virtual .app-builddeps build-base git postgresql-dev \
   && bundle install --deployment --without development test \
   && apk del .app-builddeps \
 	&& ln -sf /dev/stdout /var/log/nginx/access.log \
