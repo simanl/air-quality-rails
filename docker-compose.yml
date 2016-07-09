@@ -37,7 +37,7 @@ services:
 
   # Our Redis service:
   keyval:
-    image: redis:3.0.7
+    image: redis:3.0.7-alpine
     # Bind host port 6389 to Redis port 6379:
     ports:
       - 6389:6379
