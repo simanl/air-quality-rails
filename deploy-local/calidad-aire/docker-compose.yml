@@ -30,7 +30,7 @@ services:
 
   # The Redis service will use a configured glusterfs storage pool on Rancher:
   redis:
-    image: redis:3.0.7
+    image: redis:3.0.7-alpine
     command: redis-server --appendonly yes
     tty: true
     stdin_open: true
