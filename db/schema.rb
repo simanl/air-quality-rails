@@ -11,41 +11,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160302203423) do
+ActiveRecord::Schema.define(version: 20160716225956) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
   enable_extension "postgis"
 
-  create_table "active_station_forecasts", force: :cascade do |t|
-    t.integer "station_id",  null: false
-    t.integer "forecast_id", null: false
-  end
-
-  add_index "active_station_forecasts", ["forecast_id"], name: "FK_active_station_forecast", using: :btree
-  add_index "active_station_forecasts", ["station_id", "forecast_id"], name: "UK_active_station_forecast", unique: true, using: :btree
-  add_index "active_station_forecasts", ["station_id"], name: "FK_active_forecast_station", using: :btree
-
   create_table "forecasts", force: :cascade do |t|
-    t.integer  "station_id",              null: false
-    t.datetime "starts_at",               null: false
-    t.datetime "ends_at",                 null: false
-    t.jsonb    "data",       default: {}, null: false
-    t.datetime "created_at",              null: false
-    t.datetime "updated_at",              null: false
+    t.integer  "station_id",                           null: false
+    t.datetime "starts_at",                            null: false
+    t.datetime "ends_at",                              null: false
+    t.jsonb    "data",                    default: {}, null: false
+    t.datetime "created_at",                           null: false
+    t.datetime "updated_at",                           null: false
+    t.datetime "last_dataframe_ended_at",              null: false
   end
 
   add_index "forecasts", ["station_id", "starts_at"], name: "UK_station_forecast_start", unique: true, using: :btree
   add_index "forecasts", ["station_id"], name: "IX_forecast_station", using: :btree
-
-  create_table "forecasts_measurements", force: :cascade do |t|
-    t.integer "forecast_id",    null: false
-    t.integer "measurement_id", null: false
-  end
-
-  add_index "forecasts_measurements", ["forecast_id", "measurement_id"], name: "UK_forecast_measurement", unique: true, using: :btree
-  add_index "forecasts_measurements", ["forecast_id"], name: "FK_measurement_forecast", using: :btree
-  add_index "forecasts_measurements", ["measurement_id"], name: "FK_forecast_measurement", using: :btree
 
   create_table "measurements", force: :cascade do |t|
     t.integer  "station_id",                          null: false
@@ -110,13 +93,9 @@ ActiveRecord::Schema.define(version: 20160302203423) do
   add_index "users", ["email"], name: "UK_user_email", unique: true, using: :btree
   add_index "users", ["reset_password_token"], name: "UK_user_reset_password_token", unique: true, using: :btree
 
-  add_foreign_key "active_station_forecasts", "forecasts"
-  add_foreign_key "active_station_forecasts", "stations"
   add_foreign_key "forecasts", "stations"
-  add_foreign_key "forecasts_measurements", "forecasts"
-  add_foreign_key "forecasts_measurements", "measurements"
   add_foreign_key "measurements", "stations"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
-  add_foreign_key "stations", "measurements", column: "last_measurement_id"
+  add_foreign_key "stations", "measurements", column: "last_measurement_id", on_delete: :nullify
 end

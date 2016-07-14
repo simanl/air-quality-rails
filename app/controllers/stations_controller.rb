@@ -1,30 +1,25 @@
 class StationsController < ApplicationController
-
   before_action :set_station, only: [:show]
 
   # GET /stations
   # GET /stations.json
   def index
-    @stations = Station.all
+    debugger
+    set_stations_initial_scope!
 
-    # Fetch the stations nearest from a given point:
-    @stations = @stations.nearest_from(params[:nearest_from]) if params[:nearest_from].present?
-
-    # Sorting:
-    @stations = @stations.order(json_api_params[:sort]) if json_api_params.key? :sort
+    sort_stations_by_given_distance!
+    sort_stations_by_given_criteria!
 
     # Pagination:
-    if json_api_params[:page].present?
-      # ...
-      @stations = @stations.limit(json_api_params[:page][:limit]) if json_api_params[:page].key? :limit
-      # ...
-    end
+    paginate_stations!
 
-    # Inclusion of Related Resources:
-    @stations = @stations.includes(:last_measurement, :current_forecasts)
+    # Associations 'current_forecasts' and 'last_measurement' are always eager
+    # loaded... however, full data will only be included if using the 'include'
+    # parameter:
+    eager_load_associations!
 
     respond_to do |format|
-      format.json { render json: @stations, fields: params[:fields], include: params[:include] }
+      format.json { render json: @stations, fields: json_api_params[:fields], include: params[:include] }
     end
   end
 
@@ -32,18 +27,56 @@ class StationsController < ApplicationController
   # GET /stations/1.json
   def show
     respond_to do |format|
-      format.json { render json: @station, fields: params[:fields], include: params[:include] }
+      format.json { render json: @station, fields: json_api_params[:fields], include: params[:include] }
     end
   end
 
   protected
 
     def set_station
-      @station = if params[:id]
-        Station.find(params[:id])
+      if params[:id]
+        @station = Station.find(params[:id])
       elsif params[:nearest_from] || params[:latlon]
-        Station.nearest_from(params[:nearest_from] || params[:latlon]).limit(1).first
+        latitude, longitude = parse_latlon_param(params[:nearest_from] || params[:latlon])
+        @station = Station.nearest_from(latitude, longitude).limit(1).first
       end
     end
 
+    def parse_latlon_param(param)
+      param.split(",").map { |numeric| BigDecimal.new numeric }
+    end
+
+    def set_stations_initial_scope!
+      @stations = Station.all
+    end
+
+    def sort_stations_by_given_distance!
+      return unless params[:nearest_from].present?
+      latitude, longitude = parse_latlon_param params[:nearest_from]
+      @stations = @stations.nearest_from latitude, longitude
+    end
+
+    def sort_stations_by_given_criteria!
+      return unless json_api_params.key? :sort
+      @stations = @stations.order json_api_params[:sort]
+    end
+
+    def paginate_stations!
+      limit_stations! # limits by given pagination or default
+      return unless json_api_params[:page].present?
+    end
+
+    def limit_stations!
+      if json_api_params.key?(:page) && json_api_params[:page][:limit]
+        station_limit =json_api_params[:page][:limit].to_i
+      else
+        station_limit = 20
+      end
+
+      @stations = @stations.limit station_limit
+    end
+
+    def eager_load_associations!
+      @stations = @stations.includes :last_measurement, :current_forecasts
+    end
 end

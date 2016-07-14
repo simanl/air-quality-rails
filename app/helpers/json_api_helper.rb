@@ -1,35 +1,10 @@
 module JsonApiHelper
-
   def json_api_params
-    @_json_api_params ||= begin
-      permitted_params = params.slice(:include, :page, :sort, :fields)
-
-      ##########################################################################
-      # Parse comma-separated lists to an array:
-      [:include, :sort].each do |param_name|
-        permitted_params[param_name] = permitted_params[param_name].split ',' \
-          if permitted_params.key? param_name
-      end
-
-      # Parse the comma-separated lists on the sparse-fields key to an array:
-      permitted_params[:fields].each do |type, fieldlist|
-        permitted_params[:fields][type] = permitted_params[:fields][type].split ','
-      end if permitted_params.key? :fields
-
-      ##########################################################################
-      # Parse sort directions:
-      permitted_params[:sort] = permitted_params[:sort].inject({}) do |parsed_sort, sort_element|
-        sort_order = sort_element[0] == '-' ? :desc : :asc
-        sort_field = sort_order == :desc ? sort_element[1..-1] : sort_element
-        parsed_sort[sort_field] = sort_order
-        parsed_sort
-      end if permitted_params.key? :sort
-
-      permitted_params[:include].map!(&:to_sym) if permitted_params.key? :include
-
-      permitted_params
-
-    end
+    collected_params = params.slice(:page) # Pagination params passed as it is
+    collected_params.merge! json_api_related_resources_inclusion_params
+    collected_params.merge! json_api_sorting_params
+    collected_params.merge! json_api_sparse_fieldsets_params
+    collected_params.with_indifferent_access
   end
 
   def json_api_related_resources(records, includes)
@@ -47,4 +22,31 @@ module JsonApiHelper
     render plain: "400 Bad Request", status: 400
   end
 
+  protected
+
+    def json_api_sparse_fieldsets_params
+      return {} unless params.key?(:fields)
+      {
+        fields: params[:fields].each_with_object({}) do |fieldset, fieldsets_params|
+          resource_type, resource_fields = fieldset
+          fieldsets_params[resource_type] = resource_fields.split(",")
+        end
+      }
+    end
+
+    def json_api_sorting_params
+      return {} unless params.key?(:sort)
+      {
+        sort: params[:sort].split(",").each_with_object({}) do |criteria, sorting_params|
+          sorting_order = (criteria[0] == '-') ? :desc : :asc
+          sorting_field = ((sorting_order == :desc) ? criteria[1..-1] : criteria).to_sym
+          sorting_params[sorting_field] = sorting_order
+        end
+      }
+    end
+
+    def json_api_related_resources_inclusion_params
+      return {} unless params.key?(:include)
+      { include: params[:include].split(",").map(&:to_sym) }
+    end
 end

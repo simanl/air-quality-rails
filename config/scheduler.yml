@@ -9,10 +9,10 @@ pull_data_from_sima:
   queue: default
   description: "Updates measurements from SIMA NL web service"
 
-update_forecasts:
-  cron: "5 6,12,18 * * *"
-  # By default the job name (hash key) will be taken as worker class name.
-  # If you want to have a different job name and class name, provide the 'class' option
-  class: UpdateForecastsJob
-  queue: forecasting
-  description: "Updates measurements from SIMA NL web service"
+# update_forecasts:
+#   cron: "5 6,12,18 * * *"
+#   # By default the job name (hash key) will be taken as worker class name.
+#   # If you want to have a different job name and class name, provide the 'class' option
+#   class: UpdateForecastsJob
+#   queue: forecasting
+#   description: "Updates measurements from SIMA NL web service"

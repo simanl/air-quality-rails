@@ -1,9 +1,25 @@
 class Measurement < ActiveRecord::Base
+  WIND_CARDINALITY_MAPPING = {
+    0..23  => "north",
+    24..68 => "northeast",
+    69..113 => "east",
+    114..158 => "southeast",
+    159..203 => "south",
+    204..248 => "southwest",
+    249..293 => "west",
+    294..338 => "northwest",
+    339..360 => "north"
+  }.freeze
 
-  belongs_to :station
-  validates :station, presence: true
+  IMECA_CATEGORY_MAPPING = {
+    0..50 => "good",
+    50..100 => "regular",
+    101..150 => "bad",
+    151..200 => "very_bad",
+    201..Float::INFINITY => "extremely_bad"
+  }.freeze
 
-  has_and_belongs_to_many :forecasts
+  belongs_to :station, required: true
 
   store_accessor :weather,
     :atmospheric_pressure,
@@ -35,70 +51,124 @@ class Measurement < ActiveRecord::Base
 
   after_create :update_station_last_measurement!
 
-  def self.since(timestampish)
-    timestamp = if timestampish.respond_to? :split
-      # It's a string
-      DateTime.parse timestampish
-    else
-      timestampish
-    end
-
-    where(self.arel_table[:measured_at].gteq timestamp)
-  end
-
-  def self.latest
-    sub_query = Measurement.latest_grouped.arel.as '"grouping"'
-    join_query = arel_table.join(sub_query).on(
-      arel_table[:station_id].eq(sub_query[:station_id]).and(
-        arel_table[:updated_at].eq sub_query[:updated_at]
-      )
-    )
-    joins(join_query.join_sources)
-  end
-
-  # The query used internally that selects the latest ones:
-  def self.latest_grouped
-    # We're using unscoped to prevent `station.measurement.latest` trying to
-    # allocate two parameters whereas just providing one (station_id).
-    # TODO: Try any way to make this work without `unscoped`, since it would be
-    # better to be able to also filter this nested query...
-    unscoped.select(
-      :station_id,
-      Arel::Nodes::NamedFunction.new("max", [arel_table[:updated_at]]).as('"updated_at"')
-    ).group(:station_id)
-  end
-
-  def self.forecast_engine_dataframe(start_at)
-    finish_at = start_at.advance(hours: 5)
-
-    joins(:station)
-      .merge(Station.forecastable)
-      .where(measured_at: start_at..finish_at)
-      .order(station_id: :asc, measured_at: :asc)
-  end
+  scope :after, -> (timestamp) { where arel_table[:measured_at].gt(timestamp) }
+  scope :since, -> (timestamp) { where arel_table[:measured_at].gteq(timestamp) }
+  scope :measured_within, -> (time_range) { where measured_at: time_range }
+  scope :blank_measurements, -> { where arel_table[:id].eq(nil) }
+  scope :grouped_by_station, -> { group :station_id }
 
   def wind_cardinal_direction
-    case wind_direction
-    when 339..360 then 'north'
-    when 1..23 then 'north'
-    when 24..68 then 'northeast'
-    when 69..113 then 'east'
-    when 114..158 then 'southeast'
-    when 159..203 then 'south'
-    when 204..248 then 'southwest'
-    when 249..293 then 'west'
-    when 294..338 then 'northwest'
-    end if wind_direction.present?
+    mapped_value WIND_CARDINALITY_MAPPING, :wind_direction
   end
 
   def imeca_category
-    case imeca_points
-    when 0..50 then 'good'
-    when 50..100 then 'regular'
-    when 101..150 then 'bad'
-    when 151..200 then 'very_bad'
-    else 'extremely_bad'
-    end if imeca_points.present?
+    mapped_value IMECA_CATEGORY_MAPPING, :imeca_points
+  end
+
+  def mapped_value(mappings, reader)
+    mappings.reduce(nil) do |found_value, mapping|
+      range, value = mapping
+      range.cover?(public_send(reader)) ? value : found_value
+    end if public_send(reader).present?
+  end
+
+  class << self
+    # Operations over scopes: ==================================================
+    def has_blank_measurements?
+      blank_measurements.any?
+    end
+
+    def has_no_blank_measurements?
+      blank_measurements.empty?
+    end
+
+    def dataframe_for_time_range_can_be_closed?(given_time_range)
+      since(given_time_range.max).any?
+    end
+
+    # Complex scopes: ==========================================================
+    def latest
+      sub_query = Measurement.latest_grouped.arel.as '"grouping"'
+      join_query = arel_table.join(sub_query).on(
+        arel_table[:station_id].eq(sub_query[:station_id]).and(
+          arel_table[:updated_at].eq sub_query[:updated_at]
+        )
+      )
+      joins(join_query.join_sources)
+    end
+
+    # The query used internally that selects the latest ones:
+    def latest_grouped
+      # We're using unscoped to prevent `station.measurement.latest` trying to
+      # allocate two parameters whereas just providing one (station_id).
+      # TODO: Try any way to make this work without `unscoped`, since it would be
+      # better to be able to also filter this nested query...
+      unscoped.select(
+        :station_id,
+        Arel::Nodes::NamedFunction.new("max", [arel_table[:updated_at]]).as('"updated_at"')
+      ).group(:station_id)
+    end
+
+    # Gets a list of measurements for all the 'forecastable' stations for each
+    # hour withing the given time range, filling missing measurements with blank
+    # measurement objects, so we can feed the forecast engine with the data it
+    # expects to trigger data imputation...
+    def for_time_range_dataframe(time_range)
+      # Get the complex subquery aliased as 'base_dataframe':
+      base_df_subquery = Station.dataframe_for_time_range(time_range)
+                                .as("\"base_dataframe\"")
+
+      # Create the join conditions between the measurements table and the subquery:
+      join_condition = arel_table[:station_id]
+        .eq(base_df_subquery[:station_id])
+        .and(arel_table[:measured_at].eq(base_df_subquery[:measured_at]))
+
+      joins arel_table.create_join(
+        base_df_subquery,
+        base_df_subquery.create_on(join_condition),
+        Arel::Nodes::RightOuterJoin
+      )
+    end
+
+    # Selects the columns to generate the forecast engine input dataframe:
+    def as_forecast_engine_input_dataframe
+      # A reference to the complex subquery aliased as 'base_dataframe':
+      base_df_subquery = Arel::Table.new :base_dataframe
+
+      includes(:station).select arel_table[:id],
+                                base_df_subquery[:station_id],
+                                base_df_subquery[:measured_at],
+                                arel_table[:weather],
+                                arel_table[:pollutants],
+                                arel_table[:imeca_points],
+                                arel_table[:created_at],
+                                arel_table[:updated_at]
+    end
+
+    def last_for_each_station
+      # Get the subquery aliased as 'base_dataframe':
+      last_measurements = last_for_each_station_subquery
+        .as("\"last_measurements\"")
+
+      # Create the join conditions between the measurements table and the subquery:
+      join_condition = arel_table[:station_id]
+        .eq(last_measurements[:station_id])
+        .and(arel_table[:measured_at].gteq(last_measurements[:measured_at]))
+
+      joins arel_table.create_join(
+        last_measurements,
+        last_measurements.create_on(join_condition),
+        Arel::Nodes::InnerJoin
+      )
+    end
+
+    private
+
+      def last_for_each_station_subquery
+        last_measured_at = Arel::Nodes::Max.new [arel_table[:measured_at]]
+        grouped_by_station.select arel_table[:station_id],
+                                  last_measured_at.as("\"measured_at\"")
+      end
   end
 
   protected
@@ -107,5 +177,4 @@ class Measurement < ActiveRecord::Base
       station.update last_measurement_id: station.measurements.latest
         .limit(1).pluck(:id).first
     end
-
 end

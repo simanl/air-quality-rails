@@ -53,6 +53,7 @@ services:
     volumes:
       - forecasts-data:/app/tablas
       - ./development-forecasts-entrypoint:/app/development-entrypoint
+      - ./tmp:/tmp
     entrypoint: /app/development-entrypoint
     networks:
       - back-tier
@@ -82,6 +83,7 @@ services:
       REDIS_URL: redis://keyval:6379/air_quality_development
       FORECAST_ENGINE_URL: tcp://forecasts:6311 # The URL pointing to our engine container
       RAILS_ENV: development
+      HOME: /usr/src/app
     env_file:
       - development.env
 

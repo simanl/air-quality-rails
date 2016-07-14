@@ -90,6 +90,8 @@ class ForecastEngine
 
       # The rserve client translates the remote date into the number of days
       # since epoch...
+      # The forecast engine behind the rserve server is expecting datetimes
+      # to be expressed always as -06:00:
       date = Time.parse('1970-01-01T00:00:00-06:00')
         .advance(days: given_output_df['fecha'][row_index].to_i)
 

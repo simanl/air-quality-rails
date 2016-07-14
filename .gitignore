@@ -55,3 +55,4 @@ bower.json
 .byebug_history
 
 landing/build
+.bundle

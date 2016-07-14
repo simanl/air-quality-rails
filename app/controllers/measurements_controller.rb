@@ -6,11 +6,8 @@ class MeasurementsController < ApplicationController
     @measurements = Measurement.all
 
     # Pagination:
-    if json_api_params[:page].present?
-      @measurements = @measurements.since(json_api_params[:page][:since]) if json_api_params[:page].key? :since
-      @measurements = @measurements.limit(json_api_params[:page][:limit]) if json_api_params[:page].key? :limit
-      # ...
-    end
+    filter_measurements_since!
+    limit_measurements!
 
     respond_to do |format|
       format.json { render json: @measurements }
@@ -26,5 +23,17 @@ class MeasurementsController < ApplicationController
       format.json { render json: @measurement }
     end
   end
+
+  private
+
+    def filter_measurements_since!
+      return unless json_api_params.key?(:page) && json_api_params[:page].key?(:since)
+      @measurements = @measurements.since Time.parse(json_api_params[:page][:since])
+    end
+
+    def limit_measurements!
+      return unless json_api_params.key?(:page) && json_api_params[:page].key?(:limit)
+      @measurements = @measurements.limit json_api_params[:page][:limit].to_i
+    end
 
 end
