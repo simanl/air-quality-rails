@@ -6,5 +6,4 @@ class ApplicationController < ActionController::Base
   include JsonApiHelper
   rescue_from ActiveRecord::AssociationNotFoundError,
     with: :json_api_association_not_found
-
 end
