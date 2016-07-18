@@ -20,14 +20,14 @@ postgres:
 
 # Our Redis service:
 redis:
-  image: redis:3.0.7
+  image: redis:3.0.7-alpine
   command: redis-server --appendonly yes
   restart: always
 
 # We'll also use this configuration (&app_base) for the web and test
 # containers:
 jobs: &app
-  image: simanl/air-quality-rails:v6-rc7
+  image: simanl/air-quality-rails:1.0.0.rc5
   command: sidekiq -c 25 -q default
   restart: always
   stdin_open: true
