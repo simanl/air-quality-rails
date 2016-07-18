@@ -37,6 +37,17 @@ pronosticos:
     io.rancher.container.pull_image: always
     io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
 
+# The forecasts engine's tables access SFTP Service:
+pronosticos-sftp:
+  image: atmoz/sftp:latest
+  volumes: [ "calidad-aire-pronosticos:/home/simanl/tablas-pronosticos" ]
+  volume_driver: simanl-fs-convoy
+  ports: [ "2222:22" ]
+  command: simanl:simanl
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
+
 # The Job Processor app:
 tareas-default: &tasks
   image: simanl/air-quality-rails:1.0.0.rc5
