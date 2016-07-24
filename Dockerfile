@@ -66,7 +66,7 @@ EXPOSE 3000
 USER nobody
 
 # 5: Set the default Puma config values:
-ENV PUMA_MIN_THREADS=8 PUMA_MAX_THREADS=12 PUMA_WORKR_COUNT=2
+ENV MIN_THREADS=8 RAILS_MAX_THREADS=12 PUMA_WORKR_COUNT=2
 
 # 6: Set the default command:
 CMD bundle exec puma --bind tcp://0.0.0.0:3000

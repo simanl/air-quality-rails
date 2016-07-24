@@ -9,7 +9,7 @@ default: &default
 
   # For details on connection pooling, see rails configuration guide
   # http://guides.rubyonrails.org/configuring.html#database-pooling
-  pool: 5
+  pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
 
   # Minimum log levels, in increasing order:
   #   debug5, debug4, debug3, debug2, debug1,
@@ -29,5 +29,4 @@ test:
 # Production database configuration - bigger pool size, lower log level:
 production:
   <<: *default
-  pool: 25
   min_messages: notice
