@@ -13,7 +13,7 @@ redis:
 
 # The postgres service will use a configured glusterfs storage pool on Rancher:
 postgres:
-  image: vovimayhem/postgis:2.1.8-9.4.4
+  image: vovimayhem/postgis:9.5
   # ports: [ "5432:5432" ]
   tty: true
   stdin_open: true

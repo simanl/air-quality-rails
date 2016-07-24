@@ -19,7 +19,7 @@ networks:
 services:
   # Our PostgreSQL service:
   db:
-    image: vovimayhem/postgis:2.1.8-9.4.4
+    image: vovimayhem/postgis:9.5
     # Bind host port 5432 to PostgreSQL port 5432:
     ports:
       - 5442:5432
