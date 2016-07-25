@@ -3,7 +3,7 @@
 ## 1: Installar [GDrive](https://github.com/prasmussen/gdrive)
 
 ```bash
-curl -o /usr/local/sbin/gdrive -k "https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download"
+curl -o /usr/local/sbin/gdrive -L "https://docs.google.com/uc?id=0B3X9GlR6EmbnQ0FtZmJJUXEyRTA&export=download"
 ```
 
 ## 2: Generar dumps:
@@ -17,7 +17,7 @@ DUMP_FILEPATH="/tmp/production-`date --utc +'%Y-%m-%d-%H%M%S%z'`.dump" \
 ## 3: Cargar dumps:
 
 ```bash
-gdrive download 0BwCAD_sF1ReMQXd1VDNEMWdrRzA
+gdrive download SOME_GDRIVE_FILE_ID
 
 dropdb -U postgres -e --if-exists air_quality_production \
   && createdb -U postgres air_quality_production \

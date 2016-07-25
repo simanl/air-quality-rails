@@ -6,10 +6,11 @@ redis:
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-redis:/data" ]
-  volume_driver: simanl-fs-convoy
+  volume_driver: local
+  # volume_driver: simanl-fs-convoy
   labels:
     io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
+    io.rancher.scheduler.affinity:host_label: data-host=true
 
 # The postgres service will use a configured glusterfs storage pool on Rancher:
 postgres:
@@ -17,13 +18,14 @@ postgres:
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-postgres:/var/lib/postgresql/data" ]
-  volume_driver: simanl-fs-convoy
+  volume_driver: local
+  # volume_driver: simanl-fs-convoy
   environment:
     LC_ALL: C.UTF-8
   env_file: [ "postgres.env" ]
   labels:
     io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
+    io.rancher.scheduler.affinity:host_label: data-host=true
 
 # The Forecasts Engine will use a configured glusterfs storage pool on Rancher:
 pronosticos:
@@ -31,24 +33,26 @@ pronosticos:
   tty: true
   stdin_open: true
   volumes: [ "calidad-aire-pronosticos:/app/tablas" ]
-  volume_driver: simanl-fs-convoy
+  volume_driver: local
+  # volume_driver: simanl-fs-convoy
   labels:
     io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
+    io.rancher.scheduler.affinity:host_label: data-host=true
 
 # The forecasts engine's tables access SFTP Service:
 pronosticos-sftp:
   image: atmoz/sftp:latest
   volumes: [ "calidad-aire-pronosticos:/home/simanl/tablas-pronosticos" ]
-  volume_driver: simanl-fs-convoy
+  volume_driver: local
+  # volume_driver: simanl-fs-convoy
   ports: [ "2222:22" ]
   command: simanl:simanl
   labels:
     io.rancher.container.pull_image: always
-    io.rancher.scheduler.affinity:host_label: data-host=true,convoy.glusterfs=true
+    io.rancher.scheduler.affinity:host_label: data-host=true
 
 # The Job Processor app:
-tareas-default: &tasks
+tareas-default:
   image: simanl/air-quality-rails:1.0.0.rc6
   command: sidekiq -c 1 -q default
   tty: true
@@ -63,8 +67,18 @@ tareas-default: &tasks
   env_file: [ "app.env", "sidekiq.env" ]
 
 tareas-pronosticos:
-  <<: *tasks
+  image: simanl/air-quality-rails:1.0.0.rc6
   command: sidekiq -c 1 -q forecasting
+  tty: true
+  stdin_open: true
+  links:
+    - redis:redis
+    - postgres:postgres
+    - pronosticos:pronosticos
+  labels:
+    io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:host_label: app-host=true
+  env_file: [ "app.env", "sidekiq.env" ]
 
 # The Web + API app:
 app-web:
