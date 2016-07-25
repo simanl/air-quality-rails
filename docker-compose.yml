@@ -49,7 +49,7 @@ services:
 
   # The Forecasts Engine:
   forecasts:
-    image: simanl/air-quality-forecasts:1.0.0.rc6
+    image: simanl/air-quality-forecasts:1.0.0.rc8
     volumes:
       - forecasts-data:/app/tablas
       - ./development-forecasts-entrypoint:/app/development-entrypoint
@@ -94,7 +94,7 @@ services:
     networks:
       - front-tier
       - back-tier
-    command: rails server
+    command: rails server -p 3000 -b 0.0.0.0
 
   # App Guard: Keeps running tests on a separate process:
   test:

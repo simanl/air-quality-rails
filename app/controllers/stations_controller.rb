@@ -4,7 +4,6 @@ class StationsController < ApplicationController
   # GET /stations
   # GET /stations.json
   def index
-    debugger
     set_stations_initial_scope!
 
     sort_stations_by_given_distance!
