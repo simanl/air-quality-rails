@@ -116,7 +116,7 @@ class Measurement < ActiveRecord::Base
     def for_time_range_dataframe(time_range)
       # Get the complex subquery aliased as 'base_dataframe':
       base_df_subquery = Station.dataframe_for_time_range(time_range)
-                                .as("\"base_dataframe\"")
+                                .as "\"base_dataframe\""
 
       # Create the join conditions between the measurements table and the subquery:
       join_condition = arel_table[:station_id]
@@ -135,14 +135,16 @@ class Measurement < ActiveRecord::Base
       # A reference to the complex subquery aliased as 'base_dataframe':
       base_df_subquery = Arel::Table.new :base_dataframe
 
-      includes(:station).select arel_table[:id],
-                                base_df_subquery[:station_id],
-                                base_df_subquery[:measured_at],
-                                arel_table[:weather],
-                                arel_table[:pollutants],
-                                arel_table[:imeca_points],
-                                arel_table[:created_at],
-                                arel_table[:updated_at]
+      order(base_df_subquery[:station_id].asc, base_df_subquery[:measured_at].asc)
+        .includes(:station)
+        .select arel_table[:id],
+                base_df_subquery[:station_id],
+                base_df_subquery[:measured_at],
+                arel_table[:weather],
+                arel_table[:pollutants],
+                arel_table[:imeca_points],
+                arel_table[:created_at],
+                arel_table[:updated_at]
     end
 
     def last_for_each_station

@@ -36,9 +36,6 @@ class Station < ActiveRecord::Base
         timestamps_table[:timestamp].as("\"measured_at\"")
       ).joins(
         "CROSS JOIN (#{crossd_table.to_sql}) \"timestamps\""
-      ).order(
-        arel_table[:id].asc,
-        timestamps_table[:timestamp].asc
       )
     end
 
