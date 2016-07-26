@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160716225956) do
+ActiveRecord::Schema.define(version: 20160725225835) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -31,16 +31,18 @@ ActiveRecord::Schema.define(version: 20160716225956) do
   add_index "forecasts", ["station_id"], name: "IX_forecast_station", using: :btree
 
   create_table "measurements", force: :cascade do |t|
-    t.integer  "station_id",                          null: false
-    t.datetime "measured_at",                         null: false
-    t.jsonb    "weather",                default: {}, null: false
-    t.jsonb    "pollutants",             default: {}, null: false
+    t.integer  "station_id",                             null: false
+    t.datetime "measured_at",                            null: false
+    t.jsonb    "weather",                default: {},    null: false
+    t.jsonb    "pollutants",             default: {},    null: false
     t.integer  "imeca_points", limit: 2
-    t.datetime "created_at",                          null: false
-    t.datetime "updated_at",                          null: false
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+    t.boolean  "most_recent",            default: false, null: false
   end
 
   add_index "measurements", ["station_id", "measured_at"], name: "UK_station_measured_at", unique: true, using: :btree
+  add_index "measurements", ["station_id", "most_recent"], name: "UK_station_most_recent_measurement", unique: true, where: "most_recent", using: :btree
   add_index "measurements", ["station_id"], name: "IX_measurement_station", using: :btree
 
   create_table "roles", force: :cascade do |t|
@@ -64,16 +66,14 @@ ActiveRecord::Schema.define(version: 20160716225956) do
     t.string    "code"
     t.string    "name"
     t.string    "short_name"
-    t.geography "lonlat",              limit: {:srid=>4326, :type=>"point", :geographic=>true}
-    t.integer   "last_measurement_id"
-    t.boolean   "is_forecastable",                                                              default: false, null: false
-    t.datetime  "created_at",                                                                                   null: false
-    t.datetime  "updated_at",                                                                                   null: false
+    t.geography "lonlat",          limit: {:srid=>4326, :type=>"point", :geographic=>true}
+    t.boolean   "is_forecastable",                                                          default: false, null: false
+    t.datetime  "created_at",                                                                               null: false
+    t.datetime  "updated_at",                                                                               null: false
   end
 
   add_index "stations", ["code"], name: "UK_station_code", unique: true, using: :btree
   add_index "stations", ["is_forecastable"], name: "IX_forecastable_station", using: :btree
-  add_index "stations", ["last_measurement_id"], name: "UK_station_last_measurement", unique: true, using: :btree
 
   create_table "users", force: :cascade do |t|
     t.string   "email",                  default: "", null: false
@@ -97,5 +97,4 @@ ActiveRecord::Schema.define(version: 20160716225956) do
   add_foreign_key "measurements", "stations"
   add_foreign_key "roles_users", "roles"
   add_foreign_key "roles_users", "users"
-  add_foreign_key "stations", "measurements", column: "last_measurement_id", on_delete: :nullify
 end

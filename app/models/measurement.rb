@@ -49,13 +49,15 @@ class Measurement < ActiveRecord::Base
     numericality: { greater_than_or_equal_to: 0, less_than: 360 },
     allow_nil: true
 
-  after_create :update_station_last_measurement!
+  before_create :set_as_most_recent, if: :most_recent_uncached?
+  after_destroy :update_most_recent, if: :most_recent?
 
   scope :after, -> (timestamp) { where arel_table[:measured_at].gt(timestamp) }
   scope :since, -> (timestamp) { where arel_table[:measured_at].gteq(timestamp) }
   scope :measured_within, -> (time_range) { where measured_at: time_range }
   scope :blank_measurements, -> { where arel_table[:id].eq(nil) }
   scope :grouped_by_station, -> { group :station_id }
+  scope :most_recent, -> { where arel_table[:most_recent].eq(true) }
 
   def wind_cardinal_direction
     mapped_value WIND_CARDINALITY_MAPPING, :wind_direction
@@ -70,6 +72,10 @@ class Measurement < ActiveRecord::Base
       range, value = mapping
       range.cover?(public_send(reader)) ? value : found_value
     end if public_send(reader).present?
+  end
+
+  def most_recent?
+    most_recent
   end
 
   class << self
@@ -146,37 +152,42 @@ class Measurement < ActiveRecord::Base
                 arel_table[:created_at],
                 arel_table[:updated_at]
     end
-
-    def last_for_each_station
-      # Get the subquery aliased as 'base_dataframe':
-      last_measurements = last_for_each_station_subquery
-        .as("\"last_measurements\"")
-
-      # Create the join conditions between the measurements table and the subquery:
-      join_condition = arel_table[:station_id]
-        .eq(last_measurements[:station_id])
-        .and(arel_table[:measured_at].gteq(last_measurements[:measured_at]))
-
-      joins arel_table.create_join(
-        last_measurements,
-        last_measurements.create_on(join_condition),
-        Arel::Nodes::InnerJoin
-      )
-    end
-
-    private
-
-      def last_for_each_station_subquery
-        last_measured_at = Arel::Nodes::Max.new [arel_table[:measured_at]]
-        grouped_by_station.select arel_table[:station_id],
-                                  last_measured_at.as("\"measured_at\"")
-      end
   end
 
   protected
 
-    def update_station_last_measurement!
-      station.update last_measurement_id: station.measurements.latest
-        .limit(1).pluck(:id).first
+    def update_most_recent
+      table = self.class.arel_table
+
+      sub_query = table
+        .where(table[:station_id].eq(station_id))
+        .order(table[:measured_at].desc)
+        .take(1)
+        .project(table[:id])
+        .as "\"new_most_recent\""
+
+      join_condition = table[:id].eq(sub_query[:id])
+
+      self.class.connection.execute "UPDATE \"#{table.name}\" " \
+        "SET \"most_recent\" = 't' " \
+        "FROM #{sub_query.to_sql} WHERE #{join_condition.to_sql}"
+    end
+
+    def most_recent_uncached?
+      return false unless station_id.present? && measured_at.present?
+
+      # NOTE: Weird how `self.class.most_recent` already filters by station_id..
+      self.class
+          .most_recent
+          .where(self.class.arel_table[:measured_at].gt(measured_at))
+          .empty?
+    end
+
+    def set_as_most_recent
+      # Set any other measurements' most_recent column to false:
+      # NOTE: Weird how `self.class.most_recent` already filters by station_id..
+      self.class.most_recent.update_all most_recent: false
+
+      assign_attributes most_recent: true
     end
 end
