@@ -34,13 +34,13 @@ module Sima
         end
       end
 
-      def pull
+      def pull(record_response = false)
         # Pull general data:
         # TODO: use only the 2nd request to generate data, as soon as the extra
         # data needed is available on the second request:
-        msrmnts = fetch_type_a
+        msrmnts = fetch_type_a(record_response)
 
-        fetch_type_b.each do |type_b_msrmnt|
+        fetch_type_b(record_response).each do |type_b_msrmnt|
           if (msrmnt = msrmnts.detect { |x| x.station.code == type_b_msrmnt.station.code })
             %w(temperature relative_humidity wind_direction wind_speed
             precipitation atmospheric_pressure solar_radiation carbon_monoxide
@@ -76,9 +76,17 @@ module Sima
           end
         end
 
-        def fetch_type_a
-          parse_fetch_of_type ActiveSupport::JSON.decode(conn.get('/PollutionServer/').body),
-                              :type_a
+        def fetch_type_a(record_response)
+          request_path = "PollutionServer"
+          response_body = conn.get("/#{request_path}/").body
+
+          if record_response
+            file_name = Time.now.utc.strftime "%Y-%m-%dT%H:%M:%S+0000.json"
+            file_path = Rails.root.join "spec", "fixtures", "sima_responses", request_path, file_name
+            File.write file_path, response_body
+          end
+
+          parse_fetch_of_type ActiveSupport::JSON.decode(response_body), :type_a
         end
 
         def from_type_a_data(measurement, general_attributes = {})
@@ -94,9 +102,18 @@ module Sima
           )
         end
 
-        def fetch_type_b
-          parse_fetch_of_type ActiveSupport::JSON.decode(conn.get('/simaservernlpro/').body),
-                              :type_b
+        def fetch_type_b(record_response)
+          request_path = "simaservernlpro"
+          response_body = conn.get("/#{request_path}/").body
+
+          if record_response
+            response_body.force_encoding(Encoding::UTF_8)
+            file_name = Time.now.utc.strftime "%Y-%m-%dT%H:%M:%S+0000.json"
+            file_path = Rails.root.join "spec", "fixtures", "sima_responses", request_path, file_name
+            File.write file_path, response_body
+          end
+
+          parse_fetch_of_type ActiveSupport::JSON.decode(response_body), :type_b
         end
 
         def from_type_b_data(data, general_attributes = {})

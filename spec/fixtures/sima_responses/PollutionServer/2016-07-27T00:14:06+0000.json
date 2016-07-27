@@ -1,0 +1,111 @@
+{
+    "pollutionMeasurements": {
+        "City": "Monterrey",
+        "CityCode": "MTY",
+        "Country": "Mexico",
+        "MesurementAgency": "SIMA",
+        "URL": "http://www.nl.gob.mx/?P=sima_metropolitano",
+        "TimeStamp": "2016-07-26 T 18:00 CDT",
+        "Stations": [{
+            "name": "CENTRO OBISPADO",
+            "shortName": "OBISPADO",
+            "location": "25.67602,-100.335847",
+            "imecaPoints": 57,
+            "pollutant": "PM10",
+            "temperature": 30.1,
+            "humidity": 0.49,
+            "windDirection": 196,
+            "windSpeed": 3.7
+        }, {
+            "name": "NOROESTE 2 GARCIA",
+            "shortName": "GARCIA",
+            "location": "25.80194,-100.343056",
+            "imecaPoints": 93,
+            "pollutant": "PM10",
+            "temperature": 30.2,
+            "humidity": 0.47,
+            "windDirection": 354,
+            "windSpeed": 6.0
+        }, {
+            "name": "NORESTE SAN NICOLAS",
+            "shortName": "SAN NICOLAS",
+            "location": "25.74543,-100.255020",
+            "imecaPoints": 60,
+            "pollutant": "PM10",
+            "temperature": 28.4,
+            "humidity": 0.62,
+            "windDirection": 319,
+            "windSpeed": 3.5
+        }, {
+            "name": "NORESTE 2 APODACA",
+            "shortName": "APODACA",
+            "location": "25.77722,-100.188055",
+            "imecaPoints": 60,
+            "pollutant": "PM10",
+            "temperature": 28.4,
+            "humidity": 0.62,
+            "windDirection": 319,
+            "windSpeed": 3.5
+        }, {
+            "name": "NOROESTE SAN BERNABE",
+            "shortName": "SAN BERNABE",
+            "location": "25.75712,-100.365974",
+            "imecaPoints": 74,
+            "pollutant": "PM10",
+            "temperature": 27.4,
+            "humidity": 0.64,
+            "windDirection": 24,
+            "windSpeed": 7.5
+        }, {
+            "name": "NORTE ESCOBEDO",
+            "shortName": "ESCOBEDO",
+            "location": "25.675,-100.458333",
+            "imecaPoints": 104,
+            "pollutant": "PM10",
+            "temperature": 25.1,
+            "humidity": 0.73,
+            "windDirection": 320,
+            "windSpeed": 3.1
+        }, {
+            "name": "SURESTE LA PASTORA",
+            "shortName": "LA PASTORA",
+            "location": "25.66827,-100.249580",
+            "imecaPoints": 64,
+            "pollutant": "PM10",
+            "temperature": 34.6,
+            "humidity": 0.34,
+            "windDirection": 125,
+            "windSpeed": 4.8
+        }, {
+            "name": "SURESTE 2 JUAREZ",
+            "shortName": "JUAREZ",
+            "location": "25.64611,-100.095555",
+            "imecaPoints": 61,
+            "pollutant": "PM10",
+            "temperature": 29.5,
+            "humidity": 0.58,
+            "windDirection": 11,
+            "windSpeed": 4.7
+        }, {
+            "name": "SUROESTE SANTA CATARINA",
+            "shortName": "SANTA CATARINA",
+            "location": "25.67536,-100.460037",
+            "imecaPoints": 73,
+            "pollutant": "PM10",
+            "temperature": 30.4,
+            "humidity": 0.47,
+            "windDirection": 146,
+            "windSpeed": 4.1
+        }, {
+            "name": "SUROESTE2 SAN PEDRO",
+            "shortName": "SAN PEDRO",
+            "location": "25.66528,-100.412778",
+            "imecaPoints": 65,
+            "pollutant": "PM10",
+            "temperature": 0.0,
+            "humidity": 0.0,
+            "windDirection": 0,
+            "windSpeed": 0.0
+        }]
+    }
+}
