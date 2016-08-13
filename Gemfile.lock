@@ -242,6 +242,8 @@ GEM
       tilt (>= 1.3, < 3)
     slop (3.6.0)
     spring (1.7.2)
+    spring-commands-rspec (1.0.4)
+      spring (>= 0.9.1)
     sprockets (3.6.3)
       concurrent-ruby (~> 1.0)
       rack (> 1, < 3)
@@ -299,6 +301,7 @@ DEPENDENCIES
   sidekiq-scheduler (~> 2.0.8)
   sinatra
   spring
+  spring-commands-rspec (~> 1.0.4)
   therubyracer
   turbolinks
   uglifier (>= 1.3.0)
