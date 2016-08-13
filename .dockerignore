@@ -48,3 +48,7 @@ bin/attach
 bin/check-or-setup-db
 bin/restoredb
 bin/run
+
+# Ember frontend modules:
+.config/*
+.npm/*

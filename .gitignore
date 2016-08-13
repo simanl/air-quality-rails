@@ -57,3 +57,7 @@ bower.json
 
 landing/build
 .bundle
+
+# Ember frontend modules:
+.config/*
+.npm/*
