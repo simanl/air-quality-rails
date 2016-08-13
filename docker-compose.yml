@@ -103,13 +103,14 @@ services:
       - keyval
     command: rails server -p 3000 -b 0.0.0.0
 
-  # App Guard: Keeps running tests on a separate process:
+  # Spring Server: Keeps a copy of the app in memory so invoking tests is
+  # speedier:
   test:
     <<: *app # We copy from &app_base, and override:
     networks:
       - front-tier
       - back-tier
-    command: guard start --no-bundler-warning --no-interactions --force-polling
+    command: spring server
     environment:
       <<: *app_environment
       DATABASE_URL: postgis://postgres:41rqu4l1ty@db:5432/air_quality_test
