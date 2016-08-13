@@ -62,7 +62,10 @@ services:
 
   # Application: -----------------------------------------------------------------
   jobs: &app
-    image: ruby:2.2.5
+    image: simanl/air-quality-rails:development
+    build:
+      context: .
+      dockerfile: dev.Dockerfile
     entrypoint: /usr/src/app/development-entrypoint
     command: sidekiq -c 1 -q default -q forecasting
     volumes:
@@ -70,20 +73,21 @@ services:
       - .:/usr/src/app
     networks:
       - back-tier
-    working_dir: /usr/src/app
     stdin_open: true
     tty: true
+    depends_on:
+      - db
+      - keyval
+      - forecasts
     links:
       - db
       - keyval
       - forecasts
     environment: &app_environment
-      PATH: /usr/src/app/bin:/usr/local/bundle/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
       DATABASE_URL: postgis://postgres:41rqu4l1ty@db:5432/air_quality_development
       REDIS_URL: redis://keyval:6379/air_quality_development
       FORECAST_ENGINE_URL: tcp://forecasts:6311 # The URL pointing to our engine container
       RAILS_ENV: development
-      HOME: /usr/src/app
     env_file:
       - development.env
 
@@ -94,6 +98,9 @@ services:
     networks:
       - front-tier
       - back-tier
+    depends_on:
+      - db
+      - keyval
     command: rails server -p 3000 -b 0.0.0.0
 
   # App Guard: Keeps running tests on a separate process:
