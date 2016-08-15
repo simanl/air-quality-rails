@@ -13,5 +13,4 @@
 //= require jquery
 //= require jquery_ujs
 //= require turbolinks
-//= require jquery.easyModal
 //= require_tree ./application

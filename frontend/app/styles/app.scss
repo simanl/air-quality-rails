@@ -1,0 +1,455 @@
+$good-color: #51CD54;
+$regular-color: #FDD630;
+$bad-color: #F19940;
+$very-bad-color: #e44342;
+$extremely-bad-color: #723785;
+
+body {
+  // background-attachment: fixed;
+  // background-position: 50% 20%;
+  // background-repeat: no-repeat;
+  // background-size: cover;
+  // background-color: #000;
+  font-family: Lato;
+
+  &:before {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    z-index: -1;
+    display: block;
+
+    background-image: url("images/bg_day.jpg");
+    background-size: cover;
+    background-position: center;
+
+    width: 100%;
+    height: 100%;
+
+    -webkit-filter: brightness(80%);
+    -moz-filter: brightness(80%);
+    -o-filter: brightness(80%);
+    -ms-filter: brightness(80%);
+    filter: brightness(80%);
+
+    -webkit-transition: background-image 0.2s ease-in-out;
+    -moz-transition: background-image 0.2s ease-in-out;
+    -o-transition: background-image 0.2s ease-in-out;
+    transition: background-image 0.2s ease-in-out;
+  }
+
+  &.day:before { background-image: url("images/bg_day.jpg"); }
+  &.night:before { background-image: url("images/bg_night.jpg"); }
+  &.sunset:before { background-image: url("images/bg_sunset.jpg"); }
+  &.blur:before, &.blur .container {
+    -webkit-filter: blur(8px);
+    -moz-filter: blur(8px);
+    -o-filter: blur(8px);
+    -ms-filter: blur(8px);
+    filter: blur(8px);
+  }
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.modals {
+  .modal-content {
+    background-color: rgba(255,255,255,0.2);
+    color: #FFF;
+    border-radius: 3px;
+    display: none;
+    height: 250px;
+    overflow-y: auto;
+    padding:15px;
+    width: 300px;
+    h1 {
+      font-family: AvenirNext-UltraLight;
+      font-size: 14px;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      font-weight: normal;
+      text-align: center;
+      margin: 0;
+    }
+    p, pre {
+      font-family: Lato;
+      font-weight: lighter;
+    }
+    pre {
+      white-space: pre-wrap;       /* css-3 */
+      white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+      white-space: -pre-wrap;      /* Opera 4-6 */
+      white-space: -o-pre-wrap;    /* Opera 7 */
+      word-wrap: break-word;       /* Internet Explorer 5.5+ */
+    }
+  }
+  #quality-modal {
+    > ul {
+      list-style: none;
+      padding:0;
+      margin:0;
+
+      > li.air-quality.category {
+        &:before { content: "• "; font-size: 4ex; }
+        &.good:before { color: $good-color; }
+        &.regular:before { color: $regular-color; }
+        &.bad:before { color: $bad-color; }
+        &.very-bad:before { color: $very-bad-color; }
+        &.extremely-bad:before { color: $extremely-bad-color; }
+        > h2 {
+          display: inline-block;
+          font-size: 1em;
+          vertical-align: middle;
+          margin: -1.1ex 0 0 1ex;
+        }
+        > pre { margin: 0 0 0 2em; }
+      }
+    }
+  }
+
+  #pollutants-modal {
+    > ul {
+      list-style: none;
+      padding:0;
+      margin:0;
+
+      > li.pollutant {
+        > h2 { font-size: 1em; margin: 1em 0 0 0; }
+      }
+    }
+  }
+}
+
+.easy-modal, .easy-modal-animated {
+  background-color: white;
+  box-shadow: 1px 1px 3px rgba(0,0,0,0.35);
+  padding: 2em;
+  width: 600px;
+}
+
+.container {
+  margin: auto;
+  width: 800px;
+}
+
+.brand {
+  margin: 12% auto 4rem;
+  width: 184px;
+
+  img {
+    width: 100%;
+  }
+}
+
+.title {
+  color: #FFFFFF;
+  font-family: AvenirNext-UltraLight;
+  font-size: 26px;
+  letter-spacing: 1px;
+  line-height: 50px;
+  margin-top: 10px;
+  text-align: center;
+}
+
+.label {
+  color: #FFFFFF;
+  font-family: Avenir-Light;
+  font-size: 10px;
+  letter-spacing: 2px;
+  line-height: 14px;
+  opacity: 0.8;
+  text-align: center;
+}
+
+
+.board {
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 3px;
+  box-shadow: 0px 15px 20px 5px rgba(0, 0, 0, 0.08);
+  display: table;
+  margin-bottom: 1rem;
+  position: relative;
+  width: 100%;
+
+  .label { text-transform: uppercase; }
+
+  & > aside {
+    box-sizing: border-box;
+    display: table-cell;
+    vertical-align: top;
+    width: 50%;
+
+    article {
+      position: relative;
+    }
+  }
+
+  .left { text-align: center; }
+
+  .right {
+    background-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 90%, #000000 100%);
+    background: rgba(0, 0, 0, 0.05);
+    padding: 28px;
+  }
+
+  .row {
+    clear: both;
+    display: block;
+
+    .station-name {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      margin: 0 0 6px 0;
+      color: #FFFFFF;
+      font-family: Avenir-Light;
+      font-size: 12px;
+      padding: .002ex 1em;
+      text-align: right;
+      text-transform: uppercase;
+    }
+
+    .item {
+      background: rgba(255, 255, 255, 0.15);
+      border-radius: 3px;
+      margin: 0 0 6px 0;
+      min-height: 94px;
+
+      .table {
+        display: table;
+
+        &.agents {
+          width: 80%;
+          margin: auto;
+        }
+
+        .col {
+          width: 1%;
+          display: table-cell;
+          text-align: center;
+
+          .badge {
+            margin: 15px auto 0;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 2px;
+            width: 40px;
+            padding: 5px 3px 3px;
+            font-family: Avenir-Light;
+            font-size: 9px;
+            color: #FFFFFF;
+            letter-spacing: 2px;
+            line-height: 12px;
+          }
+
+          .value {
+            margin-top: 8px;
+            font-family: AvenirNext-UltraLight;
+            font-size: 26px;
+            color: #FFFFFF;
+            letter-spacing: 1px;
+            line-height: 36px;
+          }
+        }
+      }
+
+      &.half {
+        width: 49%;
+        display: block;
+
+        &:first-child {
+          margin-right: 1%;
+          float: left;
+        }
+
+        &:last-child {
+          float: right;
+        }
+      }
+
+      .icon {
+        width: 28px;
+      }
+
+      .icon-thermometer {
+        width: 12px;
+        margin-right: 5px;
+      }
+
+
+    &.forecast {
+      padding-top: 15px;
+      min-height: 160px;
+      .col {
+        display: table-cell;
+        min-width: 80px;
+        .label {
+
+        }
+        .value {
+          font-family: Avenir-Light;
+          font-size: 14px;
+          color: #FFFFFF;
+          letter-spacing: 0.76px;
+          line-height: 18px;
+          border-radius: 2px;
+          margin: 0 3ex;
+          &.good { background-color: $good-color; }
+          &.regular { background-color: $regular-color; }
+          &.bad { background-color: $bad-color; }
+        }
+
+        .time-range {
+          font-family: AvenirNext-UltraLight;
+          font-size: 12px;
+          color: #FFFFFF;
+          line-height: 27px;
+        }
+
+        &.th {
+          font-family: Avenir-Light;
+          font-size: 10px;
+          color: #FFFFFF;
+          letter-spacing: 2px;
+          line-height: 14px;
+        }
+      }
+    }
+
+
+    }
+  }
+
+  .info-icon {
+    background-image: url("images/moreinfo.png");
+    background-size: 100%;
+    display: block;
+    float: left;
+    height: 14px;
+    left: 20px;
+    position: absolute;
+    top: 18px;
+    width: 14px;
+    content: "";
+    clear: both;
+  }
+
+  .activities {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 3px;
+    margin:24px;
+    padding:15px;
+    min-height: 94px;
+
+    .head {
+      margin:5px 0px 10px;
+    }
+
+    .activity-icon { display: none; }
+
+    &.exercise .activity-icon.exercise,
+    &.no-exercise .activity-icon.no-exercise,
+    &.limited-exercise .activity-icon.limited-exercise,
+    &.no-car .activity-icon.no-car,
+    &.limited-car .activity-icon.limited-car,
+    &.limited-heart .activity-icon.limited-heart,
+    &.outdoors .activity-icon.outdoors,
+    &.no-outdoors .activity-icon.no-outdoors,
+    &.limited-outdoors .activity-icon.limited-outdoors,
+    &.sensible .activity-icon.sensible,
+    &.no-sensible .activity-icon.no-sensible,
+    &.limited-sensible .activity-icon.limited-sensible,
+    &.no-smoking .activity-icon.no-smoking,
+    &.limited-smoking .activity-icon.limited-smoking,
+    &.no-fuel .activity-icon.no-fuel,
+    &.window .activity-icon.window { display: inline-block; }
+  }
+
+  .main-measure {
+    h1 {
+      font-weight: lighter;
+      font-size: 90px;
+      color: #FFFFFF;
+      line-height: 123px;
+      margin: 1rem auto 0;
+    }
+
+    small {
+      opacity: 0.8;
+      font-size: 10px;
+      color: #FFFFFF;
+      letter-spacing: 2px;
+      line-height: 14px;
+    }
+  }
+
+  .quality {
+    margin: 1.5rem auto 1rem;
+
+    .label {
+      color: #FFFFFF;
+      font-size: 10px;
+      letter-spacing: 2px;
+      line-height: 14px;
+      opacity: 0.8;
+    }
+
+    .info-badge {
+      border-radius: 40px;
+      height: 50px;
+      line-height: 50px;
+      margin: 1rem auto;
+      opacity: 0.89;
+      position: relative;
+      width: 200px;
+
+      &.good { background-color: $good-color; }
+      &.regular { background-color: $regular-color; }
+      &.bad { background-color: $bad-color; }
+      &.very_bad { background-color: $very-bad-color; }
+      &.extremely_bad { background-color: $extremely-bad-color; }
+
+      .description {
+        font-size: 18px;
+        color: #FFFFFF;
+        letter-spacing: 1.22px;
+        line-height: 25px;
+      }
+    }
+  }
+}
+
+.activity-icon {
+  margin:3px;
+  width: 50px;
+  height: 50px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+
+  &.exercise { background-image: url("images/recommended-activities/exercise.png"); }
+  &.no-exercise { background-image: url("images/recommended-activities/no-exercise.png"); }
+  &.limited-exercise { background-image: url("images/recommended-activities/limited-exercise.png"); }
+
+  &.limited-car { background-image: url("images/recommended-activities/limited-car.png"); }
+  &.no-car { background-image: url("images/recommended-activities/no-car.png"); }
+
+  &.limited-heart { background-image: url("images/recommended-activities/limited-heart.png"); }
+
+  &.outdoors { background-image: url("images/recommended-activities/outdoors.png"); }
+  &.no-outdoors { background-image: url("images/recommended-activities/no-outdoors.png"); }
+  &.limited-outdoors { background-image: url("images/recommended-activities/limited-outdoors.png"); }
+
+  &.sensible { background-image: url("images/recommended-activities/sensible.png"); }
+  &.no-sensible { background-image: url("images/recommended-activities/no-sensible.png"); }
+  &.limited-sensible { background-image: url("images/recommended-activities/limited-sensible.png"); }
+
+  &.no-smoking { background-image: url("images/recommended-activities/no-smoking.png"); }
+  &.limited-smoking { background-image: url("images/recommended-activities/limited-smoking.png"); }
+
+  &.no-fuel { background-image: url("images/recommended-activities/no-fuel.png");   }
+  &.window { background-image: url("images/recommended-activities/window.png");   }
+}

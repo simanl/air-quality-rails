@@ -1,0 +1,18 @@
+<article class="item">
+  <a href="#" class="modal-link" data-modal="#pollutants-modal"><span class="info-icon"></span></a>
+  <div class="table agents">
+    <div class="col">
+      <div class="badge">PM10</div>
+      <div class="toracic-particles value">{{ valueOrDash measurement.toracicParticles }}</div>
+    </div>
+    <div class="col">
+      <div class="badge">PM2.5</div>
+      <div class="respirable-particles value">{{ valueOrDash measurement.respirableParticles }}</div>
+    </div>
+    <div class="col">
+      <div class="badge">O3</div>
+      <div class="ozone value">{{ valueOrDash measurement.ozone }}</div>
+    </div>
+  </div>
+  {{yield}}
+</article>

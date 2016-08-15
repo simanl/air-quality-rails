@@ -1,0 +1,29 @@
+<article class="item forecast">
+
+  <div class="table row">
+    <div class="col th"></div>
+    <div class="col th"><div class="badge">PM10</div></div>
+    <div class="col th"><div class="badge">PM2.5</div></div>
+    <div class="col th"><div class="badge">O3</div></div>
+  </div>
+
+
+  {{#each forecasts as |forecast|}}
+  <div class="table row">
+    <div class="col">
+      <div class="time-range">{{ hour forecast.startsAt }}-{{ hour forecast.endsAt }}</div>
+    </div>
+    <div class="col">
+      <div class="value {{ forecast.toracicParticlesCategory }}">{{ valueOrDash forecast.toracicParticlesIndex }}</div>
+    </div>
+    <div class="col">
+      <div class="value {{ forecast.respirableParticlesCategory }}">{{ valueOrDash forecast.respirableParticlesIndex }}</div>
+    </div>
+    <div class="col">
+      <div class="value {{ forecast.ozoneCategory }}">{{ valueOrDash forecast.ozoneIndex }}</div>
+    </div>
+  </div>
+  {{/each}}
+
+</article>
+{{yield}}

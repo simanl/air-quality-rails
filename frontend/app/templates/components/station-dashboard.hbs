@@ -1,0 +1,28 @@
+<section class="board">
+  <aside class="left">
+    {{ air-quality-indicator measurement=station.lastMeasurement }}
+    {{ recommended-activities-indicator measurement=station.lastMeasurement }}
+  </aside>
+
+  <aside class="right">
+    <div class="row">
+      {{ temperature-indicator measurement=station.lastMeasurement }}
+      {{ wind-indicator measurement=station.lastMeasurement }}
+    </div>
+
+    <div class="row">
+      {{ pollutants-indicator measurement=station.lastMeasurement }}
+    </div>
+
+    <div class="row">
+      {{ pollutant-forecasts-indicator forecasts=station.currentForecasts }}
+    </div>
+
+    <div class="row">
+      <article class="station-name">
+        <p>Estaci&oacute;n: {{ station.name }}</p>
+      </article>
+    </div>
+  </aside>
+  {{yield}}
+</section>

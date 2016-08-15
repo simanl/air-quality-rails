@@ -1,0 +1,27 @@
+<article class="activities {{ arrayJoin measurement.recommendedActivities " " }}">
+  <div class="label head">{{ t "indicators.recommended-activities.label" }}</div>
+
+  <a href="#" class="activity-icon exercise modal-link" data-modal="#exercise-modal"></a>
+  <a href="#" class="activity-icon no-exercise modal-link" data-modal="#no-exercise-modal"></a>
+  <a href="#" class="activity-icon limited-exercise modal-link" data-modal="#limited-exercise-modal"></a>
+
+  <a href="#" class="activity-icon limited-car modal-link" data-modal="#limited-car-modal"></a>
+  <a href="#" class="activity-icon no-car modal-link" data-modal="#no-car-modal"></a>
+
+  <a href="#" class="activity-icon limited-heart modal-link" data-modal="#limited-heart-modal"></a>
+
+  <a href="#" class="activity-icon outdoors modal-link" data-modal="#outdoors-modal"></a>
+  <a href="#" class="activity-icon no-outdoors modal-link" data-modal="#no-outdoors-modal"></a>
+  <a href="#" class="activity-icon limited-outdoors modal-link" data-modal="#limited-outdoors-modal"></a>
+
+  <a href="#" class="activity-icon sensible modal-link" data-modal="#sensible-modal"></a>
+  <a href="#" class="activity-icon no-sensible modal-link" data-modal="#no-sensible-modal"></a>
+  <a href="#" class="activity-icon limited-sensible modal-link" data-modal="#limited-sensible-modal"></a>
+
+  <a href="#" class="activity-icon no-smoking modal-link" data-modal="#no-smoking-modal"></a>
+  <a href="#" class="activity-icon limited-smoking modal-link" data-modal="#limited-smoking-modal"></a>
+
+  <a href="#" class="activity-icon no-fuel modal-link" data-modal="#no-fuel-modal"></a>
+  <a href="#" class="activity-icon window modal-link" data-modal="#window-modal"></a>
+  {{yield}}
+</article>

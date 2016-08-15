@@ -19,6 +19,7 @@ class StationsController < ApplicationController
 
     respond_to do |format|
       format.json { render json: @stations, fields: json_api_params[:fields], include: params[:include] }
+      format.jsonapi { render json: @stations, fields: json_api_params[:fields], include: params[:include], key_transform: :dash }
     end
   end
 
@@ -27,6 +28,7 @@ class StationsController < ApplicationController
   def show
     respond_to do |format|
       format.json { render json: @station, fields: json_api_params[:fields], include: params[:include] }
+      format.jsonapi { render json: @station, fields: json_api_params[:fields], include: params[:include], key_transform: :dash }
     end
   end
 

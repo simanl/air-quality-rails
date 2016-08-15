@@ -14,7 +14,8 @@ Rails.application.routes.draw do
     end
   end
 
-  root "home#index"
+  # root "home#index"
+  mount_ember_app :frontend, to: "/"
 
   resources :stations, only: [:index, :show] do
     collection do

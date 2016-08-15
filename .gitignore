@@ -21,11 +21,6 @@ pickle-email-*.html
 # unless supporting rvm < 1.11.0 or doing something fancy, ignore this:
 .rvmrc
 
-# if using bower-rails ignore default bower_components path bower.json files
-/vendor/assets/bower_components
-*.bowerrc
-bower.json
-
 # Ignore pow environment settings
 .powenv
 
@@ -40,6 +35,7 @@ bower.json
 /.npm/*
 /.cache/*
 /.config/*
+/.local/*
 
 # TODO: Remove whatever makes the .gem file to be created:
 /.gem
@@ -63,3 +59,20 @@ bower.json
 
 landing/build
 .bundle
+
+# 4: Ember frontend ignored files:
+# 4.1: Compiled output
+frontend/dist
+frontend/tmp
+
+# 4.2: Dependencies
+frontend/node_modules
+frontend/bower_components
+
+# 4.3: Misc
+frontend/.sass-cache
+frontend/connect.lock
+frontend/coverage/*
+frontend/libpeerconnection.log
+frontend/npm-debug.log
+frontend/testem.log

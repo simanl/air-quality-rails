@@ -1,0 +1,133 @@
+<section class="modals">
+  <!-- Modal contents -->
+  <div id="quality-modal" class="modal-content">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <ul>
+      <li class="air-quality category good">
+        <h2>{{ t "indicators.air-quality.good.title" }}</h2>
+        <pre>{{ t "indicators.air-quality.good.description" }}</pre>
+      </li>
+      <li class="air-quality category regular">
+        <h2>{{ t "indicators.air-quality.regular.title" }}</h2>
+        <pre>{{ t "indicators.air-quality.regular.description" }}</pre>
+      </li>
+      <li class="air-quality category bad">
+        <h2>{{ t "indicators.air-quality.bad.title" }}</h2>
+        <pre>{{ t "indicators.air-quality.bad.description" }}</pre>
+      </li>
+      <li class="air-quality category very-bad">
+        <h2>{{ t "indicators.air-quality.very-bad.title" }}</h2>
+        <pre>{{ t "indicators.air-quality.very-bad.description" }}</pre>
+      </li>
+      <li class="air-quality category extremely-bad">
+        <h2>{{ t "indicators.air-quality.extremely-bad.title" }}</h2>
+        <pre>{{ t "indicators.air-quality.extremely-bad.description" }}</pre>
+      </li>
+    </ul>
+  </div>
+
+  <div id="pollutants-modal" class="modal-content">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <ul>
+      <li class="pollutant toracic-particles">
+        <h2>{{ t "indicators.pollutants.toracic-particles.title" }}</h2>
+        <pre>{{ t "indicators.pollutants.toracic-particles.description" }}</pre>
+      </li>
+      <li class="pollutant respirable-particles">
+        <h2>{{ t "indicators.pollutants.respirable-particles.title" }}</h2>
+        <pre>{{ t "indicators.pollutants.respirable-particles.description" }}</pre>
+      </li>
+      <li class="pollutant ozone">
+        <h2>{{ t "indicators.pollutants.ozone.title" }}</h2>
+        <pre>{{ t "indicators.pollutants.ozone.description" }}</pre>
+      </li>
+    </ul>
+  </div>
+
+  <div class="modal-content" id="exercise-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.exercise.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="no-exercise-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.no-exercise.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="limited-exercise-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.limited-exercise.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="limited-car-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.limited-car.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="no-car-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.no-car.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="limited-heart-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.limited-heart.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="outdoors-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.outdoors.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="no-outdoors-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.no-outdoors.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="limited-outdoors-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.limited-outdoors.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="sensible-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.sensible.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="no-sensible-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.no-sensible.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="limited-sensible-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.limited-sensible.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="no-smoking-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.no-smoking.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="limited-smoking-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.limited-smoking.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="no-fuel-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.no-fuel.description" }}</pre>
+  </div>
+
+  <div class="modal-content" id="window-modal">
+    <h1>{{ t "indicators.generic-title" }}</h1>
+    <pre>{{ t "indicators.recommended-activities.window.description" }}</pre>
+  </div>
+</section>
+
+<div class="container">
+  <div class="brand">
+    <img src="/assets/images/airenl.png" />
+  </div>
+  {{outlet}}
+</div>
