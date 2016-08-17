@@ -103,6 +103,28 @@ services:
       - keyval
     command: rails server -p 3000 -b 0.0.0.0
 
+  benchmark:
+    image: simanl/air-quality-rails:latest
+    ports: [ "3011:3000" ]
+    stdin_open: true
+    tty: true
+    command: /usr/bin/supervisord --configuration=/usr/src/app/config/nginx-rails.conf
+    networks:
+      - front-tier
+      - back-tier
+    links:
+      - db
+      - keyval
+    depends_on:
+      - db
+      - keyval
+    environment:
+      <<: *app_environment
+      RAILS_ENV: production
+      MIN_THREADS: 8
+      RAILS_MAX_THREADS: 12
+      SECRET_KEY_BASE: f5c8303a92658b08b79e275e4d3888c9bf5ff40505c84344a2013fa574b3b4fd5144c2477caa19a382288e1e9e8929760764f53c9d83133970f77b8bd7e281fe
+
   # Spring Server: Keeps a copy of the app in memory so invoking tests is
   # speedier:
   test:

@@ -3,7 +3,7 @@
 .gitignore
 
 # Ignore docker and environment files:
-Dockerfile
+*Dockerfile
 docker-compose.yml
 *.env
 development-forecasts-entrypoint
@@ -41,6 +41,18 @@ db/dumps
 .npm/*
 .cache/*
 .config/*
+.local/*
+
+# 3.3: bundler stuff
+.bundle/*
+
+# 3.4: Codeclimate stuff:
+.codeclimate.yml
+.csslintrc
+.eslintignore
+.eslintrc
+.rubocop.yml
+coffeelint.json
 
 # Ignore the examples folder:
 examples/
@@ -55,6 +67,19 @@ bin/check-or-setup-db
 bin/restoredb
 bin/run
 
-# Ember frontend modules:
-.config/*
-.npm/*
+# 4: Ember frontend ignored files:
+# 4.1: Compiled output
+frontend/dist
+frontend/tmp
+
+# 4.2: Dependencies
+frontend/node_modules
+frontend/bower_components
+
+# 4.3: Misc
+frontend/.sass-cache
+frontend/connect.lock
+frontend/coverage/*
+frontend/libpeerconnection.log
+frontend/npm-debug.log
+frontend/testem.log
