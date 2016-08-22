@@ -1,4 +1,7 @@
 export default {
+  "values": {
+    "null" : "n/a"
+  },
   "indicators": {
     "generic-title": "More Information",
 
@@ -55,18 +58,23 @@ export default {
     },
 
     "pollutants": {
+      "label": "Last hour concentration",
       "toracic-particles": {
-        "title": "PM 10 (μg x m³)",
+        "title": "PM 10 (expressed in μg x m³)",
         "description": "Suspended solid or liquid particles in the air with aerodynamic diameter of 10μm or less. They are emitted from a variety of stationary and mobile sources such as diesel engines, wood stoves, power plants, etc.\n\nConstant exposure to high levels of PM10 has been related to heart and lung diseases, eye, nose and throat irritation, coughing and shortness of breath, reduced lung function, and asthma and heart attacks."
       },
       "respirable-particles": {
-        "title": "PM 2.5 (μg x m³)",
+        "title": "PM 2.5 (expressed in μg x m³)",
         "description": "Suspended fine particles in the air with aerodynamic diameter of 2.5μm or less. PM2.5 primary sources include road transport, industrial, commercial and domestic burn of fuel, and dust emissions from construction sites.\n\nLong-term exposure to high levels of PM2.5 can cause respiratory and cardiovascular illness, and even death."
       },
       "ozone": {
-        "title": "O₃ (Parts per billion)",
+        "title": "O₃ (expressed in ppb)",
         "description": "Secondary pollutant created by photochemical reactions between nitrogen oxides and volatile organic compounds. Major sources of precursors are industrial and electrical facilities, automovile exhaust, petrol vapours, and chemical solvents.\n\nExposure to O₃ can irritate and swell the lungs, and also irritate the eyes, nose and throat, which can lead to coughing and chest discomfort. Swelling and narrowing of the airways can lead to increased sensitivity to cold air and exercise."
       }
+    },
+
+    "forecasts": {
+      "label" : "Forecasts"
     }
   }
   // "some.translation.key": "Text for some.translation.key",

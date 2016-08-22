@@ -1,8 +1,5 @@
-<article class="item half">
-  <div class="title">
-    <img src="/assets/images/wind.png" class="icon" />
-    <span class="wind-speed value">{{ valueOrDash measurement.windSpeed }}</span>
-  </div>
-  <div class="label">{{ t "indicators.wind.label" }}</div>
-  {{yield}}
-</article>
+<div class="title">
+  <img src="/assets/images/wind.png" class="icon" />
+  <span class="wind-speed value">{{ coalesce measurement.windSpeed (t 'values.null') }}</span>
+</div>
+<div class="label">{{ t "indicators.wind.label" }}</div>

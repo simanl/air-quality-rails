@@ -1,6 +1,14 @@
+# 1: Use ruby 2.2.5 as base:
 FROM ruby:2.2.5
 
-# Install node for javascript asset compilation and ember-cli:
+# 2: We'll set the application path as the working directory
+WORKDIR /usr/src/app
+
+# 3: We'll add the app's binaries path to $PATH:
+ENV HOME=/usr/src/app \
+    PATH=/usr/src/app/bin:$PATH
+
+# 4: Install node for javascript asset compilation and ember-cli:
 # gpg keys listed at https://github.com/nodejs/node
 RUN set -ex \
   && for key in \
@@ -24,11 +32,14 @@ RUN set -ex \
   && tar -xJf "node-v$NODE_VERSION-linux-x64.tar.xz" -C /usr/local --strip-components=1 \
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt.asc SHASUMS256.txt
 
-# Install ember-cli and friends:
+# 5: Install ember-cli and friends:
 RUN set -ex \
   && npm install -g ember-cli \
   && npm install -g bower \
-  && npm install -g phantomjs-prebuilt \
+  && npm install -g phantomjs-prebuilt
+
+# 6: Install watchman:
+RUN set -ex \
   && export WATCHMAN_VERSION=4.6.0 \
   && curl -SL "https://github.com/facebook/watchman/archive/v${WATCHMAN_VERSION}.tar.gz" | tar -xz -C /tmp/ \
   && cd /tmp/watchman-${WATCHMAN_VERSION} \
@@ -41,12 +52,7 @@ RUN set -ex \
   && rm -rf /var/lib/apt/lists/* \
   && rm -rf /tmp/*
 
-WORKDIR /usr/src/app
-
-ENV HOME=/usr/src/app \
-    PATH=/usr/src/app/bin:$PATH
-
-# Install the current project gems - they can be safely changed later during
+# 7: Install the current project gems - they can be safely changed later during
 # developmenr via `bundle install` or `bundle update`:
 ADD Gemfile* /usr/src/app/
 RUN set -ex && bundle install

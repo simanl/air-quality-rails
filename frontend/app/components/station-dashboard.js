@@ -2,6 +2,8 @@ import Ember from 'ember';
 import jQuery from "jquery";
 
 export default Ember.Component.extend({
+  tagName: "section",
+  classNames: ["board"],
   didInsertElement() {
     jQuery(".modal-content").easyModal({
       top: "auto",

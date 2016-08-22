@@ -1,4 +1,7 @@
 export default {
+  "values": {
+    "null" : "n/d"
+  },
   "indicators": {
     "generic-title": "Más Información",
 
@@ -55,18 +58,23 @@ export default {
     },
 
     "pollutants": {
+      "label": "Concentraciones última hora",
       "toracic-particles": {
-        "title": "PM 10 (μg x m³)",
+        "title": "PM 10 (expresado en μg x m³)",
         "description": "Partículas suspendidas líquidas o sólidas con diámetro aerodinámico igual o menor de 10μm. Son emitidas por una variedad de fuentes fijas y móviles, como camiones a diesel, estufas de leña, centrales eléctricas, etc.\n\nLa exposición constante a niveles elevados de PM10 ha sido relacionada con irritación de los ojos, nariz y garganta, tos frecuente y dificultad  para respirar, ataques de asma, al corazón y afectaciones a las funciones pulmonares."
       },
       "respirable-particles": {
-        "title": "PM 2.5 (μg x m³)",
+        "title": "PM 2.5 (expresado en μg x m³)",
         "description": "Partículas finas suspendidas en el aire con diámetro aerodinámico igual o menor de 2.5μm. Son emitidas durante cualquier proceso de combustión, incluyendo vehículos motorizados, centrales eléctricas, quema de biomasa e incendios forestales, además de algunos procesos industriales.\n\nLa exposición por largos períodos a PM2.5 ha sido asociada con problemas de afecciónes respiratorias y cardiacas, principalmente entre grupos susceptibles como adultos mayores e infantes."
       },
       "ozone": {
-        "title": "O₃ (Partes por billón)",
+        "title": "O₃ (expresado en ppb)",
         "description": "Contaminante secundario formado durante reacciones fotoquímicas entre óxidos de nitrógeno y compuestos orgánicos volátiles. Emisiones de instalaciones eléctricas e industriales, vehiculares, vapores de gasolina y sovlentes son algunas de las mayores fuentes de precursores.\n\nLa exposición a O₃ puede desencadenar en afecciones del sistema respiratorio tales como asma, especialmente en niños y adultos mayores."
       }
+    },
+
+    "forecasts": {
+      "label" : "Pronóstico"
     }
   }
   // "some.translation.key": "Text for some.translation.key",

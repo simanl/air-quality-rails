@@ -1,8 +1,6 @@
-<article class="item half">
-  <div class="title">
-    <img src="/assets/images/thermometer.png" class="icon-thermometer" />
-    <span class="temperature value">{{ measurement.temperature }}</span>
-  </div>
-  <div class="label">{{ t "indicators.temperature.label" }}</div>
-  {{yield}}
-</article>
+<div class="title">
+  <img src="/assets/images/thermometer.png" class="icon-thermometer" />
+  <span class="temperature value">{{ formattedTemperature measurement.temperature }}</span>
+</div>
+<div class="label">{{ t "indicators.temperature.label" }}</div>
+{{yield}}

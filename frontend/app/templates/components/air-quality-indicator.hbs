@@ -1,15 +1,8 @@
-<article class="main-measure">
-  <h1 class="imeca-points value">{{ measurement.imecaPoints }}</h1>
-  <small>IMECA</small>
-</article>
-
-<article class="quality">
-  <span class="label">{{ t "indicators.air-quality.category-label" }}</span>
-  <div class="info-badge {{ measurement.imecaCategory }}">
-    <a class="modal-link" data-modal="#quality-modal" href="#">
-      <span class="info-icon"></span>
-      <span class="description imeca-category value">{{t (concat "indicators.air-quality." measurement.imecaCategory ".title") }}</span>
-    </a>
-  </div>
-  {{yield}}
-</article>
+<span class="label">{{ t "indicators.air-quality.category-label" }}</span>
+<div class="info-badge {{ quality }}">
+  <a class="modal-link" data-modal="#quality-modal" href="#">
+    <span class="info-icon"></span>
+    <span class="description imeca-category value">{{t (concat "indicators.air-quality." quality ".title") }}</span>
+  </a>
+</div>
+{{yield}}

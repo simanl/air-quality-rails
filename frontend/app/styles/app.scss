@@ -6,7 +6,7 @@ $extremely-bad-color: #723785;
 $app-font-family: Lato;
 
 @mixin chafari {
-  font-weight: 300;
+  font-weight: 400;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: antialiased;
   font-smoothing: antialiased;
@@ -36,11 +36,11 @@ body {
     width: 100%;
     height: 100%;
 
-    -webkit-filter: brightness(70%);
-    -moz-filter: brightness(70%);
-    -o-filter: brightness(70%);
-    -ms-filter: brightness(70%);
-    filter: brightness(70%);
+    -webkit-filter: brightness(70%) blur(2px);
+    -moz-filter: brightness(70%) blur(2px);
+    -o-filter: brightness(70%) blur(2px);
+    -ms-filter: brightness(70%) blur(2px);
+    filter: brightness(70%) blur(2px);
 
     -webkit-transition: background-image 0.2s ease-in-out;
     -moz-transition: background-image 0.2s ease-in-out;
@@ -48,7 +48,14 @@ body {
     transition: background-image 0.2s ease-in-out;
   }
 
-  &.day:before { background-image: url("images/bg_day.jpg"); }
+  &.day:before {
+    background-image: url("images/bg_day.jpg");
+    -webkit-filter: brightness(60%) blur(3px);
+    -moz-filter: brightness(60%) blur(3px);
+    -o-filter: brightness(60%) blur(3px);
+    -ms-filter: brightness(60%) blur(3px);
+    filter: brightness(60%) blur(3px);
+  }
   &.night:before { background-image: url("images/bg_night.jpg"); }
   &.sunset:before { background-image: url("images/bg_sunset.jpg"); }
   &.blur:before, &.blur .container {
@@ -175,6 +182,10 @@ body {
 
 
 .board {
+  .pollutants-indicator > .label.head {
+    margin-bottom: -1em;
+    padding-top: .5em;
+  }
   background: rgba(255, 255, 255, 0.3);
   border-radius: 3px;
   box-shadow: 0px 15px 20px 5px rgba(0, 0, 0, 0.08);
@@ -183,7 +194,15 @@ body {
   position: relative;
   width: 100%;
 
-  .label { text-transform: uppercase; }
+  .label {
+    text-transform: uppercase;
+    color: #FFF;
+    font-size: 11px;
+    letter-spacing: 2px;
+    line-height: 14px;
+    opacity: 0.8;
+    @include chafari;
+  }
 
   & > aside {
     box-sizing: border-box;
@@ -304,6 +323,7 @@ body {
           line-height: 18px;
           border-radius: 2px;
           margin: 0 3ex;
+          font-weight: bolder;
           &.good { background-color: $good-color; }
           &.regular { background-color: $regular-color; }
           &.bad { background-color: $bad-color; }
@@ -380,30 +400,12 @@ body {
       font-size: 90px;
       color: #FFFFFF;
       line-height: 123px;
-      margin: 1rem auto 0;
-    }
-
-    small {
-      opacity: 0.8;
-      font-size: 10px;
-      color: #FFFFFF;
-      letter-spacing: 2px;
-      line-height: 14px;
-      @include chafari;
+      margin: 1rem auto -1rem;
     }
   }
 
   .quality {
     margin: 1.5rem auto 1rem;
-
-    .label {
-      color: #FFFFFF;
-      font-size: 10px;
-      letter-spacing: 2px;
-      line-height: 14px;
-      opacity: 0.8;
-      @include chafari;
-    }
 
     .info-badge {
       border-radius: 40px;
@@ -414,18 +416,13 @@ body {
       position: relative;
       width: 200px;
 
-      &.good { background-color: $good-color; }
-      &.regular { background-color: $regular-color; }
-      &.bad { background-color: $bad-color; }
-      &.very_bad { background-color: $very-bad-color; }
-      &.extremely_bad { background-color: $extremely-bad-color; }
-
       .description {
         font-size: 18px;
         color: #FFFFFF;
         letter-spacing: 1.22px;
         line-height: 25px;
         @include chafari;
+        font-weight: bolder;
       }
     }
   }
@@ -438,6 +435,8 @@ body {
   display: inline-block;
   background-size: contain;
   background-repeat: no-repeat;
+  filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
+  -webkit-filter: drop-shadow(1px 1px 1px rgba(0,0,0,0.3));
 
   &.exercise { background-image: url("images/recommended-activities/exercise.png"); }
   &.no-exercise { background-image: url("images/recommended-activities/no-exercise.png"); }
@@ -461,4 +460,73 @@ body {
 
   &.no-fuel { background-image: url("images/recommended-activities/no-fuel.png");   }
   &.window { background-image: url("images/recommended-activities/window.png");   }
+}
+
+.g-map-canvas {
+  width: 800px;
+  height: 475px;
+  margin: auto;
+}
+
+.g-map-marker {
+  > h3, > .quality {
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  > h3 {
+    font-weight:400;
+    margin: 0 0 0.5ex 0;
+  }
+
+  > .quality {
+    > .label {
+      color: #999;
+      letter-spacing: inherit;
+      @include chafari;
+    }
+
+    > .info-badge {
+      border-radius: 15px;
+      padding: 5px 0;
+      margin-top: .5ex;
+      @include chafari;
+    }
+  }
+}
+
+.info-badge {
+  &.good { background-color: $good-color; }
+  &.regular { background-color: $regular-color; }
+  &.bad { background-color: $bad-color; }
+  &.very_bad { background-color: $very-bad-color; }
+  &.extremely_bad { background-color: $extremely-bad-color; }
+  .description { color: #FFFFFF; }
+}
+
+.station-indicator {
+  text-align: center;
+  a {
+    min-width: 200px;
+    background-color: rgba(0, 0, 0, 0.35);
+    border-radius: 30px;
+    text-align: center;
+    color: #FFF;
+    display: inline-block;
+    margin: auto;
+    text-transform: uppercase;
+    padding: 1.3em 2em;
+    font-size: 11px;
+    white-space: nowrap;
+    @include chafari;
+  }
+  a::before {
+    background-image: url("images/location.png");
+    background-size: 23px;
+    display: inline-block;
+    width: 23px;
+    height: 23px;
+    content: "";
+    margin: -3px 1ex -6px 0;
+  }
 }

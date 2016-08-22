@@ -40,7 +40,9 @@ if [ -z "$1" ]; then set -- rails server -p 3000 -b 0.0.0.0 "$@"; fi
 # file into an private directory - suddenly killing and removing app containers
 # without this would leave a pidfile in the project's tmp dir, preventing containers
 # from starting up on further attempts:
-if [[ "$1" = "rails" && ("$2" = "s" || "$2" = "server") ]]; then set -- "$@" -P /tmp/server.pid; fi
+if [[ "$1" = "rails" && ("$2" = "s" || "$2" = "server") ]]; then
+  rm -rf "${APP_TEMP_PATH}/pids/server.pid";
+fi
 
 # 9: Execute the given or default command:
 exec "$@"
