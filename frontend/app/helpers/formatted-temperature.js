@@ -1,11 +1,12 @@
 import Ember from 'ember';
 
-export function temperature(params/*, hash*/) {
-  var temperature = params.get("firstObject");
-  if (temperature) {
+export function temperature(params, hash) {
+  let temperature = params.get("firstObject");
+  let coalesceWith = hash.coalesceWith || "--";
+  if (typeof temperature !== 'undefined' && temperature !== null) {
     return `${Math.round(temperature)}°`;
   } else {
-    return "N.D.";
+    return coalesceWith;
   }
 }
 

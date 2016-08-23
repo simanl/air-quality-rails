@@ -1,8 +1,8 @@
-$good-color: #51CD54;
-$regular-color: #FDD630;
-$bad-color: #F19940;
-$very-bad-color: #e44342;
-$extremely-bad-color: #723785;
+$good-color: #65CD68;
+$regular-color: #FBD742;
+$bad-color: #F0A051;
+$very-bad-color: #E45352;
+$extremely-bad-color: #7D488E;
 $app-font-family: Lato;
 
 @mixin chafari {
@@ -152,7 +152,7 @@ body {
 }
 
 .brand {
-  margin: 12% auto 4rem;
+  margin: 3rem auto 2rem;
   width: 184px;
 
   img {
@@ -215,7 +215,10 @@ body {
     }
   }
 
-  .left { text-align: center; }
+  .left {
+    text-align: center;
+    padding: 1.9em 1.7em;
+  }
 
   .right {
     background-image: linear-gradient(90deg, rgba(0, 0, 0, 0) 90%, #000000 100%);
@@ -325,7 +328,7 @@ body {
           margin: 0 3ex;
           font-weight: bolder;
           &.good { background-color: $good-color; }
-          &.regular { background-color: $regular-color; }
+          &.regular { background-color: $regular-color; text-shadow: 1px 1px 1px rgba(150, 150, 150, .4); }
           &.bad { background-color: $bad-color; }
         }
 
@@ -366,7 +369,6 @@ body {
   .activities {
     background: rgba(255, 255, 255, 0.15);
     border-radius: 3px;
-    margin:24px;
     padding:15px;
     min-height: 94px;
 
@@ -395,26 +397,33 @@ body {
   }
 
   .main-measure {
-    h1 {
+    > h1 {
       font-weight: lighter;
       font-size: 90px;
       color: #FFFFFF;
-      line-height: 123px;
-      margin: 1rem auto -1rem;
+      margin: 0;
+      line-height: 2ex;
     }
   }
 
   .quality {
-    margin: 1.5rem auto 1rem;
+    margin: 1.5rem auto .7rem;
 
-    .info-badge {
+    > .info-badge {
       border-radius: 40px;
       height: 50px;
       line-height: 50px;
       margin: 1rem auto;
       opacity: 0.89;
-      position: relative;
-      width: 200px;
+      display: inline-block;
+      padding: 0 2em;
+      padding-left: calc(2em + 10px);
+      background-image: url("images/moreinfo.png");
+      background-repeat: no-repeat;
+      background-position: 20px center;
+      background-size: 15px;
+      min-width: 120px;
+      margin-bottom: 1ex;
 
       .description {
         font-size: 18px;
@@ -488,14 +497,17 @@ body {
 
     > .info-badge {
       border-radius: 15px;
-      padding: 5px 0;
+      padding: 5px 1em;
       margin-top: .5ex;
+      display: inline-block;
+      min-width: 110px;
       @include chafari;
     }
   }
 }
 
 .info-badge {
+  background-color: #666;
   &.good { background-color: $good-color; }
   &.regular { background-color: $regular-color; }
   &.bad { background-color: $bad-color; }
@@ -504,9 +516,10 @@ body {
   .description { color: #FFFFFF; }
 }
 
-.station-indicator {
+.station-indicator, .station-map-title {
   text-align: center;
-  a {
+  margin: 1rem auto 2rem;
+  > a, > span {
     min-width: 200px;
     background-color: rgba(0, 0, 0, 0.35);
     border-radius: 30px;
@@ -519,14 +532,18 @@ body {
     font-size: 11px;
     white-space: nowrap;
     @include chafari;
+    &::before {
+      background-image: url("images/location.png");
+      background-size: 23px;
+      display: inline-block;
+      width: 23px;
+      height: 23px;
+      content: "";
+      margin: -3px 1ex -6px 0;
+    }
   }
-  a::before {
-    background-image: url("images/location.png");
-    background-size: 23px;
-    display: inline-block;
-    width: 23px;
-    height: 23px;
-    content: "";
-    margin: -3px 1ex -6px 0;
-  }
+}
+
+.pollutant-forecasts-indicator {
+  &.unavailable { display: none }
 }

@@ -32,7 +32,9 @@ module.exports = function(environment) {
 
     'g-map': {
       key: 'AIzaSyCgWX_uzBjxjQ8XbIMi8cZ5IsFi8xwA_r8'
-    }
+    },
+
+    moment: { includeLocales: ['es', 'en'] }
   };
 
   if (environment === 'development') {

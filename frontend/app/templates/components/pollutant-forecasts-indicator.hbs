@@ -1,4 +1,7 @@
-<div class="label head">{{ t "indicators.forecasts.label" }}</div>
+<div class="label head">
+  <a href="#" class="modal-link" data-modal="#forecast-modal"><span class="info-icon"></span></a>
+  {{ t "indicators.forecasts.label" }}
+</div>
 
 <div class="table row">
   <div class="col th"></div>
@@ -23,4 +26,3 @@
   </div>
 </div>
 {{/each}}
-{{yield}}

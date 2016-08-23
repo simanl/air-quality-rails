@@ -2,8 +2,15 @@ export default {
   "values": {
     "null" : "n/d"
   },
+  "stations-list": {
+    "label" : "Sitios de Monitoreo"
+  },
   "indicators": {
     "generic-title": "Más Información",
+
+    "imeca": {
+      "measurement-datetime-format" : "HH:MM"
+    },
 
     "air-quality": {
       "category-label": "La calidad del aire es",
@@ -19,11 +26,11 @@ export default {
         "title": "Mala",
         "description": "Posibles efectos adversos a la salud, en particular niños, adultos mayores y personas con enfermedades cardiovasculares o respiratorias."
       },
-      "very-bad": {
+      "very_bad": {
         "title": "Muy Mala",
         "description": "Efectos adversos a la salud de la población en general. Se agravan los síntomas en niños, adultos mayores y personas con enfermedades cardiovasculares o respiratorias."
       },
-      "extremely-bad": {
+      "extremely_bad": {
         "title": "Extremadamente Mala",
         "description": "Efectos graves a la salud de la población en general. Se pueden presentar complicaciones en niños, adultos mayores y personas con enfermedades cardiovasculares o respiratorias."
       }
@@ -60,11 +67,11 @@ export default {
     "pollutants": {
       "label": "Concentraciones última hora",
       "toracic-particles": {
-        "title": "PM 10 (expresado en μg x m³)",
+        "title": "PM 10 (expresado en μg/m³)",
         "description": "Partículas suspendidas líquidas o sólidas con diámetro aerodinámico igual o menor de 10μm. Son emitidas por una variedad de fuentes fijas y móviles, como camiones a diesel, estufas de leña, centrales eléctricas, etc.\n\nLa exposición constante a niveles elevados de PM10 ha sido relacionada con irritación de los ojos, nariz y garganta, tos frecuente y dificultad  para respirar, ataques de asma, al corazón y afectaciones a las funciones pulmonares."
       },
       "respirable-particles": {
-        "title": "PM 2.5 (expresado en μg x m³)",
+        "title": "PM 2.5 (expresado en μg/m³)",
         "description": "Partículas finas suspendidas en el aire con diámetro aerodinámico igual o menor de 2.5μm. Son emitidas durante cualquier proceso de combustión, incluyendo vehículos motorizados, centrales eléctricas, quema de biomasa e incendios forestales, además de algunos procesos industriales.\n\nLa exposición por largos períodos a PM2.5 ha sido asociada con problemas de afecciónes respiratorias y cardiacas, principalmente entre grupos susceptibles como adultos mayores e infantes."
       },
       "ozone": {
@@ -74,7 +81,8 @@ export default {
     },
 
     "forecasts": {
-      "label" : "Pronóstico"
+      "label" : "Pronóstico",
+      "description" : "Máximo valor esperado."
     }
   }
   // "some.translation.key": "Text for some.translation.key",

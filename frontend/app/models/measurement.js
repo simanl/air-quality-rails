@@ -32,8 +32,10 @@ export default DS.Model.extend({
           return ["limited-exercise", "limited-outdoors", "no-sensible"];
         case "good":
           return ["exercise", "outdoors", "sensible"];
-        default:
+        case "regular":
           return ["exercise", "outdoors", "limited-sensible"];
+        default:
+          return [];
       }
     }
   })
