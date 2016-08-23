@@ -25,6 +25,17 @@
     {{content-for "head-footer"}}
   </head>
   <body>
+    <script type="text/javascript">
+      window.aireNlMapMarkers = {
+        bad: 'assets/images/map-markers/bad.png',
+        extremely_bad: 'assets/images/map-markers/extremely_bad.png',
+        good: 'assets/images/map-markers/good.png',
+        not_available: 'assets/images/map-markers/not_available.png',
+        regular: 'assets/images/map-markers/regular.png',
+        very_bad: 'assets/images/map-markers/very_bad.png'
+      };
+    </script>
+
     {{content-for "body"}}
 
     <script src="{{rootURL}}assets/vendor.js"></script>

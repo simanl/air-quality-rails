@@ -82,7 +82,9 @@ RUN set -ex \
   SECRET_KEY_BASE=10167c7f7654ed02b3557b05b88ece \
   rake assets:precompile \
   && apt-get purge -y --auto-remove $buildDeps \
-  && mv /usr/src/app/tmp/ember-cli/apps/frontend/assets/* /usr/src/app/public/assets/ \
+  && for asset in $(ls /usr/src/app/tmp/ember-cli/apps/frontend/assets); do \
+    ln -s "/usr/src/app/tmp/ember-cli/apps/frontend/assets/${asset}" "/usr/src/app/public/assets/${asset}"; \
+  done \
   && chown -R nobody /usr/src/app
 
 # 3: Expose the following ports:

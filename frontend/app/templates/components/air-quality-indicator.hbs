@@ -1,8 +1,10 @@
-<span class="label">{{ t "indicators.air-quality.category-label" }}</span>
-<div class="info-badge {{ quality }}">
-  <a class="modal-link" data-modal="#quality-modal" href="#">
-    <span class="info-icon"></span>
-    <span class="description imeca-category value">{{t (concat "indicators.air-quality." quality ".title") }}</span>
-  </a>
-</div>
-{{yield}}
+<div class="label">{{ t "indicators.air-quality.category-label" }}</div>
+<a class="modal-link info-badge {{ quality }}" data-modal="#quality-modal" href="#">
+  <span class="description imeca-category value">
+    {{#if quality}}
+      {{t (concat "indicators.air-quality." quality ".title") }}
+    {{else}}
+      {{ t 'values.null' }}
+    {{/if}}
+  </span>
+</a>

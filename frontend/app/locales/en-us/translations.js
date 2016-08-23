@@ -2,8 +2,15 @@ export default {
   "values": {
     "null" : "n/a"
   },
+  "stations-list": {
+    "label" : "Monitored Sites"
+  },
   "indicators": {
     "generic-title": "More Information",
+
+    "imeca": {
+      "measurement-datetime-format" : "HH:MM"
+    },
 
     "air-quality": {
       "category-label": "The air quality is",
@@ -19,11 +26,11 @@ export default {
         "title": "Bad",
         "description" : "Adults and children with lung problems, and adults with heart problems, who experience symptoms, should reduce strenuous physical exertion, particularly outdoors, and particularly if they experience symptoms.\n\nPeople with asthma may find they need to use their relievermore often. Older people should also reduce physical exertion."
       },
-      "very-bad": {
+      "very_bad": {
         "title": "Very Bad",
         "description" : "Adults and children with lung problems, and adults with heart problems, and older people should avoid strenuous physical activity.\n\nPeople with asthma may find they need to use their reliever more often."
       },
-      "extremely-bad": {
+      "extremely_bad": {
         "title": "Extremely Bad",
         "description" : "Adults and children with lung problems, and adults with heart problems, and older people should avoid strenuous physical activity. People with asthma may find they need to use their reliever more often."
       }
@@ -60,11 +67,11 @@ export default {
     "pollutants": {
       "label": "Last hour concentration",
       "toracic-particles": {
-        "title": "PM 10 (expressed in μg x m³)",
+        "title": "PM 10 (expressed in μg/m³)",
         "description": "Suspended solid or liquid particles in the air with aerodynamic diameter of 10μm or less. They are emitted from a variety of stationary and mobile sources such as diesel engines, wood stoves, power plants, etc.\n\nConstant exposure to high levels of PM10 has been related to heart and lung diseases, eye, nose and throat irritation, coughing and shortness of breath, reduced lung function, and asthma and heart attacks."
       },
       "respirable-particles": {
-        "title": "PM 2.5 (expressed in μg x m³)",
+        "title": "PM 2.5 (expressed in μg/m³)",
         "description": "Suspended fine particles in the air with aerodynamic diameter of 2.5μm or less. PM2.5 primary sources include road transport, industrial, commercial and domestic burn of fuel, and dust emissions from construction sites.\n\nLong-term exposure to high levels of PM2.5 can cause respiratory and cardiovascular illness, and even death."
       },
       "ozone": {
@@ -74,7 +81,8 @@ export default {
     },
 
     "forecasts": {
-      "label" : "Forecasts"
+      "label" : "Forecasts",
+      "description" : "Maximum expected value."
     }
   }
   // "some.translation.key": "Text for some.translation.key",
