@@ -40,15 +40,18 @@ pronosticos:
     io.rancher.scheduler.affinity:host_label: data-host=true
 
 # The forecasts engine's tables access SFTP Service:
-pronosticos-sftp:
-  image: atmoz/sftp:latest
-  volumes: [ "calidad-aire-pronosticos:/home/simanl/tablas-pronosticos" ]
+sftp:
+  image: atmoz/sftp:alpine
+  volumes:
+    - calidad-aire-pronosticos:/home/simanl/tablas-pronosticos:ro
+    - calidad-aire-postgres:/home/simanl/postgres-data:ro
   volume_driver: local
-  # volume_driver: simanl-fs-convoy
-  ports: [ "2222:22" ]
-  command: simanl:simanl
+  ports: ["2222:22/tcp"]
+  command:
+    - simanl:$$1$$FVN2R3SO$$rKeCtsTbNnYok5CuNtVCg.:e:999:999
   labels:
     io.rancher.container.pull_image: always
+    io.rancher.scheduler.affinity:container_ne: sftp
     io.rancher.scheduler.affinity:host_label: data-host=true
 
 # The Job Processor app:
