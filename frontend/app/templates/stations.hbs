@@ -4,7 +4,7 @@
 
 {{#g-map lat=25.77 lng=-100.27 zoom=11 options=mapOptions as |context|}}
   {{#each model as |station| }}
-    {{#g-map-marker context lat=station.latitude lng=station.longitude onClick=(action "goToStation" station) icon=(mapMarkerIconByQuality station.lastMeasurement.imecaCategory) as |markerContext|}}
+    {{#g-map-marker context lat=station.latitude lng=station.longitude onClick=(action "goToStation" station) icon=(map-marker-icon-by-quality station.lastMeasurement.imecaCategory) as |markerContext|}}
       {{#g-map-infowindow markerContext openOn="mouseover" closeOn="mouseout"}}
         <h3>{{ station.name }}</h3>
         {{ air-quality-indicator quality=station.lastMeasurement.imecaCategory }}

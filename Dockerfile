@@ -65,7 +65,7 @@ RUN set -ex \
     gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key"; \
   done \
   && apt-get update \
-  && buildDeps='git xz-utils' \
+  && buildDeps='git xz-utils curl' \
   && apt-get install -y --no-install-recommends $buildDeps \
   && rm -rf /var/lib/apt/lists/* \
   && export NPM_CONFIG_LOGLEVEL=info \
