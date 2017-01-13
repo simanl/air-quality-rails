@@ -176,7 +176,7 @@ class Measurement < ActiveRecord::Base
     def most_recent_uncached?
       return false unless station_id.present? && measured_at.present?
 
-      # NOTE: Weird how `self.class.most_recent` already filters by station_id..
+      # NOTE: Weird how `self.class.most_recent` already filters by station_id...
       self.class
           .most_recent
           .where(self.class.arel_table[:measured_at].gt(measured_at))

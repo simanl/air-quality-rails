@@ -7,6 +7,8 @@ class PullDataFromSimaJob < ActiveJob::Base
   nitric_oxide nitrogen_oxides imeca_points).freeze
 
   def perform(*_args)
+    measurement_ids = []
+
     Sima::Measurement.pull.each do |sima_msrmnt|
       # Obtain the refered station from our database, or create it:
       station = Station.find_or_create_by(code: sima_msrmnt.station.code) do |station_to_create|
@@ -32,11 +34,18 @@ class PullDataFromSimaJob < ActiveJob::Base
       # signature, but it does exist on rails 5.0.x... hence we'll need to fetch the record and
       # update it:
       if station.measurements.where(measured_at_condition).any?
-        station.measurements.find_by(measured_at_condition).update attrs
+        measurement = station.measurements.find_by(measured_at_condition)
+        measurement.update attrs
       else
-        station.measurements.create attrs.merge(measured_at_condition)
+        measurement = station.measurements.create attrs.merge(measured_at_condition)
       end
+
+      measurement_ids << measurement.id
     end
+
+    # Update 'most_recent' columns by force... something is not right with the Measurement callbacks
+    Measurement.most_recent.where.not(id: measurement_ids).update_all most_recent: false
+    Measurement.where(id: measurement_ids).update_all most_recent: true
 
     enqueue_forecasts_update_if_a_dataframe_can_be_closed!
   end
