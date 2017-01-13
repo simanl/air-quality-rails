@@ -24,8 +24,18 @@ class PullDataFromSimaJob < ActiveJob::Base
         collected_attrs
       end
 
-      station.measurements.create_with(attrs)
-        .find_or_create_by(measured_at: sima_msrmnt.measured_at)
+      # Define the update-or-create condition:
+      measured_at_condition = { measured_at: sima_msrmnt.measured_at }
+
+      # Update the matching measurement if there's any, or create a new measurement:
+      # NOTE: In rails 4.2.x, there's no ActiveRecord::Relation.update(attrs) method with this exact
+      # signature, but it does exist on rails 5.0.x... hence we'll need to fetch the record and
+      # update it:
+      if station.measurements.where(measured_at_condition).any?
+        station.measurements.find_by(measured_at_condition).update attrs
+      else
+        station.measurements.create attrs.merge(measured_at_condition)
+      end
     end
 
     enqueue_forecasts_update_if_a_dataframe_can_be_closed!
