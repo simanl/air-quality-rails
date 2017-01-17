@@ -63,15 +63,19 @@ gem 'puma', '~> 3.4.0'
 
 gem 'ember-cli-rails', '~> 0.8.0'
 
-# Guard setup for automatic testing:
-group :development do
-  gem 'guard',       '~> 2.14.0'
-  gem 'guard-rspec', '~> 4.7.2', require: nil
-end
-
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
-  gem 'byebug'
+  gem 'byebug', platform: :mri
+  gem 'pry-rails', '~> 0.3.4'
+  gem 'rspec-rails', '~> 3.5'
+  gem 'spring-commands-rspec', '~> 1.0', '>= 1.0.4'
+
+  gem 'factory_girl_rails', '~> 4.7.0'
+  gem 'shoulda-matchers', '~> 3.1.1'
+  gem 'database_cleaner', '~> 1.5', '>= 1.5.3', require: false
+
+  # Run specs automatically:
+  gem 'guard-rspec', '~> 4.7', '>= 4.7.3', require: false
 end
 
 group :development do
@@ -80,8 +84,4 @@ group :development do
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
-  gem 'spring-commands-rspec', '~> 1.0.4'
-
-  gem 'rspec-rails', '~> 3.5.1'
-  gem 'factory_girl_rails', '~> 4.7.0'
 end
