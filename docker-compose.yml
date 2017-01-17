@@ -1,4 +1,4 @@
-version: "2"
+version: "2.1"
 
 volumes:
   postgres-data:
@@ -10,27 +10,19 @@ volumes:
   gems:
     driver: local
 
-networks:
-  front-tier:
-    driver: bridge
-  back-tier:
-    driver: bridge
-
 services:
   # Our PostgreSQL service:
   db:
     image: vovimayhem/postgis:9.5
     # Bind host port 5432 to PostgreSQL port 5432:
     ports:
-      - 5442:5432
+      - ${AIR_QUALITY_POSTGRES_PORT:-5432}:5432
     # We're mounting 'db/dumps' into the postgres container so we can backup and
     # restore data dumps easily:
     volumes:
       - postgres-data:/var/lib/postgresql/data
       - ./db/dumps:/db/dumps
       - ./bin/restoredb:/usr/local/bin/restoredb
-    networks:
-      - back-tier
     environment:
       LC_ALL: C.UTF-8
       POSTGRES_PASSWORD: 41rqu4l1ty
@@ -44,8 +36,6 @@ services:
     command: redis-server --appendonly yes
     volumes:
       - redis-data:/var/lib/redis
-    networks:
-      - back-tier
 
   # The Forecasts Engine:
   forecasts:
@@ -55,8 +45,6 @@ services:
       - ./development-forecasts-entrypoint:/app/development-entrypoint
       - ./tmp:/tmp
     entrypoint: /app/development-entrypoint
-    networks:
-      - back-tier
     mem_limit: 2g
     memswap_limit: 4g
 
@@ -71,15 +59,9 @@ services:
     volumes:
       - gems:/usr/local/bundle
       - .:/usr/src/app
-    networks:
-      - back-tier
     stdin_open: true
     tty: true
     depends_on:
-      - db
-      - keyval
-      - forecasts
-    links:
       - db
       - keyval
       - forecasts
@@ -88,16 +70,12 @@ services:
       REDIS_URL: redis://keyval:6379/air_quality_development
       FORECAST_ENGINE_URL: tcp://forecasts:6311 # The URL pointing to our engine container
       RAILS_ENV: development
-    env_file:
-      - development.env
+      WEB_CONSOLE_WHITELISTED_IPS: ${WEB_CONSOLE_WHITELISTED_IPS}
 
   web:
     <<: *app
     ports:
       - 3010:3000
-    networks:
-      - front-tier
-      - back-tier
     depends_on:
       - db
       - keyval
@@ -109,9 +87,6 @@ services:
     stdin_open: true
     tty: true
     command: /usr/bin/supervisord --configuration=/usr/src/app/config/nginx-rails.conf
-    networks:
-      - front-tier
-      - back-tier
     links:
       - db
       - keyval
@@ -129,10 +104,7 @@ services:
   # speedier:
   test:
     <<: *app # We copy from &app_base, and override:
-    networks:
-      - front-tier
-      - back-tier
-    command: spring server
+    command: guard
     environment:
       <<: *app_environment
       DATABASE_URL: postgis://postgres:41rqu4l1ty@db:5432/air_quality_test
