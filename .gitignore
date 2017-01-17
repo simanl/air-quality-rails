@@ -40,9 +40,9 @@ pickle-email-*.html
 # TODO: Remove whatever makes the .gem file to be created:
 /.gem
 
-# Ignore dotenv environment files:
+# Ignore dotenv files, but not the dotenv example files:
 *.env
-!*.example.env
+!*example.env
 
 # Ignore RSpec "spec/examples.txt" file:
 /spec/examples.txt
