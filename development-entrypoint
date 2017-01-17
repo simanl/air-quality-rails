@@ -1,5 +1,8 @@
 #! /bin/bash
 
+# The Docker App Container's development entrypoint.
+# This is a script used by the project's Docker development environment to
+# setup the app containers and databases upon runnning.
 set -e
 
 : ${APP_PATH:="/usr/src/app"}
@@ -15,33 +18,34 @@ function wait_setup { echo "Waiting for app setup to finish..."; sleep $APP_SETU
 # 2: 'Unlock' the setup process if the script exits prematurely:
 trap unlock_setup HUP INT QUIT KILL TERM EXIT
 
-# 3: Wait until the setup 'lock' file no longer exists:
-while [ -f $APP_SETUP_LOCK ]; do wait_setup; done
-
-# 4: 'Lock' the setup process, to prevent a race condition when the project's
-# app containers will try to install gems and setup the database concurrently:
-lock_setup
-
-# 5: Check if the database exists, or setup the database if it doesn't, as it is
-# the case when the project runs for the first time.
-# We'll use a custom script `check-or-setup-db` (inside our app's `bin` folder),
-# instead of running `rake db:version  || rake db:setup`, as running that command
-# (at least on rails 4.2.4) will leave a couple of small ruby zombie processes
-# running in the container:
-check-or-setup-db
-
-# 6: 'Unlock' the setup process:
-unlock_setup
-
-# 7: Especificar el comando default:
+# 3: Specify a default command, in case it wasn't issued:
 if [ -z "$1" ]; then set -- rails server -p 3000 -b 0.0.0.0 "$@"; fi
 
-# 8: If the command to execute is 'rails server', then force it to write the pid
-# file into an private directory - suddenly killing and removing app containers
-# without this would leave a pidfile in the project's tmp dir, preventing containers
-# from starting up on further attempts:
-if [[ "$1" = "rails" && ("$2" = "s" || "$2" = "server") ]]; then
-  rm -rf "${APP_TEMP_PATH}/pids/server.pid";
+if [[ "$1" = "rails" || "$1" = "sidekiq" || "$1" = "guard" ]]
+then
+  # 3: Wait until the setup 'lock' file no longer exists:
+  while [ -f $APP_SETUP_LOCK ]; do wait_setup; done
+
+  # 4: 'Lock' the setup process, to prevent a race condition when the project's
+  # app containers will try to install gems and setup the database concurrently:
+  lock_setup
+
+  # 5: Check if the database exists, or setup the database if it doesn't, as it is
+  # the case when the project runs for the first time.
+  #
+  # We'll use a custom script `checkdb` (inside our app's `bin` folder), instead
+  # of running `rails db:version` to avoid loading the entire rails app for this
+  # simple check:
+  bundle exec checkdb || setup
+
+  # 6: 'Unlock' the setup process:
+  unlock_setup
+
+  # 8: If the command to execute is 'rails server', then force it to write the
+  # pid file into a non-shared container directory. Suddenly killing and removing
+  # app containers without this would leave a pidfile in the project's tmp dir,
+  # preventing the app container from starting up on further attempts:
+  if [[ "$2" = "s" || "$2" = "server" ]]; then rm -rf /usr/src/app/tmp/pids/server.pid; fi
 fi
 
 # 9: Execute the given or default command:

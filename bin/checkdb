@@ -1,0 +1,33 @@
+#!/usr/bin/env ruby
+
+# This script is used in the development environment with Docker to check if the
+# app database exists, and runs the database setup if it doesn't, as it is the
+# case when the project runs for the first time on the development machine.
+#
+# We are using this custom script instead of running the
+# `rake db:version  || rake db:setup` commands, as that currently leaves a
+# couple of small ruby zombie processes running in the app container:
+require 'rubygems'
+require 'rake'
+require 'bundler'
+
+Bundler.setup(:default)
+
+require 'active_record'
+
+exit begin
+  connection_tries ||= 3
+  ActiveRecord::Base.establish_connection && ActiveRecord::Migrator.current_version
+  0
+rescue PG::ConnectionBad
+  unless (connection_tries -= 1).zero?
+    puts "Retrying DB connection #{connection_tries} more times..."
+    sleep ENV.fetch("APP_SETUP_WAIT", "5").to_i
+    retry
+  end
+  1
+rescue ActiveRecord::NoDatabaseError
+  2
+ensure
+  ActiveRecord::Base.clear_all_connections!
+end
